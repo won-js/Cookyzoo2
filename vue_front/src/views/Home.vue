@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <!-- <h1>나는</h1> -->
     <Gamemain />
     <div></div>
   </div>
@@ -18,6 +19,8 @@ export default {
 </script>
 
 <style scoped>
+/* @import "../assets/styles/reset.css"; */
+
 .home {
   height: 100vh;
 }
