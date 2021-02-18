@@ -1,8 +1,8 @@
 <template>
-	<div class="home">
-		<Gamemain />
-		<div></div>
-	</div>
+  <div class="home">
+    <Gamemain />
+    <div></div>
+  </div>
 </template>
 
 <script>
@@ -10,9 +10,18 @@
 import Gamemain from "@/components/Gamemain.vue";
 
 export default {
-	name: "Home",
-	components: {
-		Gamemain,
-	},
+  name: "Home",
+  components: {
+    Gamemain,
+  },
 };
 </script>
+
+<style scoped>
+.home {
+  height: 100vh;
+}
+video {
+  width: 100%;
+}
+</style>

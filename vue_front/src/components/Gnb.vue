@@ -23,14 +23,12 @@ export default {};
 <style scoped>
 .logo {
 }
-
 nav {
   width: 1200px;
   padding: 20px;
   display: flex;
   justify-content: space-between;
 }
-
 .menu a {
   margin: 5px;
   color: blue;

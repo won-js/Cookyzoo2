@@ -36,13 +36,11 @@ h6,
 video {
   margin: 0;
 }
-
 html,
 body {
   margin: 0;
   padding: 0;
 }
-
 /* a-style */
 a {
   color: #fff;
@@ -62,17 +60,14 @@ header {
   display: flex;
   justify-content: center;
 }
-
 footer {
   height: 300px;
   background-color: cornflowerblue;
 }
-
 @media (max-width: 1200px) {
   .container {
     width: 100%;
   }
-
   header {
     width: 100%;
   }

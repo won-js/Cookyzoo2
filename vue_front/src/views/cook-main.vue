@@ -31,23 +31,19 @@ section {
 article {
   flex: 3;
   border: 1px solid red;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
 }
-
 aside {
   flex: 1;
   border: 1px solid blue;
-
   display: flex;
   flex-direction: column;
   background-image: url("../assets/domaback1.jpg");
   background-size: 100% 100%;
 }
-
 .side-tab {
   height: 200px;
 }
@@ -57,19 +53,16 @@ aside {
 .side-logo {
   text-align: right;
 }
-
 .side-logo img {
   width: auto;
   height: auto;
   max-width: 100px;
   max-height: 100px;
 }
-
 article img {
   width: 500px;
   height: 500px;
 }
-
 button {
   background: inherit;
   border: none;

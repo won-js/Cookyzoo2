@@ -44,7 +44,7 @@ export default {
 				45,
 				window.innerWidth / window.innerHeight,
 				1,
-				2000
+				2000,
 			);
 			this.camera.position.set(100, 200, 300);
 
@@ -100,7 +100,7 @@ export default {
 			this.loader = new FBXLoader();
 			this.loader.load(
 				"./fbx/test.fbx",
-				(model) => {
+				model => {
 					this.mixer = new THREE.AnimationMixer(model);
 					this.model = model;
 
@@ -112,7 +112,7 @@ export default {
 
 					action.play();
 
-					model.traverse((child) => {
+					model.traverse(child => {
 						if (child.isMesh) {
 							child.castShadow = true;
 							child.receiveShadow = true;
@@ -122,9 +122,9 @@ export default {
 					this.scene.add(model);
 				},
 				undefined,
-				(error) => {
+				error => {
 					// console.log(error);
-				}
+				},
 			);
 
 			// controls
