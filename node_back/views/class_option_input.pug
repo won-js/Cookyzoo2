@@ -1,0 +1,74 @@
+doctype html
+html(lang='ko')
+	head
+		title 클래스 옵션
+		style.
+			table {
+				width: 100%;
+				border-top: 1px solid #444444;
+				border-collapse: collapse;
+			}
+			th, td {
+				border-bottom: 1px solid #444444;
+				padding: 10px;
+			}
+
+	body
+		#header 
+			h1.title 클래스 옵션 추가하기
+
+	form(
+		action="/class-option/input"
+		method="POST"
+	)
+		table 
+			tr 
+				td 
+					input(
+						type="text" name="name" placeholder="이름"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="price" placeholder="가격"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="description" placeholder="설명"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="thumbnail" placeholder="썸네일"
+					)
+			tr 
+				td 
+					input(
+						type="number" name="class_id" placeholder="class_id"
+					)
+		br
+		input(
+			type="submit"
+			value="전송하기"
+		)
+
+	br
+	br
+
+	table
+		tr
+			td id
+			td name
+			td price 
+			td description
+			td thumbnail
+			td class_id
+		for classOption in classOptions
+			tr
+				td= classOption.dataValues.id
+				td= classOption.dataValues.name 
+				td= classOption.dataValues.price 
+				td= classOption.dataValues.description 
+				td= classOption.dataValues.thumbnail 
+				td= classOption.dataValues.class_id 

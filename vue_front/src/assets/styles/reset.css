@@ -1,0 +1,22 @@
+/* reset.css */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+/* a-style */
+a {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+a:hover,
+a:active {
+  text-decoration: none;
+  color: #fff;
+  background-color: #f59000;
+}

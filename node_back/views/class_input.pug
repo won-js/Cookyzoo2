@@ -1,0 +1,67 @@
+doctype html
+html(lang='ko')
+	head
+		title 클래스
+		style.
+			table {
+				width: 100%;
+				border-top: 1px solid #444444;
+				border-collapse: collapse;
+			}
+			th, td {
+				border-bottom: 1px solid #444444;
+				padding: 10px;
+			}
+
+	body
+		#header 
+			h1.title 클래스 추가하기
+
+	form(
+		action="/classes/input"
+		method="POST"
+	)
+		table 
+			tr 
+				td 
+					input(
+						type="text" name="name" placeholder="이름"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="price" placeholder="가격"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="thumbnail" placeholder="미리보기 사진"
+					)
+			tr 
+				td 
+					input(
+						type="number" name="category_id" placeholder="카테고리 id"
+					)
+		br
+		input(
+			type="submit"
+			value="전송하기"
+		)
+
+	br
+	br
+
+	table
+		tr
+			td id
+			td name
+			td price 
+			td thumbnail
+			td category_id
+		for clss in clsses
+			tr
+				td= clss.dataValues.id
+				td= clss.dataValues.name 
+				td= clss.dataValues.price 
+				td= clss.dataValues.thumbnail 
+				td= clss.dataValues.category_id 
