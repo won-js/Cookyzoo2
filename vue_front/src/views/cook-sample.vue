@@ -80,6 +80,7 @@
           <div class="left">← 이전 순서</div>
           <div class="cur">☆</div>
           <div class="right">다음 순서 →</div>
+          <div>{{ user.name }}</div>
         </div>
       </aside>
     </section>
@@ -87,7 +88,25 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
+  created() {
+    this.$http
+      .get("/api/test")
+      .then(res => {
+        const user = res.data.user;
+
+        if (user) this.user = user; // user값이 유효하면, this.user에 대입.
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  },
+};
 </script>
 
 <style scoped>
