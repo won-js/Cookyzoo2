@@ -1,5 +1,6 @@
 <template>
   <main class="pink">
+    <MaterialModal></MaterialModal>
     <section class="purple">
       <article class="display-red"></article>
       <aside class="list-yellow">
@@ -88,11 +89,16 @@
 </template>
 
 <script>
+import MaterialModal from "../components/cook-modal/material-modal";
+
 export default {
   data() {
     return {
       user: null,
     };
+  },
+  components: {
+    MaterialModal,
   },
   created() {
     this.$http
