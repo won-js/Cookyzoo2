@@ -1,22 +1,22 @@
 <template>
   <section>
     <article>
-      3. 손씻기(-> 4.재료확인)
-      <button v-on:click="onClick">다 씻었어요!</button>
-      <button v-on:click="goBefore">뒤로가기</button>
+      <!-- <Gamemain /> -->
     </article>
     <aside></aside>
   </section>
 </template>
 
 <script>
+// import Gamemain from "@/components/Gamemain.vue";
+
 export default {
+  components: {
+    // Gamemain,
+  },
   methods: {
     onClick() {
       this.$router.push({ path: "cook-material" });
-    },
-    goBefore() {
-      this.$router.go(-1);
     },
   },
 };
@@ -26,7 +26,10 @@ export default {
 @import "../assets/styles/cook-style.css";
 
 article {
-  background-image: url("../assets/images/washhands.jpg");
-  background-size: 100% 100%;
+  height: 100vh;
+}
+
+video {
+  width: 100%;
 }
 </style>

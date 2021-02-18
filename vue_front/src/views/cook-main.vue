@@ -1,49 +1,65 @@
 <template>
   <section>
     <article>
-      <img src="http://placehold.it/300x300" alt="" />
-      <button>요리 시작하기</button>
+      <p>초코 쿠키 클래스 : 단숨에 제작하는 렌지쿠키 초코렛맛 1편</p>
+      <img
+        style="width: 1200px; height: 700px"
+        src="../assets/images/cooksample.jpg"
+        alt=""
+      />
+      <button v-on:click="onClick">요리 시작하기</button>
     </article>
     <aside>
-      <div class="side-tab">(( 메인화면 ))</div>
       <div class="side-text">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi libero
-        reprehenderit repudiandae odit laborum iste.
+        <p>{{ className }}</p>
+        <p>간단한 재료만으로 만들어보는 바삭말랑 초코쿠키</p>
+        <p>필요 재료</p>
+        <p>밀가루 반죽, 초콜렛, 손가락...</p>
+        수업 시작하기 버튼을 누르면 수업이 시작됩니다.
       </div>
       <div class="side-logo">
-        <img src="@/assets/cookyzoo.png" alt="" />
+        <img src="@/assets/images/cookyzoo.png" alt="" />
       </div>
     </aside>
   </section>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      className: "초코쿠키",
+      class: {
+        name: "무야호",
+      },
+    };
+  },
+  methods: {
+    onClick() {
+      this.$router.push({ path: "cook-character" });
+    },
+  },
+};
 </script>
 
 <style scoped>
+@import "../assets/styles/cook-style.css";
+
 section {
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  height: 100vh;
+  background-color: #3f3f37;
 }
-article {
-  flex: 3;
-  border: 1px solid red;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+
+p {
+  color: white;
 }
+
+article img {
+}
+
 aside {
-  flex: 1;
-  border: 1px solid blue;
-  display: flex;
-  flex-direction: column;
-  background-image: url("../assets/domaback1.jpg");
-  background-size: 100% 100%;
+  color: #000;
 }
+
 .side-tab {
   height: 200px;
 }
@@ -62,15 +78,5 @@ aside {
 article img {
   width: 500px;
   height: 500px;
-}
-button {
-  background: inherit;
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  overflow: visible;
-  cursor: pointer;
-  font-size: 50px;
 }
 </style>
