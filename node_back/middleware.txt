@@ -23,6 +23,10 @@ cookie-parser 미들웨어 뒤에 위치하는 것이 안전.(281p)
 
 
 그 외 참고.
+<<<<<<< HEAD
 https://expressjs.com/ko/resources/middleware.html
 
 
+=======
+https://expressjs.com/ko/resources/middleware.html
+>>>>>>> e31593e9a1d0e07758e63968a3f009c396304c11

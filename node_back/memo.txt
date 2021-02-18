@@ -51,6 +51,7 @@ views/: view파일(템플릿 파일)들을 관리하는 곳, 화면 부분 작�
 		참조링크 : https://velog.io/@new_wisdom/Node.js-6-Express-Express-generator%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A7%8C%EB%93%A4%EA%B8%B0
 
 package.json : vue project와 동일.
+<<<<<<< HEAD
 
 2021-02-18 재식
 
@@ -117,3 +118,5 @@ package.json : vue project와 동일.
 	- 모델 별로 정리
 
 9. model 확인 pug 정리, 추가
+=======
+>>>>>>> e31593e9a1d0e07758e63968a3f009c396304c11

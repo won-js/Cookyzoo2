@@ -3,6 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
+<<<<<<< HEAD
 		"start": "set NODE_ENV=development&&nodemon --exec babel-node ./src/bin/www",
 		"start_prod": "set NODE_ENV=production&&babel-node ./src/bin/www",
 		"lint": "./node_modules/.bin/eslint . --fix"
@@ -28,10 +29,24 @@
 		"winston": "^3.3.3",
 		"winston-daily-rotate-file": "^4.5.0",
 		"xss-clean": "^0.1.1"
+=======
+		"start": "node ./bin/www",
+		"lint": "eslint \"./**/*.js\" --fix"
+	},
+	"dependencies": {
+		"cookie-parser": "~1.4.4",
+		"debug": "~2.6.9",
+		"express": "~4.16.1",
+		"morgan": "~1.9.1"
+>>>>>>> e31593e9a1d0e07758e63968a3f009c396304c11
 	},
 	"devDependencies": {
 		"eslint": "^7.20.0",
 		"eslint-config-naver": "^2.1.0",
 		"eslint-plugin-import": "^2.22.1"
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e31593e9a1d0e07758e63968a3f009c396304c11
