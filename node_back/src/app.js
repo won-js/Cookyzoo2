@@ -1,5 +1,4 @@
 import express from "express";
-
 import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -11,7 +10,6 @@ import httpStatus from "http-status";
 
 import {logger} from "./config/winston";
 import morgan from "./config/morgan";
-
 import indexRouter from "./routes/index";
 import ApiError from "./utils/ApiError";
 import models from "./models";
@@ -24,6 +22,9 @@ process.env.NODE_ENV =
 	process.env.NODE_ENV.trim().toLowerCase() === "production" ?
 		"production" :
 		"development";
+
+//정호 테스트
+const testRouter = require('./routes/test');
 
 if (process.env.NODE_ENV === "production") {
 	logger.info("Production Mode");
@@ -79,7 +80,10 @@ app.use((req, res, next) => {
 	next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 
-// sequelize 사용
+//정호 테스트
+app.use('/api/test', testRouter);
+
+//sequelize 사용
 models.sequelize.sync();
 models.sequelize
 	.authenticate()

@@ -20,6 +20,9 @@ module.exports = {
 		'linebreak-style': 'off',
 		'indent': 'off',
 		'object-curly-spacing': 'off',
+		'no-console': 'off',
+
+		'arrow-parens': 'off'
 	}
 =======
 =======
