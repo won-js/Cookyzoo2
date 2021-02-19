@@ -117,15 +117,16 @@ export default {
 </script>
 
 <style scoped>
+
 main {
   /* border: 1px solid pink; */
   height: 100vh;
-
   display: flex;
   flex-direction: column;
   background-image: url("../assets/images/cooksample.jpg");
   /* background-image: url("../assets/images/bonam.png"); */
   background-size: 100% 100%;
+  font-family: 'SpoMedium';
 }
 
 h2 {
