@@ -103,12 +103,12 @@ export default {
   created() {
     this.$http
       .get("/api/test")
-      .then((res) => {
+      .then(res => {
         const user = res.data.user;
 
         if (user) this.user = user; // user값이 유효하면, this.user에 대입.
       })
-      .catch((err) => {
+      .catch(err => {
         // console.error(err);
         console.log(err);
       });
@@ -117,7 +117,6 @@ export default {
 </script>
 
 <style scoped>
-
 main {
   /* border: 1px solid pink; */
   height: 100vh;
@@ -126,7 +125,7 @@ main {
   background-image: url("../assets/images/cooksample.jpg");
   /* background-image: url("../assets/images/bonam.png"); */
   background-size: 100% 100%;
-  font-family: 'SpoMedium';
+  font-family: "SpoMedium";
 }
 
 h2 {
