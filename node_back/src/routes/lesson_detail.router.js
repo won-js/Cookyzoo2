@@ -4,28 +4,28 @@ import models from "../models";
 
 const router = express.Router();
 
-// class_detail에 데이터 추가하는 폼 보기
+// lesson_detail에 데이터 추가하는 폼 보기
 router.get("/show", (req, res, next) => {
-	models.class_detail.findAll()
+	models.lesson_detail.findAll()
 		.then(result => {
-			res.render("class_material_input", {
-				classMaterials: result,
+			res.render("lesson_detail_input", {
+				lessonDetails: result,
 			});
 		});
 });
 
-// class_detail에 데이터 추가
+// lesson_detail에 데이터 추가
 router.post("/input", (req, res, next) => {
 	const body = req.body;
 
-	models.class_detail.create({
+	models.lesson_detail.create({
 		image: body.image,
 		information: body.information,
-		class_id: body.class_id,
+		lesson_id: body.lesson_id,
 	})
 		.then(result => {
 			logger.info("데이터 추가 완료");
-			res.redirect("/classdetailinput");
+			res.redirect("/lesson-detail/show");
 		})
 		.catch(err => {
 			logger.error("데이터 추가 실패");

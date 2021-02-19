@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-	const ClassMaterial = sequelize.define("class_material", {
+	const LessonMaterial = sequelize.define("lesson_material", {
 		name: {
 			type: DataTypes.STRING(20),
 			allowNull: true,
@@ -8,21 +8,21 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER.UNSIGNED,
 			allowNull: true,
 		},
-		class_id: {
+		lesson_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 	}, {
 		timestamps: false,
-		tableName: "class_material",
+		tableName: "lesson_material",
 	});
 
-	ClassMaterial.associate = function(models) {
-		ClassMaterial.belongsTo(models.class, {
-			foreignKey: "class_id",
+	LessonMaterial.associate = function(models) {
+		LessonMaterial.belongsTo(models.lesson, {
+			foreignKey: "lesson_id",
 			onDelete: "cascade",
 		});
 	};
 
-	return ClassMaterial;
+	return LessonMaterial;
 };

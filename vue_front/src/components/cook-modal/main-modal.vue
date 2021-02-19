@@ -3,7 +3,10 @@
     <div class="overlay" @click="$emit('close-modal')"></div>
     <div class="modal-card">
       <slot />
-      <img src="" alt="" />
+      <!-- <img :src="thumbnail" alt="" /> -->
+      <li v-for="(image, index) in thumbnail" v-bind:key="index">
+        <img :src="image.thumbnail" />
+      </li>
       <button @click="isMainModalEnabled = true">넘어가기 테스트</button>
       <MaterialModal
         v-if="isMainModalEnabled"
@@ -23,6 +26,8 @@ export default {
   },
   data() {
     return {
+      id: 1,
+      thumbnail: [],
       user: null,
       isMainModalEnabled: false,
     };
@@ -34,6 +39,39 @@ export default {
         const user = res.data.user;
 
         if (user) this.user = user; // user값이 유효하면, this.user에 대입.
+      })
+      .catch((err) => {
+        // console.error(err);
+        console.log(err);
+      });
+
+    // this.$http
+    //   .get(`http://127.0.0.1:3000/lessons/${this.id}`)
+    //   .then((res) => {
+    //     const thumbnail = res.data.thumbnail;
+
+    //     if (thumbnail) {
+    //       this.thumbnail = `images/lesson/${thumbnail}`; // user값이 유효하면, this.user에 대입.
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     // console.error(err);
+    //     console.log(err);
+    //   });
+
+    this.$http
+      .get(`http://127.0.0.1:3000/lessons/find`)
+      .then((res) => {
+        this.thumbnail = res.data.result;
+
+        // if (thumbnail) {
+        //   this.thumbnail = `images/lesson/${thumbnail}`; // user값이 유효하면, this.user에 대입.
+        // }
+        for (let i = 0; i < this.thumbnail.length; i++) {
+          this.thumbnail[
+            i
+          ].thumbnail = `images/lesson/${this.thumbnail[i].thumbnail}`;
+        }
       })
       .catch((err) => {
         // console.error(err);
@@ -73,7 +111,7 @@ export default {
 }
 
 img {
-  width: 100%;
+  width: 60%;
 }
 
 button {

@@ -1,6 +1,6 @@
 <template>
   <main class="pink">
-    <MaterialModal></MaterialModal>
+    <main-modal></main-modal>
     <section class="purple">
       <article class="display-red"></article>
       <aside class="list-yellow">
@@ -89,7 +89,8 @@
 </template>
 
 <script>
-import MaterialModal from "../components/cook-modal/material-modal";
+// import MaterialModal from "../components/cook-modal/material-modal";
+import MainModal from "../components/cook-modal/main-modal";
 
 export default {
   data() {
@@ -98,17 +99,18 @@ export default {
     };
   },
   components: {
-    MaterialModal,
+    // MaterialModal,
+    MainModal,
   },
   created() {
     this.$http
       .get("/api/test")
-      .then(res => {
+      .then((res) => {
         const user = res.data.user;
 
         if (user) this.user = user; // user값이 유효하면, this.user에 대입.
       })
-      .catch(err => {
+      .catch((err) => {
         // console.error(err);
         console.log(err);
       });

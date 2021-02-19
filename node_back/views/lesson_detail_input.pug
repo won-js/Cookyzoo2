@@ -18,7 +18,7 @@ html(lang='ko')
 			h1.title 클래스 디테일 목록 추가하기
 
 	form(
-		action="/class-detail/input"
+		action="/lesson-detail/input"
 		method="POST"
 	)
 		table 
@@ -35,7 +35,7 @@ html(lang='ko')
 			tr 
 				td 
 					input(
-						type="number" name="class_id" placeholder="class_id"
+						type="number" name="lesson_id" placeholder="lesson_id"
 					)
 		br
 		input(
@@ -51,10 +51,10 @@ html(lang='ko')
 			td id
 			td image
 			td information 
-			td class_id
-		for classDetail in classDetails
+			td lesson_id
+		for lessonDetail in lessonDetails
 			tr
-				td= classDetail.dataValues.id
-				td= classDetail.dataValues.image 
-				td= classDetail.dataValues.information 
-				td= classDetail.dataValues.class_id 
+				td= lessonDetail.dataValues.id
+				td= lessonDetail.dataValues.image 
+				td= lessonDetail.dataValues.information 
+				td= lessonDetail.dataValues.lesson_id 

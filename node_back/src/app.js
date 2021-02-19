@@ -75,13 +75,13 @@ app.use(express.static(path.join(__dirname, "public")));
 // 라우터 부분, app.use를 사용하므로, 라우터도 일종의 미들웨어. /users는 routes/users.js를 호출하라는 의미.
 app.use("/", indexRouter);
 
+//정호 테스트
+app.use('/api/test', testRouter);
+
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
 	next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
-
-//정호 테스트
-app.use('/api/test', testRouter);
 
 //sequelize 사용
 models.sequelize.sync();
