@@ -13,7 +13,8 @@ export default {
   name: "Home",
   components: { Footer },
 };
-</script>  <style scoped>
+</script>
+<style scoped>
 .home {
   height: 100vh;
 }
