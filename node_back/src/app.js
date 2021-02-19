@@ -1,9 +1,9 @@
-process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
+process.env.NODE_ENV = (process.env.NODE_ENV && (process.env.NODE_ENV).trim().toLowerCase() == 'production') ? 'production' : 'development';
 
 if (process.env.NODE_ENV == 'production') {
-  console.log("Production Mode");
+	console.log("Production Mode");
 } else if (process.env.NODE_ENV == 'development') {
-  console.log("Development Mode");
+	console.log("Development Mode");
 }
 
 var express = require('express');
@@ -13,6 +13,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+//정호 테스트
+const testRouter = require('./routes/test');
 
 var models = require('./models');
 
@@ -42,15 +45,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+//정호 테스트
+app.use('/api/test', testRouter);
+
 //sequelize 사용
 models.sequelize.sync();
 models.sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.')
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err)
-  })
+	.authenticate()
+	.then(() => {
+		console.log('Connection has been established successfully.')
+	})
+	.catch((err) => {
+		console.error('Unable to connect to the database:', err)
+	})
 
 module.exports = app;

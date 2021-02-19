@@ -1,23 +1,19 @@
 <template>
-  <div class="home">
-    <Gamemain />
-    <div></div>
+  <div id="Home">
+    <section>
+      <video src="@/assets/videos/sample2.mp4" autoplay muted loop></video>
+    </section>
+    <Footer />
   </div>
-</template>
-
-<script>
+</template>  <script>
 // @ is an alias to /src
-import Gamemain from "@/components/Gamemain.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: "Home",
-  components: {
-    Gamemain,
-  },
+  components: { Footer },
 };
-</script>
-
-<style scoped>
+</script>  <style scoped>
 .home {
   height: 100vh;
 }

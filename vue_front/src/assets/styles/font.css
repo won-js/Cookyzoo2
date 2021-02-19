@@ -1,0 +1,31 @@
+h1 {
+    color: blueviolet;
+}
+
+
+/* 글꼴 등록 부분 */
+
+@font-face {
+    font-family: 'SpoMedium';
+    src: url('../fonts/SpoqaHanSansNeo-Medium.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'SpoBold';
+    src: url('../fonts/SpoqaHanSansNeo-Bold.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'SpoLight';
+    src: url('../fonts/SpoqaHanSansNeo-Light.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'SpoRegular';
+    src: url('../fonts/SpoqaHanSansNeo-Regular.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'SpoThin';
+    src: url('../fonts/SpoqaHanSansNeo-Thin.ttf') format('truetype')
+}
