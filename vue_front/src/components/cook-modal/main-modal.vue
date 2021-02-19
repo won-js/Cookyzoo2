@@ -1,17 +1,16 @@
 <template>
   <div class="modal">
-      <div class="overlay" @click="$emit('close-modal')"></div>
-        <div class="modal-card">
-            <slot />
-            <button>넘어가기 테스트</button>
-            {{ user.name }}
-asdf
-        </div>
+    <div class="overlay" @click="$emit('close-modal')"></div>
+    <div class="modal-card">
+      <slot />
+      <button>넘어가기 테스트</button>
+      {{ user.name }}
+      asdf
     </div>
+  </div>
 </template>
 
 <script>
-
 export default {
   name: "App",
   data() {
@@ -28,7 +27,8 @@ export default {
         if (user) this.user = user; // user값이 유효하면, this.user에 대입.
       })
       .catch(err => {
-        console.error(err);
+        // console.error(err);
+        console.log(err);
       });
   },
 };
@@ -40,7 +40,8 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
-  left: 0; top: 0;
+  left: 0;
+  top: 0;
 }
 
 .overlay {

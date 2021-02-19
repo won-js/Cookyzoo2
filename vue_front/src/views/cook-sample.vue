@@ -103,13 +103,14 @@ export default {
   created() {
     this.$http
       .get("/api/test")
-      .then(res => {
+      .then((res) => {
         const user = res.data.user;
 
         if (user) this.user = user; // user값이 유효하면, this.user에 대입.
       })
-      .catch(err => {
-        console.error(err);
+      .catch((err) => {
+        // console.error(err);
+        console.log(err);
       });
   },
 };
