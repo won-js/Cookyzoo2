@@ -51,3 +51,69 @@ views/: view파일(템플릿 파일)들을 관리하는 곳, 화면 부분 작�
 		참조링크 : https://velog.io/@new_wisdom/Node.js-6-Express-Express-generator%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A7%8C%EB%93%A4%EA%B8%B0
 
 package.json : vue project와 동일.
+
+2021-02-18 재식
+
+1. log를 morgan 과 winston으로 구분함
+	- morgan : http request 요청을 로그 찍어줌 ex) get, post 메세지, url 등
+	
+	- winston : console.log와 같은 역할 (콘솔에 로그가 찍힘과 동시에 logs 폴더에 로그 파일이 남음)
+		사용법 -> 1. import
+					import {logger} from "./config/winston";
+				 
+				 2. logger 사용
+				 	logger.info("로그내용");
+					 
+					로그 레벨 = const levels = { 
+									error: 0,
+									warn: 1,
+									info: 2,
+									http: 3,
+									verbose: 4,
+									debug: 5,
+									silly: 6
+								};
+					이 중에 역할에 맞게 사용
+
+2. babel 사용
+	- es6 문법 사용 가능하게 함
+
+	- es6 대표 문법 
+
+		1. require 대신 import 사용
+			module.exports 대신 export {a, b};나 export default a; 사용
+
+		2. => 함수 가능
+
+		3. 템플릿 리터럴 
+			ex) "저의 이름은 "  + name +  "이고, 나이는 " + age + "살 입니다."
+				=> `저의 이름은 ${name}이고, 나이는 ${age}살 입니다.`
+
+	- require와 module.exports를 전부 es6 문법으로 바꿈
+
+3. xss-clean, helmet, csurf 사용
+	1. xss-clean
+		- xss 공격을 막아준다고 함, 잘 모름
+	  	보안 관련이라는데 안 할 이유는 없는 것 같다.
+	
+	2. helmet
+		- 이건 header 쪽 보안이라는데 마찬가지로 안 할 이유가 없다.
+
+	모두 app.js에 app.use로 선언해주면 간단하게 사용 가능
+
+4. cors 설정
+	- npm 으로 cors 설치 후 app.js에 app.use로 사용
+
+5. compression 사용
+	- http response를 압축해 보내줌 -> 성능 향상 (express 공홈의 미들웨어)
+
+6. nodemon 설치
+	- dev에서 사용 중 npm run start 실행하면 자동 실행됨
+
+7. lint script 만듬
+	- npm run lint 치면 코드 fix 됨
+
+8. router 정리
+	- 모델 별로 정리
+
+9. model 확인 pug 정리, 추가

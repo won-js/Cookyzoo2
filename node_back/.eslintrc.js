@@ -2,12 +2,13 @@
 module.exports = {
   root: true,
   env: {
+    es6: true,
     node: true,
-		browser: true,
+    browser: true,
   },
   extends: ["naver"],
   parserOptions: {
-		"sourceType" : "module"
+    sourceType: "module",
   },
   rules: {
     // "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
