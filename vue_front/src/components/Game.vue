@@ -184,12 +184,12 @@ export default {
 
 <style scoped>
 #motion {
-  /* position: absolute; */
+  position: absolute;
   z-index: 0;
 }
 
 #video {
-  /* position: absolute; */
+  position: absolute;
   z-index: 5;
 }
 </style>

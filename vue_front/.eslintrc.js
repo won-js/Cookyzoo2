@@ -19,7 +19,8 @@ module.exports = {
 		'indent': 'off',
 		'object-curly-spacing': 'off',
 		'no-console': 'off',
-
-		'arrow-parens': 'off'
+		'comma-dangle': 'off',
+		'arrow-parens': 'off',
+		'spaced-comment': 'off'
 	}
 }
