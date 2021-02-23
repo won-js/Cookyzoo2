@@ -7,7 +7,8 @@
 <script>
 import * as THREE from "three";
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+// import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 import EventBus from "../EventBus";
@@ -32,6 +33,7 @@ export default {
       model: undefined,
       change: false,
       stage: 0,
+      mesh: undefined,
     };
   },
   methods: {
@@ -53,6 +55,7 @@ export default {
       this.scene = new THREE.Scene();
 
       // renderer
+      // this.renderer = new THREE.WebGLRenderer({ antialias: true }); // 투명하게 할때 alpha 사용
       this.renderer = new THREE.WebGLRenderer({ alpha: true }); // 투명하게 할때 alpha 사용
       this.renderer.setPixelRatio(window.devicePixelRatio);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -97,36 +100,61 @@ export default {
       // grid.material.transparent = true;
       // this.scene.add(grid);
 
-      // model
-      this.loader = new FBXLoader();
+      //gltf
+      this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/test.fbx",
-        (model) => {
-          this.mixer = new THREE.AnimationMixer(model);
-          this.model = model;
+        "./fbx/gltfpose.gltf",
+        (gltf) => {
+          this.model = gltf.scene;
+          this.mixer = new THREE.AnimationMixer(this.model);
+          // const action = this.mixer.clipAction(this.model.animations[0]);
 
-          model.scale.set(2, 2, 2);
-          model.position.set(0, 0, -110);
-
-          // character action
-          const action = this.mixer.clipAction(model.animations[1]);
-
-          action.play();
-
-          model.traverse((child) => {
+          // action.play();
+          this.model.traverse((child) => {
             if (child.isMesh) {
               child.castShadow = true;
               child.receiveShadow = true;
             }
           });
+          this.model.scale.set(70, 70, 70);
 
-          this.scene.add(model);
+          this.scene.add(this.model);
         },
         undefined,
         (error) => {
-          // console.log(error);
+          console.log(error);
         }
       );
+      // model
+      // this.loader = new FBXLoader();
+      // this.loader.load(
+      //   "./fbx/pose12.fbx",
+      //   (model) => {
+      //     this.mixer = new THREE.AnimationMixer(model);
+      //     this.model = model;
+
+      //     model.scale.set(2, 2, 2);
+      //     model.position.set(0, 0, -110);
+
+      //     // character action
+      //     const action = this.mixer.clipAction(model.animations[0]);
+
+      //     action.play();
+
+      // model.traverse((child) => {
+      //   if (child.isMesh) {
+      //     child.castShadow = true;
+      //     child.receiveShadow = true;
+      //   }
+      // });
+
+      //     this.scene.add(model);
+      //   },
+      //   undefined,
+      //   (error) => {
+      //     // console.log(error);
+      //   }
+      // );
 
       // controls
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -139,12 +167,12 @@ export default {
       // this.stats = new Stats();
       // container.appendChild(this.stats.dom);
 
-      this.renderer.setSize(window.innerWidth * 0.75, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
     },
     onWindowResize() {
-      this.camera.aspect = (window.innerWidth * 0.75) / window.innerHeight;
+      this.camera.aspect = (window.innerWidth * 0.7) / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth * 0.75, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -162,16 +190,15 @@ export default {
       const vid = document.getElementById("vid");
 
       // 현재 영상 시간
-      console.log(vid.currentTime);
+      // console.log(vid.currentTime);
 
       // 끝나는 시간
-      console.log(vid.duration);
-
+      // console.log(vid.duration);
       // 애니메이션 변경
-      if (vid.currentTime >= vid.duration * 0.1 && !this.change) {
+      if (vid.currentTime >= vid.duration * 0.6 && !this.change) {
         this.mixer = new THREE.AnimationMixer(this.model);
 
-        const action = this.mixer.clipAction(this.model.animations[0]);
+        const action = this.mixer.clipAction(this.model.animations[1]);
 
         action.play();
 

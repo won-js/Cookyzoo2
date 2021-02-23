@@ -21,6 +21,7 @@ module.exports = {
 		'no-console': 'off',
 		'comma-dangle': 'off',
 		'arrow-parens': 'off',
-		'spaced-comment': 'off'
+		'spaced-comment': 'off',
+		'newline-per-chained-call': 'off'
 	}
 }
