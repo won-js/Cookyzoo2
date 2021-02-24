@@ -23,6 +23,7 @@ export default {
       controls: undefined,
       loader: undefined,
       mixer: undefined,
+      gltf: undefined,
       video: undefined,
       videoImage: undefined,
       videoImageContext: undefined,
@@ -33,7 +34,6 @@ export default {
       model: undefined,
       change: false,
       stage: 0,
-      mesh: undefined,
     };
   },
   methods: {
@@ -105,11 +105,12 @@ export default {
       this.loader.load(
         "./fbx/gltfpose.gltf",
         (gltf) => {
+          this.gltf = gltf;
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
-          // const action = this.mixer.clipAction(this.model.animations[0]);
+          const action = this.mixer.clipAction(this.gltf.animations[1]);
 
-          // action.play();
+          action.play();
           this.model.traverse((child) => {
             if (child.isMesh) {
               child.castShadow = true;
@@ -195,15 +196,15 @@ export default {
       // 끝나는 시간
       // console.log(vid.duration);
       // 애니메이션 변경
-      if (vid.currentTime >= vid.duration * 0.6 && !this.change) {
+      if (vid.currentTime >= vid.duration * 0.1 && !this.change) {
+        // gltf는 불러온 gltf
+        // model은 gltf.scene()
         this.mixer = new THREE.AnimationMixer(this.model);
-
-        const action = this.mixer.clipAction(this.model.animations[1]);
+        const action = this.mixer.clipAction(this.gltf.animations[2]);
 
         action.play();
 
         this.scene.add(this.model);
-
         this.change = true;
         console.log(this.change);
       }
