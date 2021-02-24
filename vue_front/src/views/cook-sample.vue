@@ -81,7 +81,7 @@
           <div class="left">← 이전 순서</div>
           <div class="cur">☆</div>
           <div class="right">다음 순서 →</div>
-          <div>{{ user.name }}</div>
+          <!-- <div>{{ user.name }}</div> -->
         </div>
       </aside>
     </section>
