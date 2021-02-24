@@ -1,88 +1,64 @@
 <template>
-  <div class="modal">
-    <div class="overlay" @click="$emit('close-modal')"></div>
-    <div class="modal-card">
-      <slot />
-      <img src="" alt="" />
-      <button @click="isMainModalEnabled = true">넘어가기 테스트</button>
-      <MaterialModal
-        v-if="isMainModalEnabled"
-        @close-modal="isMainModalEnabled = false"
-      ></MaterialModal>
-    </div>
-  </div>
+  <div></div>
 </template>
 
 <script>
-import MaterialModal from "./material-modal";
+import { mapGetters, mapMutations } from "vuex";
+import DemoCustomComponent from "./Modal_CustomComponent";
 
 export default {
   name: "App",
   components: {
-    MaterialModal,
+    // MaterialModal,
+    DemoCustomComponent,
+  },
+  computed: {
+    ...mapGetters({
+      getThumbnail: "lesson/thumbnail",
+    }),
   },
   data() {
     return {
+      id: 1,
       user: null,
       isMainModalEnabled: false,
+      thumbnail: [],
     };
   },
   created() {
     this.$http
-      .get("/api/test")
+      .get(`http://127.0.0.1:3000/lessons/find`)
       .then((res) => {
-        const user = res.data.user;
+        this.thumbnail = res.data.result;
 
-        if (user) this.user = user; // user값이 유효하면, this.user에 대입.
+        for (let i = 0; i < this.thumbnail.length; i++) {
+          this.thumbnail[
+            i
+          ].thumbnail = `images/lesson/${this.thumbnail[i].thumbnail}`;
+        }
+
+        this.setThumbnail(this.thumbnail);
+
+        this.$modal.show(
+          DemoCustomComponent,
+          {
+            modal: this.$modal,
+          },
+          {
+            width: "1500px",
+            height: "1000px",
+          },
+        );
       })
       .catch((err) => {
         // console.error(err);
         console.log(err);
       });
   },
+  methods: {
+    ...mapMutations({
+      setThumbnail: "lesson/THUMBNAIL_UPDATED",
+    }),
+  },
 };
 </script>
-
-<style>
-.modal,
-.overlay {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-}
-
-.overlay {
-  opacity: 0.5;
-  background-color: black;
-}
-
-.modal-card {
-  /* position: relative;
-  max-width: 80%;
-  margin: auto;
-  margin-top: 30px;
-  padding: 20px; */
-  background-color: white;
-  /* min-height: 500px;
-  z-index: 10;
-  opacity: 1; */
-  display: flex;
-  flex-direction: column;
-}
-
-img {
-  width: 100%;
-}
-
-button {
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  overflow: visible;
-  cursor: pointer;
-  font-size: 50px;
-}
-</style>

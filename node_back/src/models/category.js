@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 	});
 
 	Category.associate = function(models) {
-		Category.hasMany(models.class, {
+		Category.hasMany(models.lesson, {
 			foreignKey: "category_id",
 			onDelete: "cascade",
 		});

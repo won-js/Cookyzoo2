@@ -18,7 +18,7 @@ html(lang='ko')
 			h1.title 클래스 콘텐트 목록 추가하기
 
 	form(
-		action="/class-content/input"
+		action="/lesson-content/input"
 		method="POST"
 	)
 		table 
@@ -40,7 +40,7 @@ html(lang='ko')
 			tr 
 				td 
 					input(
-						type="number" name="class_id" placeholder="class_id"
+						type="number" name="lesson_id" placeholder="lesson_id"
 					)
 		br
 		input(
@@ -56,10 +56,10 @@ html(lang='ko')
 			td id
 			td name
 			td subtitle 
-			td class_id
-		for classContent in classContents
+			td lesson_id
+		for lessonContent in lessonContents
 			tr
-				td= classContent.dataValues.id
-				td= classContent.dataValues.step 
-				td= classContent.dataValues.subtitle 
-				td= classContent.dataValues.class_id 
+				td= lessonContent.dataValues.id
+				td= lessonContent.dataValues.step 
+				td= lessonContent.dataValues.subtitle 
+				td= lessonContent.dataValues.lesson_id 

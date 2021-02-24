@@ -20,6 +20,7 @@ module.exports = {
 		'object-curly-spacing': 'off',
 		'no-console': 'off',
 
-		'arrow-parens': 'off'
+		'arrow-parens': 'off',
+		'vue/no-unused-components': 'off'
 	}
 }
