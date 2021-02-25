@@ -1,202 +1,221 @@
 <template>
-	<div id="container">
-		<video id="vid" :src="this.videoSource" autoplay />
-	</div>
+  <div id="container">
+    <video id="vid" :src="this.videoSource" autoplay />
+  </div>
 </template>
 
 <script>
 import * as THREE from "three";
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+// import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 import EventBus from "../EventBus";
 
 export default {
-	data() {
-		return {
-			stats: undefined,
-			camera: undefined,
-			scene: undefined,
-			renderer: undefined,
-			controls: undefined,
-			loader: undefined,
-			mixer: undefined,
-			video: undefined,
-			videoImage: undefined,
-			videoImageContext: undefined,
-			videoTexture: undefined,
-			clock: new THREE.Clock(),
-			videoSource: undefined,
-			videoSources: [],
-			model: undefined,
-			stage: 0,
-		};
-	},
-	methods: {
-		init() {
-			const container = document.getElementById("container");
+  data() {
+    return {
+      camera: undefined,
+      scene: undefined,
+      renderer: undefined,
+      controls: undefined,
+      loader: undefined,
+      mixer: undefined,
+      gltf: undefined,
+      video: undefined,
+      videoImage: undefined,
+      videoImageContext: undefined,
+      videoTexture: undefined,
+      clock: new THREE.Clock(),
+      videoSource: undefined,
+      videoSources: [],
+      model: undefined,
+      change: false,
+      stage: 0,
+    };
+  },
+  methods: {
+    init() {
+      const container = document.getElementById("container");
 
-			// document.body.appendChild(container); //이거 새로운 영역을 추가하는 거임
+      // // camera
+      this.camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        1,
+        2000
+      );
+      this.camera.position.set(100, 200, 300);
 
-			// // camera
-			this.camera = new THREE.PerspectiveCamera(
-				45,
-				window.innerWidth / window.innerHeight,
-				1,
-				2000,
-			);
-			this.camera.position.set(100, 200, 300);
+      // // scene
+      this.scene = new THREE.Scene();
 
-			// // scene
-			this.scene = new THREE.Scene();
+      // renderer
+      this.renderer = new THREE.WebGLRenderer({ alpha: true }); // 투명하게 할때 alpha 사용
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.shadowMap.enabled = true;
+      container.appendChild(this.renderer.domElement);
 
-			// renderer
-			this.renderer = new THREE.WebGLRenderer({ alpha: true }); // 투명하게 할때 alpha 사용
-			this.renderer.setPixelRatio(window.devicePixelRatio);
-			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			this.renderer.shadowMap.enabled = true;
-			container.appendChild(this.renderer.domElement);
+      // light
+      // character light
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
 
-			// light
-			// character light
-			const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+      hemiLight.position.set(0, 200, 0);
+      this.scene.add(hemiLight);
 
-			hemiLight.position.set(0, 200, 0);
-			this.scene.add(hemiLight);
+      const dirLight = new THREE.DirectionalLight(0xffffff);
 
-			const dirLight = new THREE.DirectionalLight(0xffffff);
+      dirLight.position.set(0, 200, 100);
+      dirLight.castShadow = true;
+      dirLight.shadow.camera.top = 180;
+      dirLight.shadow.camera.bottom = -100;
+      dirLight.shadow.camera.left = -120;
+      dirLight.shadow.camera.right = -120;
+      this.scene.add(dirLight);
 
-			dirLight.position.set(0, 200, 100);
-			dirLight.castShadow = true;
-			dirLight.shadow.camera.top = 180;
-			dirLight.shadow.camera.bottom = -100;
-			dirLight.shadow.camera.left = -120;
-			dirLight.shadow.camera.right = -120;
-			this.scene.add(dirLight);
+      // test
+      const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
 
-			// test
-			const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+      this.scene.add(ambientLight);
 
-			this.scene.add(ambientLight);
+      const pointLight = new THREE.PointLight(0xffffff, 0.8);
 
-			const pointLight = new THREE.PointLight(0xffffff, 0.8);
+      this.camera.add(pointLight);
+      this.scene.add(this.camera);
 
-			this.camera.add(pointLight);
-			this.scene.add(this.camera);
+      //gltf
+      this.loader = new GLTFLoader();
+      this.loader.load(
+        "./fbx/gltfpose.gltf", // todo: 여기를 동적으로 변경
+        (gltf) => {
+          this.gltf = gltf;
+          this.model = gltf.scene;
+          this.mixer = new THREE.AnimationMixer(this.model);
+          const action = this.mixer.clipAction(this.gltf.animations[1]);
 
-			// ground
-			// const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false}));
-			// mesh.rotation.x = Math.PI/2;
-			// mesh.receiveShadow = true;
-			// this.scene.add( mesh );
+          action.play();
 
-			// const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000);
-			// grid.material.opacity = 0.2;
-			// grid.material.transparent = true;
-			// this.scene.add(grid);
+          this.model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+          // 모델의 크기 조정
+          this.model.scale.set(70, 70, 70);
+          this.model.position.set(190, 0, -50);
 
-			// model
-			this.loader = new FBXLoader();
-			this.loader.load(
-				"./fbx/test.fbx",
-				model => {
-					this.mixer = new THREE.AnimationMixer(model);
-					this.model = model;
+          this.scene.add(this.model);
+        },
+        undefined,
+        (error) => {
+          console.log(error);
+        }
+      );
+      // fbx model을 사용할 때 코드
+      // this.loader = new FBXLoader();
+      // this.loader.load(
+      //   "./fbx/pose12.fbx",
+      //   (model) => {
+      //     this.mixer = new THREE.AnimationMixer(model);
+      //     this.model = model;
 
-					model.scale.set(2, 2, 2);
-					model.position.set(0, 0, -110);
+      //     model.scale.set(2, 2, 2);
+      //     model.position.set(0, 0, -110);
 
-					// character action
-					const action = this.mixer.clipAction(model.animations[0]);
+      //     // character action
+      //     const action = this.mixer.clipAction(model.animations[0]);
 
-					action.play();
+      //     action.play();
 
-					model.traverse(child => {
-						if (child.isMesh) {
-							child.castShadow = true;
-							child.receiveShadow = true;
-						}
-					});
+      // model.traverse((child) => {
+      //   if (child.isMesh) {
+      //     child.castShadow = true;
+      //     child.receiveShadow = true;
+      //   }
+      // });
 
-					this.scene.add(model);
-				},
-				undefined,
-				error => {
-					// console.log(error);
-				},
-			);
+      //     this.scene.add(model);
+      //   },
+      //   undefined,
+      //   (error) => {
+      //     // console.log(error);
+      //   }
+      // );
 
-			// controls
-			this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-			this.controls.target.set(0, 100, 0);
-			this.controls.update();
+      // controls // 컨트롤 안해도 될거 같음
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.target.set(0, 100, 0);
+      this.controls.update();
 
-			window.addEventListener("resize", this.onWindowResize, false);
+      window.addEventListener("resize", this.onWindowResize, false);
 
-			// stats
-			// this.stats = new Stats();
-			// container.appendChild(this.stats.dom);
-		},
-		onWindowResize() {
-			this.camera.aspect = window.innerWidth / window.innerHeight;
-			this.camera.updateProjectionMatrix();
-			this.renderer.setSize(window.innerWidth, window.innerHeight);
-		},
-		animate() {
-			requestAnimationFrame(this.animate);
-			const delta = this.clock.getDelta();
+      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+    },
+    onWindowResize() {
+      this.camera.aspect = (window.innerWidth * 0.79) / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+    },
+    animate() {
+      requestAnimationFrame(this.animate);
+      const delta = this.clock.getDelta();
 
-			if (this.mixer) this.mixer.update(delta);
+      if (this.mixer) this.mixer.update(delta);
 
-			// this.stats.update();
+      this.renderer.render(this.scene, this.camera);
+    },
+    getTime() {
+      const vid = document.getElementById("vid");
 
-			this.renderer.render(this.scene, this.camera);
+      // 현재 영상 시간
+      // console.log(vid.currentTime);
 
-			// keyboard
-		},
-		animate1() {
-			requestAnimationFrame(this.animate1);
-			const delta = this.clock.getDelta();
+      // 끝나는 시간
+      // console.log(vid.duration);
+      // 애니메이션 변경
+      if (vid.currentTime >= vid.duration * 0.1 && !this.change) {
+        // gltf는 불러온 gltf
+        // model은 gltf.scene()
+        this.mixer = new THREE.AnimationMixer(this.model);
+        const action = this.mixer.clipAction(this.gltf.animations[2]); // todo : 동적으로 변경해야함
 
-			const action = this.mixer.clipAction(this.model.animations[1]);
+        action.play();
 
-			action.play();
-
-			if (this.mixer) this.mixer.update(delta);
-
-			// this.stats.update();
-
-			this.renderer.render(this.scene, this.camera);
-
-			// keyboard
-		},
-	},
-	mounted() {
-		this.init();
-		this.animate();
-		this.videoSources = ["/videos/lake.mp4", "/videos/tree.mp4"];
-		this.videoSource = this.videoSources[this.stage];
-	},
-	created() {
-		EventBus.$on("next-step", () => {
-			if (this.stage < this.videoSources.length) {
-				this.stage++;
-				this.videoSource = this.videoSources[this.stage];
-			}
-			this.animate1();
-		});
-	},
+        this.scene.add(this.model);
+        // 동작을 바뀌었으면 True로 설정을 해서 더 이상 동작이 바뀌지 않도록
+        this.change = true;
+      }
+    },
+    checkTime() {
+      setInterval(this.getTime, 1000);
+    },
+  },
+  mounted() {
+    this.init();
+    this.animate();
+    this.videoSources = ["/videos/lake.mp4", "/videos/tree.mp4"]; // todo : db에서 불러와야함
+    this.videoSource = this.videoSources[this.stage];
+    this.checkTime();
+  },
+  created() {
+    EventBus.$on("next-step", () => {
+      if (this.stage < this.videoSources.length) {
+        this.stage++;
+        this.videoSource = this.videoSources[this.stage];
+      }
+    });
+  },
 };
 </script>
 
 <style scoped>
 #vid {
-	position: absolute;
-	min-width: 100%;
-	min-height: 100%;
-	width: auto;
-	height: auto;
-	z-index: -1;
+  position: absolute;
+  width: 100%;
+  /* height: 100%; */
+  z-index: -1;
 }
 </style>

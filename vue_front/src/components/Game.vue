@@ -4,7 +4,7 @@
       <P5 v-on="{ setup, draw }" />
     </div>
     <!-- <div id="video" v-show="this.toggle"> -->
-    <div id="video" v-show="this.toggle">
+    <div id="video" v-show="this.temp">
       <Video />
     </div>
   </div>
@@ -50,15 +50,18 @@ export default {
       },
       count: 0,
       modelCount: 0,
+      temp: true,
     };
   },
   methods: {
     setup(sketch) {
-      sketch.createCanvas(750, 750);
+      // sketch.createCanvas(750, 750);
+      sketch.createCanvas(window.innerWidth * 0.79, window.innerHeight);
       sketch.background(0);
 
       this.video = sketch.createCapture(sketch.VIDEO);
-      this.video.size(750, 750);
+      // this.video.size(750, 750);
+      this.video.size(window.innerWidth * 0.79, window.innerHeight);
       this.video.hide();
 
       this.poseNet = ml5.poseNet(this.video, this.Loaded);
@@ -75,19 +78,23 @@ export default {
       sketch.push();
       sketch.translate(this.video.width, 0);
       sketch.scale(-1, 1);
-      sketch.image(this.video, 0, 0, 750, 750);
-      sketch.image(this.image, 0, 0, 750, 750);
+      // sketch.image(this.video, 0, 0, 750, 750);
+      // sketch.image(this.image, 0, 0, 750, 750);
+      sketch.image(
+        this.video,
+        0,
+        0,
+        window.innerWidth * 0.8,
+        window.innerHeight
+      );
+      sketch.image(
+        this.image,
+        0,
+        0,
+        window.innerWidth * 0.8,
+        window.innerHeight
+      );
 
-      // if (this.pose) {
-      // 	for (let i = 0; i < this.skeleton.length; i++) {
-      // 		const a = this.skeleton[i][0];
-      // 		const b = this.skeleton[i][1];
-
-      // 		sketch.strokeWeight(10);
-      // 		sketch.stroke(0);
-      // 		sketch.line(a.position.x, a.position.y, b.position.x, b.position.y);
-      // 	}
-      // }
       sketch.pop();
 
       sketch.fill(255, 255, 0);
@@ -116,6 +123,7 @@ export default {
 
           inputs.push(x);
           inputs.push(y);
+          // 비율로 할 때 고려해야 할 점
           // inputs.push(x / 7.5);
           // inputs.push(y / 7.5);
         }
@@ -184,12 +192,12 @@ export default {
 
 <style scoped>
 #motion {
-  /* position: absolute; */
+  position: absolute;
   z-index: 0;
 }
 
 #video {
-  /* position: absolute; */
+  position: absolute;
   z-index: 5;
 }
 </style>
