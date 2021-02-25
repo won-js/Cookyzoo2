@@ -4,6 +4,7 @@ import mutations from "./mutations";
 
 const state = {
   lessonId: 0,
+  name: 0,
   price: 0,
   thumbnail: [],
   categoryId: 0,
