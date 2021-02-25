@@ -2,7 +2,7 @@ import axios from "axios";
 
 const setLesson = (context) => {
 	axios
-	.get(`http://127.0.0.1:3000/lessons/${context.state.lessonId}`)
+	.get(`http://127.0.0.1:3000/lesson/${context.state.lessonId}`)
 	.then((res) => {
 		context.commit("PRICE_UPDATED", res.data.price);
 		context.commit("NAME_UPDATED", res.data.name);

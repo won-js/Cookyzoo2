@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
 	const LessonDetail = sequelize.define("lesson_detail", {
 		image: {
-			type: DataTypes.STRING(500),
+			type: DataTypes.STRING(100),
 			allowNull: false,
 		},
 		information: {

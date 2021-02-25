@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		thumbnail: {
-			type: DataTypes.STRING(500),
+			type: DataTypes.STRING(100),
 			allowNull: true,
 		},
 		category_id: {
