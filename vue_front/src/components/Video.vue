@@ -196,7 +196,7 @@ export default {
   mounted() {
     this.init();
     this.animate();
-    this.videoSources = ["/videos/lake.mp4", "/videos/tree.mp4"];
+    this.videoSources = ["/videos/lake.mp4", "/videos/tree.mp4"]; // todo : db에서 불러와야함
     this.videoSource = this.videoSources[this.stage];
     this.checkTime();
   },
