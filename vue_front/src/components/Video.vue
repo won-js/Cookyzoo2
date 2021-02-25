@@ -16,7 +16,6 @@ import EventBus from "../EventBus";
 export default {
   data() {
     return {
-      stats: undefined,
       camera: undefined,
       scene: undefined,
       renderer: undefined,
@@ -40,8 +39,6 @@ export default {
     init() {
       const container = document.getElementById("container");
 
-      // document.body.appendChild(container); //이거 새로운 영역을 추가하는 거임
-
       // // camera
       this.camera = new THREE.PerspectiveCamera(
         45,
@@ -55,7 +52,6 @@ export default {
       this.scene = new THREE.Scene();
 
       // renderer
-      // this.renderer = new THREE.WebGLRenderer({ antialias: true }); // 투명하게 할때 alpha 사용
       this.renderer = new THREE.WebGLRenderer({ alpha: true }); // 투명하게 할때 alpha 사용
       this.renderer.setPixelRatio(window.devicePixelRatio);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -89,21 +85,10 @@ export default {
       this.camera.add(pointLight);
       this.scene.add(this.camera);
 
-      // ground
-      // const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false}));
-      // mesh.rotation.x = Math.PI/2;
-      // mesh.receiveShadow = true;
-      // this.scene.add( mesh );
-
-      // const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000);
-      // grid.material.opacity = 0.2;
-      // grid.material.transparent = true;
-      // this.scene.add(grid);
-
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/gltfpose.gltf",
+        "./fbx/gltfpose.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
           this.gltf = gltf;
           this.model = gltf.scene;
@@ -111,13 +96,16 @@ export default {
           const action = this.mixer.clipAction(this.gltf.animations[1]);
 
           action.play();
+
           this.model.traverse((child) => {
             if (child.isMesh) {
               child.castShadow = true;
               child.receiveShadow = true;
             }
           });
+          // 모델의 크기 조정
           this.model.scale.set(70, 70, 70);
+          this.model.position.set(190, 0, -50);
 
           this.scene.add(this.model);
         },
@@ -126,7 +114,7 @@ export default {
           console.log(error);
         }
       );
-      // model
+      // fbx model을 사용할 때 코드
       // this.loader = new FBXLoader();
       // this.loader.load(
       //   "./fbx/pose12.fbx",
@@ -157,16 +145,12 @@ export default {
       //   }
       // );
 
-      // controls
+      // controls // 컨트롤 안해도 될거 같음
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
       this.controls.target.set(0, 100, 0);
       this.controls.update();
 
       window.addEventListener("resize", this.onWindowResize, false);
-
-      // stats
-      // this.stats = new Stats();
-      // container.appendChild(this.stats.dom);
 
       this.renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
     },
@@ -181,11 +165,7 @@ export default {
 
       if (this.mixer) this.mixer.update(delta);
 
-      // this.stats.update();
-
       this.renderer.render(this.scene, this.camera);
-
-      // keyboard
     },
     getTime() {
       const vid = document.getElementById("vid");
@@ -200,13 +180,13 @@ export default {
         // gltf는 불러온 gltf
         // model은 gltf.scene()
         this.mixer = new THREE.AnimationMixer(this.model);
-        const action = this.mixer.clipAction(this.gltf.animations[2]);
+        const action = this.mixer.clipAction(this.gltf.animations[2]); // todo : 동적으로 변경해야함
 
         action.play();
 
         this.scene.add(this.model);
+        // 동작을 바뀌었으면 True로 설정을 해서 더 이상 동작이 바뀌지 않도록
         this.change = true;
-        console.log(this.change);
       }
     },
     checkTime() {
@@ -235,7 +215,7 @@ export default {
 #vid {
   position: absolute;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   z-index: -1;
 }
 </style>
