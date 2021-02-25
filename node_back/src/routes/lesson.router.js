@@ -1,4 +1,5 @@
 import express from "express";
+import httpStatus from "http-status";
 import {logger} from "../config/winston";
 import models from "../models";
 
@@ -15,36 +16,35 @@ router.get("/show", (req, res, next) => {
 });
 
 // 프론트에 lesson 데이터 뿌리기
-// router.get("/:id", (req, res, next) => {
-// 	models.lesson.findByPk(req.params.id)
-// 	.then(result => {
-// 		if (result) {
-// 			res.json({
-// 				name: result.name,
-// 				price: result.price,
-// 				thumbnail: result.thumbnail,
-// 				category_id: result.category_id,
-// 			});
-// 		} else {
-// 			res.send(httpStatus.NOT_FOUND);
-// 		}
-// 	});
-// });
+router.get("/:id", (req, res, next) => {
+	models.lesson.findByPk(req.params.id)
+		.then(result => {
+			if (result) {
+				res.json({
+					name: result.name,
+					price: result.price,
+					thumbnail: result.thumbnail,
+					category_id: result.category_id,
+				});
+			} else {
+				res.send(httpStatus.NOT_FOUND);
+			}
+		});
+});
 
 // 프론트에 lesson 데이터 뿌리기
 router.get("/find", (req, res, next) => {
 	models.lesson.findAll()
-	.then(result => {
-		if (result) {
-			res.json({
-				result
-			});
-		} else {
-			res.send('error');
-		}
-	});
+		.then(result => {
+			if (result) {
+				res.json({
+					result,
+				});
+			} else {
+				res.send("error");
+			}
+		});
 });
-
 
 
 // lesson에 데이터 추가
