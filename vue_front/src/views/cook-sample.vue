@@ -1,204 +1,196 @@
 <template>
-	<main class="pink">
-		<section class="purple">
-			<article class="display-red"></article>
-			<aside class="list-yellow">
-				<div class="side-title">
-					<h2>
-						초코 쿠키 클래스 :<br />
-						엄마와 만드는 렌지쿠키 초코렛맛 1편
-					</h2>
-				</div>
-				<div class="box">
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-					<div class="box-content">
-						<div class="icon">#</div>
-						<div class="content">1. 무얏호우</div>
-						<div class="time">2:13</div>
-					</div>
-				</div>
-				<div class="side-bar">
-					<div class="left">← 이전 순서</div>
-					<div class="cur">☆</div>
-					<div class="right">다음 순서 →</div>
-					<!-- <div>{{ user.name }}</div> -->
-				</div>
-			</aside>
-		</section>
-	</main>
+	<section>
+		<article>
+			<video :src="curVideo" autoplay controls></video>
+		</article>
+		<aside>
+			<div class="return-icon">돌아가기 버튼 아이콘</div>
+			<div class="cook-title">{{ getLessonName }}</div>
+			<div class="cook-nav">
+				<button class="entire-list">전체순서</button>
+				<div class="current-list">{{ curStep + 1 }}</div>
+				<button class="next-step" @click="curStep += 1">다음 순서</button>
+			</div>
+			<div
+				class="cook-content"
+				v-for="content in contents"
+				v-bind:key="content.id"
+			>
+				{{ content.step }}.{{ content.name }}
+			</div>
+			<div class="cook-logo">
+				<img src="cookyzoo.png" alt="" />
+			</div>
+		</aside>
+	</section>
 </template>
 
 <script>
 // import MaterialModal from "../components/cook-modal/material-modal";
-import MainModal from "../components/cook-modal/main-modal";
+// import MainModal from "../components/cook-modal/main-modal";
+import {mapGetters, mapMutations, mapActions} from "vuex";
 
 export default {
 	name: "cook-sample",
 	data() {
 		return {
-			user: null,
+			contents: [],
+			curStep: 0,
+			curVideo: null,
 		};
 	},
 	components: {
 		// MaterialModal,
-		MainModal,
+		// MainModal,
+	},
+	computed: {
+		...mapGetters({
+			getLessonName: "lesson/name",
+			getLessonId: "lesson/lessonId",
+		}),
+		getVideo() {
+			return `videos/lesson_${this.getLessonId}/${
+				this.contents[this.curStep].video
+			}`;
+		},
+	},
+	watch: {
+		curStep() {
+			this.curVideo = this.getVideo;
+		},
+	},
+	methods: {
+		...mapMutations({
+			setLessonId: "lesson/LESSON_ID_UPDATED",
+		}),
+		...mapActions({
+			setLesson: "lesson/setLesson",
+		}),
 	},
 	created() {
+		this.setLessonId(1); // lesson id 1을 쓸 거 vuex에 저장
+		this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
 		this.$http
-			.get("/api/test")
+			.get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
 			.then(res => {
-				const user = res.data.user;
+				const contents = res.data.result;
 
-				if (user) this.user = user; // user값이 유효하면, this.user에 대입.
+				if (contents) {
+					this.contents = contents;
+					console.log(this.contents);
+					this.curVideo = this.getVideo;
+				}
 			})
 			.catch(err => {
 				// console.error(err);
 				console.log(err);
 			});
-
-		this.$modal.show(
-			MainModal,
-			{
-				modal: this.$modal,
-			},
-			{
-				clickToClose: false,
-				width: "70%",
-				height: "70%",
-			},
-		);
+		// this.$modal.show(
+		// 	MainModal,
+		// 	{
+		// 		modal: this.$modal,
+		// 	},
+		// 	{
+		// 		clickToClose: false,
+		// 		width: "70%",
+		// 		height: "70%",
+		// 	},
+		// );
 	},
 };
 </script>
 
 <style scoped>
-main {
-	/* border: 1px solid pink; */
+body,
+html {
+	margin: 0;
+	padding: 0;
+}
+
+section {
+	width: 100%;
 	height: 100vh;
+
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
 	display: flex;
-	flex-direction: column;
-	background-image: url("../assets/images/cooksample.jpg");
-	/* background-image: url("../assets/images/bonam.png"); */
-	background-size: 100% 100%;
+
 	font-family: "SpoMedium";
 }
-
-h2 {
-	color: black;
-	margin-top: 10px;
-	margin-left: 10px;
-}
-
-.title-blue {
-	/* border: 1px solid blue; */
-	flex: 0.5;
-}
-section {
-	/* border: 1px solid purple; */
-	display: flex;
-	flex: 10;
-}
 article {
-	/* border: 1px solid red; */
-	flex: 3;
+	/*        border: 1px solid red;*/
+
+	background-image: url("../assets/images/cooksample.jpg");
+	background-size: 100% 100%;
+
+	flex: 8;
+}
+article video {
+	width: 100%;
 }
 aside {
-	/* border: 1px solid yellow; */
-	flex: 1;
+	/*        border: 1px solid blue;*/
+	flex: 2;
+	background-color: #0f2232;
+	color: aliceblue;
 
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-
-	background-color: rgba(255, 255, 255, 0.85);
-	box-shadow: -0.2em 0 0.35em rgba(255, 255, 255, 0.85);
 }
 
-.box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	margin-top: 50px;
-}
-
-aside .side-title {
-	flex: 0.2;
-}
-
-aside .box-content {
-	margin: 10px;
-	color: black;
-
-	display: flex;
-	justify-content: space-around;
-
+aside .return-icon {
+	/*        border: 1px solid #e58e26;*/
 	flex: 0.5;
 }
+aside .cook-title {
+	/*        border: 1px solid #b71540;*/
+	flex: 1;
+	font-size: 20px;
+}
+aside .cook-nav {
+	/*        border: 1px solid #0c2461;*/
+	flex: 0.5;
 
-aside .side-bar {
-	flex: 0.3;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
 	display: flex;
+
 	justify-content: space-around;
-	color: black;
-	margin-top: 50px;
+	-ms-align-items: center;
+	align-items: center;
+}
+
+.cook-nav .entire-list {
+}
+.cook-nav .current-list {
+}
+.cook-nav .next-step {
+}
+
+aside .cook-content {
+	/*        border: 1px solid #82ccdd;*/
+	flex: 6;
+	font-size: 18px;
+
+	text-align: center;
+}
+aside .cook-logo {
+	/*        border: 1px solid #78e08f;*/
+	flex: 1;
+	text-align: right;
+}
+
+.cook-logo img {
+	width: 30%;
+	padding: 15px 15px 0 0;
 }
 </style>

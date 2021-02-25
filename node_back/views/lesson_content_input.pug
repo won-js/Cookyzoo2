@@ -18,7 +18,7 @@ html(lang='ko')
 			h1.title 클래스 콘텐트 목록 추가하기
 
 	form(
-		action="/lesson-content/input"
+		action="/lesson-content/"
 		method="POST"
 	)
 		table 
@@ -40,6 +40,11 @@ html(lang='ko')
 			tr 
 				td 
 					input(
+						type="text" name="video" placeholder="영상파일 이름"
+					)
+			tr 
+				td 
+					input(
 						type="number" name="lesson_id" placeholder="lesson_id"
 					)
 		br
@@ -54,12 +59,16 @@ html(lang='ko')
 	table
 		tr
 			td id
-			td name
-			td subtitle 
-			td lesson_id
+			td 순서
+			td 제목
+			td 자막 
+			td 영상파일 이름
+			td lesson id
 		for lessonContent in lessonContents
 			tr
 				td= lessonContent.dataValues.id
-				td= lessonContent.dataValues.step 
+				td= lessonContent.dataValues.step
+				td= lessonContent.dataValues.name
 				td= lessonContent.dataValues.subtitle 
+				td= lessonContent.dataValues.video
 				td= lessonContent.dataValues.lesson_id 

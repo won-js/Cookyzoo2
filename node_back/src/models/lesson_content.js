@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(500),
 			allowNull: true,
 		},
+		video: {
+			type: DataTypes.STRING(500),
+			allowNull: true,
+		},
 		lesson_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
