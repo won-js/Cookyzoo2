@@ -15,7 +15,7 @@ router.get("/show", (req, res, next) => {
 		});
 });
 
-// 프론트에 lesson 데이터 뿌리기
+// 프론트에 lesson id의 lesson 뿌리기
 router.get("/:id", (req, res, next) => {
 	models.lesson.findByPk(req.params.id)
 		.then(result => {
@@ -32,8 +32,8 @@ router.get("/:id", (req, res, next) => {
 		});
 });
 
-// 프론트에 lesson 데이터 뿌리기
-router.get("/find", (req, res, next) => {
+// 프론트에 전체 lesson 데이터 뿌리기
+router.get("/", (req, res, next) => {
 	models.lesson.findAll()
 		.then(result => {
 			if (result) {
@@ -48,7 +48,7 @@ router.get("/find", (req, res, next) => {
 
 
 // lesson에 데이터 추가
-router.post("/input", (req, res, next) => {
+router.post("/", (req, res, next) => {
 	const body = req.body;
 
 	models.lesson.create({
@@ -59,7 +59,7 @@ router.post("/input", (req, res, next) => {
 	})
 		.then(result => {
 			logger.info("데이터 추가 완료");
-			res.redirect("/lessons/show");
+			res.redirect("/lesson/show");
 		})
 		.catch(err => {
 			logger.error("데이터 추가 실패");

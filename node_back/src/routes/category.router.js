@@ -15,13 +15,13 @@ router.get("/show", (req, res, next) => {
 });
 
 
-router.get("/all", (req, res, next) => {
+router.get("/", (req, res, next) => {
 	models.category.findAll()
 		.then(result => res.send(result));
 });
 
 // category에 데이터 추가
-router.post("/input", (req, res, next) => {
+router.post("/", (req, res, next) => {
 	const body = req.body;
 
 	models.category.create({

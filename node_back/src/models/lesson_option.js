@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		description: {
-			type: DataTypes.STRING(50),
+			type: DataTypes.STRING(100),
 			allowNull: false,
 		},
 		thumbnail: {
-			type: DataTypes.STRING(500),
+			type: DataTypes.STRING(100),
 			allowNull: false,
 		},
 		lesson_id: {

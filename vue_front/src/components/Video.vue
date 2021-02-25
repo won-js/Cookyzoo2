@@ -152,12 +152,12 @@ export default {
 
       window.addEventListener("resize", this.onWindowResize, false);
 
-      this.renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
     },
     onWindowResize() {
-      this.camera.aspect = (window.innerWidth * 0.7) / window.innerHeight;
+      this.camera.aspect = (window.innerWidth * 0.79) / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
     },
     animate() {
       requestAnimationFrame(this.animate);

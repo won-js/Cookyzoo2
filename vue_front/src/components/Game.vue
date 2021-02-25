@@ -56,12 +56,12 @@ export default {
   methods: {
     setup(sketch) {
       // sketch.createCanvas(750, 750);
-      sketch.createCanvas(window.innerWidth * 0.7, window.innerHeight);
+      sketch.createCanvas(window.innerWidth * 0.79, window.innerHeight);
       sketch.background(0);
 
       this.video = sketch.createCapture(sketch.VIDEO);
       // this.video.size(750, 750);
-      this.video.size(window.innerWidth * 0.7, window.innerHeight);
+      this.video.size(window.innerWidth * 0.79, window.innerHeight);
       this.video.hide();
 
       this.poseNet = ml5.poseNet(this.video, this.Loaded);
@@ -84,14 +84,14 @@ export default {
         this.video,
         0,
         0,
-        window.innerWidth * 0.7,
+        window.innerWidth * 0.8,
         window.innerHeight
       );
       sketch.image(
         this.image,
         0,
         0,
-        window.innerWidth * 0.7,
+        window.innerWidth * 0.8,
         window.innerHeight
       );
 

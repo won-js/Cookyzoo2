@@ -15,7 +15,7 @@ router.get("/show", (req, res, next) => {
 });
 
 // lesson_detail에 데이터 추가
-router.post("/input", (req, res, next) => {
+router.post("/", (req, res, next) => {
 	const body = req.body;
 
 	models.lesson_option.create({
