@@ -1,19 +1,19 @@
 import express from "express";
-import classes from "./class.router";
+import lessons from "./lesson.router";
 import category from "./category.router";
-import classContent from "./class_content.router";
-import classDetail from "./class_detail.router";
-import classMaterial from "./class_material.router";
-import classOption from "./class_option.router";
+import lessonContent from "./lesson_content.router";
+import lessonDetail from "./lesson_detail.router";
+import lessonMaterial from "./lesson_material.router";
+import lessonOption from "./lesson_option.router";
 
 const router = express.Router();
 
 router.use("/category", category);
-router.use("/classes", classes);
-router.use("/class-content", classContent);
-router.use("/class-detail", classDetail);
-router.use("/class-material", classMaterial);
-router.use("/class-option", classOption);
+router.use("/lessons", lessons);
+router.use("/lesson-content", lessonContent);
+router.use("/lesson-detail", lessonDetail);
+router.use("/lesson-material", lessonMaterial);
+router.use("/lesson-option", lessonOption);
 
 // // category 데이터 출력
 // router.get("/category/:id", (req, res, next) => {

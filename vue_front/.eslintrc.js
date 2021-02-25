@@ -23,5 +23,6 @@ module.exports = {
 		'arrow-parens': 'off',
 		'spaced-comment': 'off',
 		'newline-per-chained-call': 'off'
+
 	}
 }

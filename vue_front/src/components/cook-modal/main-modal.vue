@@ -1,88 +1,67 @@
 <template>
-  <div class="modal">
-    <div class="overlay" @click="$emit('close-modal')"></div>
-    <div class="modal-card">
-      <slot />
-      <img src="" alt="" />
-      <button @click="isMainModalEnabled = true">넘어가기 테스트</button>
-      <MaterialModal
-        v-if="isMainModalEnabled"
-        @close-modal="isMainModalEnabled = false"
-      ></MaterialModal>
-    </div>
-  </div>
+	<div>
+		<start v-if="getPage == 0" />
+		<character v-else-if="getPage == 1" />
+		<wash v-else-if="getPage == 2" />
+		<div v-if="getPage > 2">{{ $emit("close") }}</div>
+	</div>
 </template>
 
 <script>
-import MaterialModal from "./material-modal";
+import {mapGetters, mapMutations, mapActions} from "vuex";
+import Start from "./start";
+import Wash from "./wash";
+import Character from "./character";
 
 export default {
-  name: "App",
-  components: {
-    MaterialModal,
-  },
-  data() {
-    return {
-      user: null,
-      isMainModalEnabled: false,
-    };
-  },
-  created() {
-    this.$http
-      .get("/api/test")
-      .then((res) => {
-        const user = res.data.user;
-
-        if (user) this.user = user; // user값이 유효하면, this.user에 대입.
-      })
-      .catch((err) => {
-        // console.error(err);
-        console.log(err);
-      });
-  },
+	name: "App",
+	components: {
+		// MaterialModal,
+		Wash,
+		Start,
+		Character,
+	},
+	computed: {
+		...mapGetters({
+			getThumbnail: "lesson/thumbnail",
+			getPage: "modal/page",
+			getMaxPage: "modal/maxPage",
+		}),
+	},
+	data() {
+		return {
+			id: 1,
+			user: null,
+			isMainModalEnabled: false,
+			thumbnail: [],
+		};
+	},
+	methods: {
+		...mapMutations({
+			setThumbnail: "lesson/THUMBNAIL_UPDATED",
+			setLessonId: "lesson/LESSON_ID_UPDATED",
+			setPage: "modal/PAGE_UPDATED",
+		}),
+		...mapActions({
+			setLesson: "lesson/setLesson",
+		}),
+		prev() {
+			if (this.page > 0) {
+				this.page -= 1;
+			}
+		},
+		next() {
+			if (this.page < 2) {
+				this.page += 1;
+			}
+		},
+	},
+	created() {
+		this.setPage(0);
+		this.setLessonId(2);
+		this.setLesson();
+		console.log(11111111111111111111111);
+		console.log(this.getThumbnail);
+	},
 };
 </script>
-
-<style>
-.modal,
-.overlay {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-}
-
-.overlay {
-  opacity: 0.5;
-  background-color: black;
-}
-
-.modal-card {
-  /* position: relative;
-  max-width: 80%;
-  margin: auto;
-  margin-top: 30px;
-  padding: 20px; */
-  background-color: white;
-  /* min-height: 500px;
-  z-index: 10;
-  opacity: 1; */
-  display: flex;
-  flex-direction: column;
-}
-
-img {
-  width: 100%;
-}
-
-button {
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  overflow: visible;
-  cursor: pointer;
-  font-size: 50px;
-}
-</style>

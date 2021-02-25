@@ -29,7 +29,7 @@ router.post("/input", (req, res, next) => {
 	})
 		.then(result => {
 			logger.info("데이터 추가 완료");
-			res.redirect("/category/input");
+			res.redirect("/category/show");
 		})
 		.catch(err => {
 			logger.error("데이터 추가 실패");
