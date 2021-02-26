@@ -10,8 +10,7 @@ import * as THREE from "three";
 // import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
-import EventBus from "../EventBus";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -29,11 +28,34 @@ export default {
       videoTexture: undefined,
       clock: new THREE.Clock(),
       videoSource: undefined,
-      videoSources: [],
       model: undefined,
       change: false,
-      stage: 0,
     };
+  },
+  computed: {
+    ...mapGetters({
+      getContents: "game/contents",
+      getStep: "game/step",
+      getLessonName: "lesson/name",
+      getLessonId: "lesson/lessonId",
+    }),
+    getVideo() {
+      return `videos/lesson_${this.getLessonId}/${
+        this.getContents[this.getStep].video
+      }`;
+    },
+  },
+  watch: {
+    getStep() {
+      this.videoSource = this.getVideo;
+      this.mixer = new THREE.AnimationMixer(this.model);
+      const action = this.mixer.clipAction(this.gltf.animations[0]);
+
+      action.play();
+      this.scene.add(this.model);
+      this.change = false;
+      console.log("hello");
+    },
   },
   methods: {
     init() {
@@ -196,17 +218,8 @@ export default {
   mounted() {
     this.init();
     this.animate();
-    this.videoSources = ["/videos/lake.mp4", "/videos/tree.mp4"]; // todo : db에서 불러와야함
-    this.videoSource = this.videoSources[this.stage];
     this.checkTime();
-  },
-  created() {
-    EventBus.$on("next-step", () => {
-      if (this.stage < this.videoSources.length) {
-        this.stage++;
-        this.videoSource = this.videoSources[this.stage];
-      }
-    });
+    this.videoSource = this.getVideo;
   },
 };
 </script>
