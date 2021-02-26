@@ -19,8 +19,10 @@ module.exports = {
 		'indent': 'off',
 		'object-curly-spacing': 'off',
 		'no-console': 'off',
-
+		'comma-dangle': 'off',
 		'arrow-parens': 'off',
-		'vue/no-unused-components': 'off'
+		'spaced-comment': 'off',
+		'newline-per-chained-call': 'off'
+
 	}
 }

@@ -1,64 +1,67 @@
 <template>
-  <div></div>
+	<div>
+		<start v-if="getPage == 0" />
+		<character v-else-if="getPage == 1" />
+		<wash v-else-if="getPage == 2" />
+		<div v-if="getPage > 2">{{ $emit("close") }}</div>
+	</div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import DemoCustomComponent from "./Modal_CustomComponent";
+import {mapGetters, mapMutations, mapActions} from "vuex";
+import Start from "./start";
+import Wash from "./wash";
+import Character from "./character";
 
 export default {
-  name: "App",
-  components: {
-    // MaterialModal,
-    DemoCustomComponent,
-  },
-  computed: {
-    ...mapGetters({
-      getThumbnail: "lesson/thumbnail",
-    }),
-  },
-  data() {
-    return {
-      id: 1,
-      user: null,
-      isMainModalEnabled: false,
-      thumbnail: [],
-    };
-  },
-  created() {
-    this.$http
-      .get(`http://127.0.0.1:3000/lessons/find`)
-      .then((res) => {
-        this.thumbnail = res.data.result;
-
-        for (let i = 0; i < this.thumbnail.length; i++) {
-          this.thumbnail[
-            i
-          ].thumbnail = `images/lesson/${this.thumbnail[i].thumbnail}`;
-        }
-
-        this.setThumbnail(this.thumbnail);
-
-        this.$modal.show(
-          DemoCustomComponent,
-          {
-            modal: this.$modal,
-          },
-          {
-            width: "1500px",
-            height: "1000px",
-          },
-        );
-      })
-      .catch((err) => {
-        // console.error(err);
-        console.log(err);
-      });
-  },
-  methods: {
-    ...mapMutations({
-      setThumbnail: "lesson/THUMBNAIL_UPDATED",
-    }),
-  },
+	name: "App",
+	components: {
+		// MaterialModal,
+		Wash,
+		Start,
+		Character,
+	},
+	computed: {
+		...mapGetters({
+			getThumbnail: "lesson/thumbnail",
+			getPage: "modal/page",
+			getMaxPage: "modal/maxPage",
+		}),
+	},
+	data() {
+		return {
+			id: 1,
+			user: null,
+			isMainModalEnabled: false,
+			thumbnail: [],
+		};
+	},
+	methods: {
+		...mapMutations({
+			setThumbnail: "lesson/THUMBNAIL_UPDATED",
+			setLessonId: "lesson/LESSON_ID_UPDATED",
+			setPage: "modal/PAGE_UPDATED",
+		}),
+		...mapActions({
+			setLesson: "lesson/setLesson",
+		}),
+		prev() {
+			if (this.page > 0) {
+				this.page -= 1;
+			}
+		},
+		next() {
+			if (this.page < 2) {
+				this.page += 1;
+			}
+		},
+	},
+	created() {
+		this.setPage(0);
+		this.setLessonId(2);
+		this.setLesson();
+		console.log(11111111111111111111111);
+		console.log(this.getThumbnail);
+	},
 };
 </script>

@@ -5,6 +5,7 @@ const setLesson = (context) => {
 	.get(`http://127.0.0.1:3000/lesson/${context.state.lessonId}`)
 	.then((res) => {
 		context.commit("PRICE_UPDATED", res.data.price);
+		context.commit("NAME_UPDATED", res.data.name);
 		context.commit("THUMBNAIL_UPDATED", res.data.thumbnail);
 		context.commit("CATEGORY_ID_UPDATED", res.data.categoryId);
 	})
