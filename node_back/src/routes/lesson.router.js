@@ -51,6 +51,8 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
 	const body = req.body;
 
+
+	logger.info(body.name);
 	models.lesson.create({
 		name: body.name,
 		price: body.price,

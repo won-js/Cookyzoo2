@@ -7,7 +7,6 @@
 <script>
 import * as THREE from "three";
 
-// import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { mapGetters } from "vuex";
@@ -110,13 +109,15 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/gltfpose.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/pose_a1.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
           this.gltf = gltf;
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
-          const action = this.mixer.clipAction(this.gltf.animations[1]);
+          const action = this.mixer.clipAction(this.gltf.animations[0]);
 
+          console.log(this.gltf.animations);
+          console.log(this.gltf.animations[0].name === "a1");
           action.play();
 
           this.model.traverse((child) => {
@@ -126,8 +127,8 @@ export default {
             }
           });
           // 모델의 크기 조정
-          this.model.scale.set(70, 70, 70);
-          this.model.position.set(190, 0, -50);
+          this.model.scale.set(90, 90, 90);
+          this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);
         },
@@ -198,7 +199,7 @@ export default {
       // 끝나는 시간
       // console.log(vid.duration);
       // 애니메이션 변경
-      if (vid.currentTime >= vid.duration * 0.1 && !this.change) {
+      if (vid.currentTime >= vid.duration * 0.5 && !this.change) {
         // gltf는 불러온 gltf
         // model은 gltf.scene()
         this.mixer = new THREE.AnimationMixer(this.model);
@@ -228,7 +229,7 @@ export default {
 #vid {
   position: absolute;
   width: 100%;
-  /* height: 100%; */
+  /* height: 100vh; */
   z-index: -1;
 }
 </style>
