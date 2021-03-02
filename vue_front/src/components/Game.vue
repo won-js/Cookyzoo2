@@ -184,7 +184,7 @@ export default {
       }
       if (poseLabel === "next") {
         this.modelCount++;
-        this.setStep(this.getStep++);
+        // this.setStep(this.getStep++);
       } else {
         this.modelCount = 0;
       }
