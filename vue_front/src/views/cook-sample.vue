@@ -1,8 +1,8 @@
 <template>
   <section>
     <article>
-      <Gamemain />
-      <video :src="curVideo" autoplay controls></video>
+      <!-- <Gamemain /> -->
+      <video id="playVideo" :src="curVideo" autoplay muted controls></video>
     </article>
     <aside>
       <div class="return-icon">돌아가기 버튼 아이콘</div>
@@ -30,7 +30,7 @@
 // import MaterialModal from "../components/cook-modal/material-modal";
 // import MainModal from "../components/cook-modal/main-modal";
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import Gamemain from "../components/Gamemain.vue";
+// import Gamemain from "../components/Gamemain.vue";
 
 export default {
   name: "cook-sample",
@@ -39,12 +39,13 @@ export default {
       contents: [],
       curStep: 0,
       curVideo: null,
+      playVideo: null,
     };
   },
   components: {
     // MaterialModal,
     // MainModal,
-    Gamemain,
+    // Gamemain,
   },
   computed: {
     ...mapGetters({
@@ -70,6 +71,7 @@ export default {
       setLesson: "lesson/setLesson",
     }),
   },
+
   created() {
     this.setLessonId(1); // lesson id 1을 쓸 거 vuex에 저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
@@ -80,7 +82,6 @@ export default {
 
         if (contents) {
           this.contents = contents;
-          console.log(this.contents);
           this.curVideo = this.getVideo;
         }
       })
@@ -99,6 +100,11 @@ export default {
     // 		height: "70%",
     // 	},
     // );
+  },
+  mounted() {
+    document.getElementById("playVideo").addEventListener("ended", () => {
+      this.curStep += 1;
+    });
   },
 };
 </script>
