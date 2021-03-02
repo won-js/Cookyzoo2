@@ -20,7 +20,6 @@ export default {
       controls: undefined,
       loader: undefined,
       mixer: undefined,
-      gltf: undefined,
       video: undefined,
       videoImage: undefined,
       videoImageContext: undefined,
@@ -28,7 +27,9 @@ export default {
       clock: new THREE.Clock(),
       videoSource: undefined,
       model: undefined,
-      change: false,
+      followAudio: new Audio(),
+      motions: [],
+      animations: {},
     };
   },
   computed: {
@@ -48,12 +49,11 @@ export default {
     getStep() {
       this.videoSource = this.getVideo;
       this.mixer = new THREE.AnimationMixer(this.model);
-      const action = this.mixer.clipAction(this.gltf.animations[0]);
+      const action = this.mixer.clipAction(this.animations.victory);
 
       action.play();
       this.scene.add(this.model);
       this.change = false;
-      console.log("hello");
     },
   },
   methods: {
@@ -109,15 +109,18 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/pose_a1.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/redh4.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
-          this.gltf = gltf;
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
-          const action = this.mixer.clipAction(this.gltf.animations[0]);
 
-          console.log(this.gltf.animations);
-          console.log(this.gltf.animations[0].name === "a1");
+          for (let i = 0; i < gltf.animations.length; i++) {
+            this.motions.push(gltf.animations[i].name);
+            this.animations[gltf.animations[i].name] = gltf.animations[i];
+          }
+
+          const action = this.mixer.clipAction(this.animations.armdance);
+
           action.play();
 
           this.model.traverse((child) => {
@@ -126,6 +129,7 @@ export default {
               child.receiveShadow = true;
             }
           });
+
           // 모델의 크기 조정
           this.model.scale.set(90, 90, 90);
           this.model.position.set(190, -10, -50);
@@ -174,6 +178,9 @@ export default {
       this.controls.update();
 
       window.addEventListener("resize", this.onWindowResize, false);
+      document
+        .getElementById("vid")
+        .addEventListener("ended", this.followMotion, false);
 
       this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
     },
@@ -190,36 +197,29 @@ export default {
 
       this.renderer.render(this.scene, this.camera);
     },
-    getTime() {
-      const vid = document.getElementById("vid");
+    followMotion() {
+      //랜덤화
+      const motion = this.motions[
+        Math.floor(Math.random() * this.motions.length)
+      ];
 
-      // 현재 영상 시간
-      // console.log(vid.currentTime);
+      this.mixer = new THREE.AnimationMixer(this.model);
+      this.mixer.clipAction(this.animations[motion]).play();
+      this.scene.add(this.model);
 
-      // 끝나는 시간
-      // console.log(vid.duration);
-      // 애니메이션 변경
-      if (vid.currentTime >= vid.duration * 0.5 && !this.change) {
-        // gltf는 불러온 gltf
-        // model은 gltf.scene()
-        this.mixer = new THREE.AnimationMixer(this.model);
-        const action = this.mixer.clipAction(this.gltf.animations[2]); // todo : 동적으로 변경해야함
-
-        action.play();
-
-        this.scene.add(this.model);
-        // 동작을 바뀌었으면 True로 설정을 해서 더 이상 동작이 바뀌지 않도록
-        this.change = true;
-      }
+      // 음성 follow~
+      this.followAudio.play();
     },
-    checkTime() {
-      setInterval(this.getTime, 1000);
+    clap() {
+      this.mixer = new THREE.AnimationMixer(this.model);
+      this.mixer.clipAction(this.animations.clap).play();
+      this.scene.add(this.model);
     },
   },
   mounted() {
     this.init();
     this.animate();
-    this.checkTime();
+    this.followAudio.src = "./audio/followMe.wav";
     this.videoSource = this.getVideo;
   },
 };
@@ -229,6 +229,7 @@ export default {
 #vid {
   position: absolute;
   width: 100%;
+  background-color: black;
   /* height: 100vh; */
   z-index: -1;
 }
