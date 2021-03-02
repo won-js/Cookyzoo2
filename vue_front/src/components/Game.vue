@@ -14,8 +14,7 @@
 import P5 from "vue-p5";
 import ml5 from "ml5";
 import Video from "@/components/Video.vue";
-
-import EventBus from "../EventBus";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Game",
@@ -53,7 +52,15 @@ export default {
       temp: true,
     };
   },
+  computed: {
+    ...mapGetters({
+      getStep: "game/step",
+    }),
+  },
   methods: {
+    ...mapMutations({
+      setStep: "game/STEP_UPDATED",
+    }),
     setup(sketch) {
       // sketch.createCanvas(750, 750);
       sketch.createCanvas(window.innerWidth * 0.79, window.innerHeight);
@@ -164,7 +171,6 @@ export default {
         this.toggle = false;
       }
       if (this.count >= 5) {
-        EventBus.$emit("next-step");
         this.toggle = true;
       }
     },
@@ -178,12 +184,9 @@ export default {
       }
       if (poseLabel === "next") {
         this.modelCount++;
+        this.setStep(this.getStep++);
       } else {
         this.modelCount = 0;
-      }
-
-      if (this.modelCount >= 20) {
-        EventBus.$emit("next-step");
       }
     },
   },
