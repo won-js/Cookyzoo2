@@ -24,7 +24,7 @@ process.env.NODE_ENV =
 		"development";
 
 // 정호 테스트
-const testRouter = require("./routes/test");
+const testRouter = require("./routes/model_info.router");
 
 if (process.env.NODE_ENV === "production") {
 	logger.info("Production Mode");
@@ -42,7 +42,7 @@ app.set("view engine", "pug");
 // 미들웨어 연결하는 부분
 
 // morgan -> http request 로그 찍어줌, 보통 개발시에는 short나 dev를 쓰고, 배포 시에는 common이나 combined를 사용.
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production")  {
 	app.use(morgan.successHandler);
 	app.use(morgan.errorHandler);
 } else if (process.env.NODE_ENV === "development") {
@@ -74,9 +74,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // 라우터 부분, app.use를 사용하므로, 라우터도 일종의 미들웨어. /users는 routes/users.js를 호출하라는 의미.
 app.use("/", indexRouter);
-
-// 정호 테스트
-app.use("/api/test", testRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
