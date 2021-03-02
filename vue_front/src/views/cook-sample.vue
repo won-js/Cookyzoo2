@@ -1,8 +1,8 @@
 <template>
   <section>
     <article>
-      <Gamemain />
-      <video :src="curVideo" autoplay controls></video>
+      <Game />
+      <!-- <video :src="curVideo" autoplay controls></video> -->
     </article>
     <aside>
       <div class="return-icon">돌아가기 버튼 아이콘</div>
@@ -30,7 +30,7 @@
 // import MaterialModal from "../components/cook-modal/material-modal";
 // import MainModal from "../components/cook-modal/main-modal";
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import Gamemain from "../components/Gamemain.vue";
+import Game from "@/components/Game.vue";
 
 export default {
   name: "cook-sample",
@@ -44,7 +44,7 @@ export default {
   components: {
     // MaterialModal,
     // MainModal,
-    Gamemain,
+    Game,
   },
   computed: {
     ...mapGetters({
@@ -60,11 +60,14 @@ export default {
   watch: {
     curStep() {
       this.curVideo = this.getVideo;
+      this.setStep(this.curStep);
     },
   },
   methods: {
     ...mapMutations({
       setLessonId: "lesson/LESSON_ID_UPDATED",
+      setContents: "game/CONTENTS_UPDATED",
+      setStep: "game/STEP_UPDATED",
     }),
     ...mapActions({
       setLesson: "lesson/setLesson",
@@ -73,6 +76,7 @@ export default {
   created() {
     this.setLessonId(1); // lesson id 1을 쓸 거 vuex에 저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
+    this.setStep(0);
     this.$http
       .get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
       .then((res) => {
@@ -82,6 +86,7 @@ export default {
           this.contents = contents;
           console.log(this.contents);
           this.curVideo = this.getVideo;
+          this.setContents(contents);
         }
       })
       .catch((err) => {

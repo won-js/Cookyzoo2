@@ -7,11 +7,9 @@
 <script>
 import * as THREE from "three";
 
-// import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
-import EventBus from "../EventBus";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -29,11 +27,34 @@ export default {
       videoTexture: undefined,
       clock: new THREE.Clock(),
       videoSource: undefined,
-      videoSources: [],
       model: undefined,
       change: false,
-      stage: 0,
     };
+  },
+  computed: {
+    ...mapGetters({
+      getContents: "game/contents",
+      getStep: "game/step",
+      getLessonName: "lesson/name",
+      getLessonId: "lesson/lessonId",
+    }),
+    getVideo() {
+      return `videos/lesson_${this.getLessonId}/${
+        this.getContents[this.getStep].video
+      }`;
+    },
+  },
+  watch: {
+    getStep() {
+      this.videoSource = this.getVideo;
+      this.mixer = new THREE.AnimationMixer(this.model);
+      const action = this.mixer.clipAction(this.gltf.animations[0]);
+
+      action.play();
+      this.scene.add(this.model);
+      this.change = false;
+      console.log("hello");
+    },
   },
   methods: {
     init() {
@@ -88,13 +109,15 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/gltfpose.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/pose_a1.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
           this.gltf = gltf;
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
-          const action = this.mixer.clipAction(this.gltf.animations[1]);
+          const action = this.mixer.clipAction(this.gltf.animations[0]);
 
+          console.log(this.gltf.animations);
+          console.log(this.gltf.animations[0].name === "a1");
           action.play();
 
           this.model.traverse((child) => {
@@ -104,8 +127,8 @@ export default {
             }
           });
           // 모델의 크기 조정
-          this.model.scale.set(70, 70, 70);
-          this.model.position.set(190, 0, -50);
+          this.model.scale.set(90, 90, 90);
+          this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);
         },
@@ -176,7 +199,7 @@ export default {
       // 끝나는 시간
       // console.log(vid.duration);
       // 애니메이션 변경
-      if (vid.currentTime >= vid.duration * 0.1 && !this.change) {
+      if (vid.currentTime >= vid.duration * 0.5 && !this.change) {
         // gltf는 불러온 gltf
         // model은 gltf.scene()
         this.mixer = new THREE.AnimationMixer(this.model);
@@ -196,17 +219,8 @@ export default {
   mounted() {
     this.init();
     this.animate();
-    this.videoSources = ["/videos/lake.mp4", "/videos/tree.mp4"]; // todo : db에서 불러와야함
-    this.videoSource = this.videoSources[this.stage];
     this.checkTime();
-  },
-  created() {
-    EventBus.$on("next-step", () => {
-      if (this.stage < this.videoSources.length) {
-        this.stage++;
-        this.videoSource = this.videoSources[this.stage];
-      }
-    });
+    this.videoSource = this.getVideo;
   },
 };
 </script>
@@ -215,7 +229,7 @@ export default {
 #vid {
   position: absolute;
   width: 100%;
-  /* height: 100%; */
+  /* height: 100vh; */
   z-index: -1;
 }
 </style>
