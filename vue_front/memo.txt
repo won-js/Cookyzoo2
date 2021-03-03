@@ -40,3 +40,9 @@ package-lock.json: 링크 참고
 package.json: 프로젝트에 필요한 package들을 정의하고 관리해줌.
 README.md : github readmd랑 같은건가?
 vue.config.js : vue 및 webpack관련 환경 설정파알
+
+img, video 종횡비 or 크기 채우기 참고 사이트
+https://noa-xyz.tistory.com/4
+https://jsfiddle.net/noa_xyz/972rLao8
+https://feeva.github.io/posts/%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%9D%98-%EA%B0%80%EB%A1%9C%EC%84%B8%EB%A1%9C%EB%B9%84%EB%A5%BC-%EC%9C%A0%EC%A7%80%ED%95%98%EB%A9%B4%EC%84%9C-%ED%8B%80-%EC%95%88%EC%97%90-%EB%A7%9E%EC%B6%94%EB%A0%A4
+https://webdir.tistory.com/486
