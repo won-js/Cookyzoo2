@@ -49,7 +49,7 @@ export default {
     getStep() {
       this.videoSource = this.getVideo;
       this.mixer = new THREE.AnimationMixer(this.model);
-      const action = this.mixer.clipAction(this.animations.victory);
+      const action = this.mixer.clipAction(this.animations.explain);
 
       action.play();
       this.scene.add(this.model);
@@ -109,7 +109,7 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/redh4.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/redh5.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
@@ -119,7 +119,7 @@ export default {
             this.animations[gltf.animations[i].name] = gltf.animations[i];
           }
 
-          const action = this.mixer.clipAction(this.animations.armdance);
+          const action = this.mixer.clipAction(this.animations.explain);
 
           action.play();
 
@@ -199,9 +199,11 @@ export default {
     },
     followMotion() {
       //랜덤화
-      const motion = this.motions[
-        Math.floor(Math.random() * this.motions.length)
-      ];
+      let motion;
+
+      while (motion === undefined || motion === "explain") {
+        motion = this.motions[Math.floor(Math.random() * this.motions.length)];
+      }
 
       this.mixer = new THREE.AnimationMixer(this.model);
       this.mixer.clipAction(this.animations[motion]).play();
