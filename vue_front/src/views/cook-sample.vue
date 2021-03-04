@@ -27,10 +27,9 @@
 </template>
 
 <script>
-// import MaterialModal from "../components/cook-modal/material-modal";
-// import MainModal from "../components/cook-modal/main-modal";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import Game from "@/components/Game.vue";
+// import MainModal from "../components/cook-modal/main-modal";
 
 export default {
   name: "cook-sample",
@@ -42,7 +41,6 @@ export default {
     };
   },
   components: {
-    // MaterialModal,
     // MainModal,
     Game,
   },
@@ -74,7 +72,7 @@ export default {
     }),
   },
   created() {
-    this.setLessonId(1); // lesson id 1을 쓸 거 vuex에 저장
+    this.setLessonId(1); // lesson id 1을 쓸 거 vuex에저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
     this.setStep(0);
     this.$http
@@ -93,17 +91,17 @@ export default {
         // console.error(err);
         console.log(err);
       });
-    // this.$modal.show(
-    // 	MainModal,
-    // 	{
-    // 		modal: this.$modal,
-    // 	},
-    // 	{
-    // 		clickToClose: false,
-    // 		width: "70%",
-    // 		height: "70%",
-    // 	},
-    // );
+    //   this.$modal.show(
+    //     MainModal,
+    //     {
+    //       modal: this.$modal,
+    //     },
+    //     {
+    //       clickToClose: false,
+    //       width: "70%",
+    //       height: "70%",
+    //     }
+    //   );
   },
 };
 </script>
@@ -130,13 +128,10 @@ section {
 article {
   /*        border: 1px solid red;*/
 
-  background-image: url("../assets/images/cooksample.jpg");
-  background-size: 100% 100%;
+  /* background-image: url("../assets/images/cooksample.jpg"); */
+  /* background-size: 100% 100%; */
 
   flex: 8;
-}
-article video {
-  width: 100%;
 }
 aside {
   /*        border: 1px solid blue;*/
