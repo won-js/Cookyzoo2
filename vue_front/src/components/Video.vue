@@ -140,36 +140,6 @@ export default {
           console.log(error);
         }
       );
-      // fbx model을 사용할 때 코드
-      // this.loader = new FBXLoader();
-      // this.loader.load(
-      //   "./fbx/pose12.fbx",
-      //   (model) => {
-      //     this.mixer = new THREE.AnimationMixer(model);
-      //     this.model = model;
-
-      //     model.scale.set(2, 2, 2);
-      //     model.position.set(0, 0, -110);
-
-      //     // character action
-      //     const action = this.mixer.clipAction(model.animations[0]);
-
-      //     action.play();
-
-      // model.traverse((child) => {
-      //   if (child.isMesh) {
-      //     child.castShadow = true;
-      //     child.receiveShadow = true;
-      //   }
-      // });
-
-      //     this.scene.add(model);
-      //   },
-      //   undefined,
-      //   (error) => {
-      //     // console.log(error);
-      //   }
-      // );
 
       // controls // 컨트롤 안해도 될거 같음
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -198,14 +168,11 @@ export default {
     },
     followMotion() {
       //랜덤화
-      // let motion;
+      let motion;
 
-      // while (motion === undefined || motion === "explain") {
-      //   motion = this.motions[Math.floor(Math.random() * this.motions.length)];
-      // }
-      const motion = this.motions[
-        Math.floor(Math.random() * this.motions.length)
-      ];
+      while (motion === undefined || motion === "explain") {
+        motion = this.motions[Math.floor(Math.random() * this.motions.length)];
+      }
 
       this.mixer = new THREE.AnimationMixer(this.model);
       this.mixer.clipAction(this.animations[motion]).play();
@@ -225,9 +192,10 @@ export default {
     this.animate();
     this.followAudio.src = "./audio/followMe.wav";
     this.videoSource = this.getVideo;
+
     setInterval(() => {
       this.followMotion();
-    }, 2500);
+    }, 3000);
   },
 };
 </script>
