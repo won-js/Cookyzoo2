@@ -70,12 +70,14 @@ export default {
   watch: {
     curStep() {
       this.curVideo = this.getVideo;
-      // this.setStep(this.curStep);
+      this.setStep(this.curStep);
     },
   },
   methods: {
     ...mapMutations({
       setLessonId: "lesson/LESSON_ID_UPDATED",
+      setContents: "game/CONTENTS_UPDATED",
+      setStep: "game/STEP_UPDATED",
     }),
     ...mapActions({
       setLesson: "lesson/setLesson",
@@ -109,6 +111,7 @@ export default {
   created() {
     this.setLessonId(1); // lesson id 1을 쓸 거 vuex에저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
+    this.setStep(0);
     this.$http
       .get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
       .then((res) => {
@@ -134,13 +137,6 @@ export default {
     //       height: "70%",
     //     }
     //   );
-  },
-  mounted() {
-    document.getElementById("playVideo").addEventListener("ended", () => {
-      if (this.curStep + 1 < this.contents[this.contents.length - 1].step) {
-        this.curStep += 1;
-      }
-    });
   },
 };
 </script>

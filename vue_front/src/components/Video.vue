@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <video id="vid" :src="this.videoSource" autoplay loop muted />
+    <video id="vid" :src="this.videoSource" autoplay />
   </div>
 </template>
 
@@ -181,12 +181,12 @@ export default {
         .getElementById("vid")
         .addEventListener("ended", this.followMotion, false);
 
-      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.8, window.innerHeight);
     },
     onWindowResize() {
-      this.camera.aspect = (window.innerWidth * 0.79) / window.innerHeight;
+      this.camera.aspect = (window.innerWidth * 0.8) / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.8, window.innerHeight);
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -198,11 +198,14 @@ export default {
     },
     followMotion() {
       //랜덤화
-      let motion;
+      // let motion;
 
-      while (motion === undefined || motion === "explain") {
-        motion = this.motions[Math.floor(Math.random() * this.motions.length)];
-      }
+      // while (motion === undefined || motion === "explain") {
+      //   motion = this.motions[Math.floor(Math.random() * this.motions.length)];
+      // }
+      const motion = this.motions[
+        Math.floor(Math.random() * this.motions.length)
+      ];
 
       this.mixer = new THREE.AnimationMixer(this.model);
       this.mixer.clipAction(this.animations[motion]).play();
@@ -222,6 +225,9 @@ export default {
     this.animate();
     this.followAudio.src = "./audio/followMe.wav";
     this.videoSource = this.getVideo;
+    setInterval(() => {
+      this.followMotion();
+    }, 2500);
   },
 };
 </script>
