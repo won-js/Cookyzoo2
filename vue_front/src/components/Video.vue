@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <video id="vid" :src="this.videoSource" autoplay loop muted />
+    <video id="vid" :src="this.videoSource" autoplay />
   </div>
 </template>
 
@@ -140,36 +140,6 @@ export default {
           console.log(error);
         }
       );
-      // fbx model을 사용할 때 코드
-      // this.loader = new FBXLoader();
-      // this.loader.load(
-      //   "./fbx/pose12.fbx",
-      //   (model) => {
-      //     this.mixer = new THREE.AnimationMixer(model);
-      //     this.model = model;
-
-      //     model.scale.set(2, 2, 2);
-      //     model.position.set(0, 0, -110);
-
-      //     // character action
-      //     const action = this.mixer.clipAction(model.animations[0]);
-
-      //     action.play();
-
-      // model.traverse((child) => {
-      //   if (child.isMesh) {
-      //     child.castShadow = true;
-      //     child.receiveShadow = true;
-      //   }
-      // });
-
-      //     this.scene.add(model);
-      //   },
-      //   undefined,
-      //   (error) => {
-      //     // console.log(error);
-      //   }
-      // );
 
       // controls // 컨트롤 안해도 될거 같음
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -181,12 +151,12 @@ export default {
         .getElementById("vid")
         .addEventListener("ended", this.followMotion, false);
 
-      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.8, window.innerHeight);
     },
     onWindowResize() {
-      this.camera.aspect = (window.innerWidth * 0.79) / window.innerHeight;
+      this.camera.aspect = (window.innerWidth * 0.8) / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.8, window.innerHeight);
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -222,6 +192,10 @@ export default {
     this.animate();
     this.followAudio.src = "./audio/followMe.wav";
     this.videoSource = this.getVideo;
+
+    setInterval(() => {
+      this.followMotion();
+    }, 3000);
   },
 };
 </script>

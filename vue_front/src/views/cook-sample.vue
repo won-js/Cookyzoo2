@@ -2,22 +2,25 @@
   <section>
     <article>
       <Game />
-      <!-- <video :src="curVideo" autoplay controls></video> -->
     </article>
     <aside>
       <div class="return-icon">돌아가기 버튼 아이콘</div>
       <div class="cook-title">{{ getLessonName }}</div>
+      <button class="entire-list" @click="entireButton()">전체순서</button>
       <div class="cook-nav">
-        <button class="entire-list">전체순서</button>
+        <button class="previous-step" @click="previousVideo()">이전순서</button>
         <div class="current-list">{{ curStep + 1 }}</div>
-        <button class="next-step" @click="curStep += 1">다음 순서</button>
+        <button class="next-step" @click="nextVideo()">다음 순서</button>
       </div>
-      <div
-        class="cook-content"
-        v-for="content in contents"
-        v-bind:key="content.id"
-      >
-        {{ content.step }}.{{ content.name }}
+      <div class="cook-content" v-if="entireList">
+        <div v-for="content in contents" v-bind:key="content.id">
+          <div @click="selectVideo(content.step)">
+            {{ content.step }}.{{ content.name }}
+          </div>
+        </div>
+      </div>
+      <div class="cook-content" v-else>
+        {{ contents[curStep].subtitle }}
       </div>
       <div class="cook-logo">
         <img src="cookyzoo.png" alt="" />
@@ -29,19 +32,28 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import Game from "@/components/Game.vue";
-// import MainModal from "../components/cook-modal/main-modal";
 
 export default {
   name: "cook-sample",
   data() {
     return {
-      contents: [],
+      contents: [
+        {
+          id: null,
+          step: null,
+          name: null,
+          subtitle: null,
+          video: null,
+          lesson_id: null,
+        },
+      ],
       curStep: 0,
       curVideo: null,
+      playVideo: null,
+      entireList: false,
     };
   },
   components: {
-    // MainModal,
     Game,
   },
   computed: {
@@ -70,7 +82,32 @@ export default {
     ...mapActions({
       setLesson: "lesson/setLesson",
     }),
+    nextVideo() {
+      if (this.curStep + 1 < this.contents[this.contents.length - 1].step) {
+        this.curStep += 1;
+      } else {
+        this.curStep = 0;
+      }
+    },
+    previousVideo() {
+      if (this.curStep + 1 > this.contents[0].step) {
+        this.curStep -= 1;
+      } else {
+        this.curStep = this.contents[this.contents.length - 1].step - 1;
+      }
+    },
+    selectVideo(order) {
+      this.curStep = order - 1;
+      this.specificButton();
+    },
+    entireButton() {
+      this.entireList = true;
+    },
+    specificButton() {
+      this.entireList = false;
+    },
   },
+
   created() {
     this.setLessonId(1); // lesson id 1을 쓸 거 vuex에저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
@@ -82,9 +119,7 @@ export default {
 
         if (contents) {
           this.contents = contents;
-          console.log(this.contents);
           this.curVideo = this.getVideo;
-          this.setContents(contents);
         }
       })
       .catch((err) => {
