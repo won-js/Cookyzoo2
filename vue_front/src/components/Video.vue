@@ -21,8 +21,6 @@ export default {
       loader: undefined,
       mixer: undefined,
       video: undefined,
-      videoImage: undefined,
-      videoImageContext: undefined,
       videoTexture: undefined,
       clock: new THREE.Clock(),
       videoSource: undefined,
@@ -67,7 +65,7 @@ export default {
         1,
         2000
       );
-      this.camera.position.set(100, 200, 300);
+      this.camera.position.set(250, 150, 300);
 
       // // scene
       this.scene = new THREE.Scene();
@@ -101,7 +99,8 @@ export default {
 
       this.scene.add(ambientLight);
 
-      const pointLight = new THREE.PointLight(0xffffff, 0.8);
+      // 밝기 조절
+      const pointLight = new THREE.PointLight(0xffffff, 4);
 
       this.camera.add(pointLight);
       this.scene.add(this.camera);
@@ -109,7 +108,7 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/redh5.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/mellang2.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
@@ -119,7 +118,7 @@ export default {
             this.animations[gltf.animations[i].name] = gltf.animations[i];
           }
 
-          const action = this.mixer.clipAction(this.animations.explain);
+          const action = this.mixer.clipAction(this.animations.clap);
 
           action.play();
 
@@ -131,7 +130,7 @@ export default {
           });
 
           // 모델의 크기 조정
-          this.model.scale.set(90, 90, 90);
+          this.model.scale.set(20, 20, 20);
           this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);
@@ -210,7 +209,7 @@ export default {
       this.scene.add(this.model);
 
       // 음성 follow~
-      this.followAudio.play();
+      // this.followAudio.play();
     },
     clap() {
       this.mixer = new THREE.AnimationMixer(this.model);
