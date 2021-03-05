@@ -3,7 +3,8 @@ import fs from "fs";
 import path from "path";
 import Sequelize from "sequelize";
 import {logger} from "../config/winston";
-import Config from "../config/db.config";
+
+const Config = require("../config/db.config");
 
 const basename = path.basename(__filename);
 const config = Config[process.env.NODE_ENV];

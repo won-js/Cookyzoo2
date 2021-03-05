@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-
-dotenv.config();
+require("dotenv").config();
 
 const db = {
 	"development": {
@@ -26,4 +24,4 @@ const db = {
 	},
 };
 
-export default db;
+module.exports = db;

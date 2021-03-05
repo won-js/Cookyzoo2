@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 		action_name: {
 			type: DataTypes.STRING(20),
 			allowNull: false,
+			unique: true,
 		},
 		name: {
 			type: DataTypes.STRING(30),
