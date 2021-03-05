@@ -20,8 +20,6 @@ export default {
       controls: undefined,
       loader: undefined,
       mixer: undefined,
-      video: undefined,
-      videoTexture: undefined,
       clock: new THREE.Clock(),
       videoSource: undefined,
       model: undefined,
@@ -75,6 +73,7 @@ export default {
       this.renderer.setPixelRatio(window.devicePixelRatio);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.shadowMap.enabled = true;
+      console.log(this.renderer.domElement);
       container.appendChild(this.renderer.domElement);
 
       // light
@@ -179,7 +178,7 @@ export default {
       this.scene.add(this.model);
 
       // 음성 follow~
-      // this.followAudio.play();
+      this.followAudio.play();
     },
     clap() {
       this.mixer = new THREE.AnimationMixer(this.model);
@@ -192,10 +191,6 @@ export default {
     this.animate();
     this.followAudio.src = "./audio/followMe.wav";
     this.videoSource = this.getVideo;
-
-    setInterval(() => {
-      this.followMotion();
-    }, 3000);
   },
 };
 </script>
@@ -207,7 +202,6 @@ export default {
   height: 100vh;
   object-fit: cover;
   background-color: black;
-  /* height: 100vh; */
   z-index: -1;
 }
 </style>
