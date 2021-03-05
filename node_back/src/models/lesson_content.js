@@ -16,11 +16,13 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(500),
 			allowNull: true,
 		},
-		lesson_id: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 	}, {
+		indexes: [
+			{
+				unique: true,
+				fields: ["lesson_id", "step"],
+			},
+		],
 		timestamps: false,
 		tableName: "lesson_content",
 	});

@@ -12,6 +12,9 @@ router.get("/show", (req, res, next) => {
 			res.render("lesson_input", {
 				lessons: result,
 			});
+		})
+		.catch(err => {
+			res.send(httpStatus.INTERNAL_SERVER_ERROR, err);
 		});
 });
 
@@ -19,16 +22,16 @@ router.get("/show", (req, res, next) => {
 router.get("/:id", (req, res, next) => {
 	models.lesson.findByPk(req.params.id)
 		.then(result => {
-			if (result) {
-				res.json({
-					name: result.name,
-					price: result.price,
-					thumbnail: result.thumbnail,
-					category_id: result.category_id,
-				});
-			} else {
-				res.send(httpStatus.NOT_FOUND);
-			}
+			res.status(httpStatus.OK).send({
+				name: result.name,
+				price: result.price,
+				thumbnail: result.thumbnail,
+				category_id: result.category_id,
+			});
+		})
+		.catch(err => {
+			logger.error("lesson find by id fail", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
 });
 
@@ -36,13 +39,11 @@ router.get("/:id", (req, res, next) => {
 router.get("/", (req, res, next) => {
 	models.lesson.findAll()
 		.then(result => {
-			if (result) {
-				res.json({
-					result,
-				});
-			} else {
-				res.send("error");
-			}
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("lesson findAll fail", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
 });
 
@@ -51,8 +52,6 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
 	const body = req.body;
 
-
-	logger.info(body.name);
 	models.lesson.create({
 		name: body.name,
 		price: body.price,
@@ -60,11 +59,48 @@ router.post("/", (req, res, next) => {
 		category_id: body.category_id,
 	})
 		.then(result => {
-			logger.info("데이터 추가 완료");
-			res.redirect("/lesson/show");
+			logger.info("lesson created: ", result);
+			res.status(httpStatus.OK).send(result);
 		})
 		.catch(err => {
-			logger.error("데이터 추가 실패");
+			logger.error("lesson created fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
+});
+
+// lesson 업데이트
+router.put("/:id", (req, res) => {
+	const body = req.body;
+
+	models.lesson.update({
+		name: body.name,
+		price: body.price,
+		thumbnail: body.thumbnail,
+	}, {
+		where: {
+			id: req.params.id,
+		},
+	})
+		.then(result => {
+			logger.info("lesson updated: ", result);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("lesson updated fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
+});
+
+// lesson 데이터 삭제
+router.delete("/:id", (req, res) => {
+	models.lesson.destroy({where: {id: req.params.id}})
+		.then(result => {
+			logger.info("lesson deleted: ", result);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("lesson deleted fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
 });
 
