@@ -60,6 +60,7 @@ export default {
   methods: {
     ...mapMutations({
       setStep: "game/STEP_UPDATED",
+      setSuccess: "game/SUCCESS_UPDATED",
     }),
     setup(sketch) {
       // sketch.createCanvas(750, 750);

@@ -61,11 +61,6 @@ export default {
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
-    getVideo() {
-      return `videos/lesson_${this.getLessonId}/${
-        this.contents[this.curStep].video
-      }`;
-    },
   },
   watch: {
     curStep() {
@@ -78,6 +73,7 @@ export default {
       setLessonId: "lesson/LESSON_ID_UPDATED",
       setContents: "game/CONTENTS_UPDATED",
       setStep: "game/STEP_UPDATED",
+      setSuccess: "game/SUCCESS_UPDATED",
     }),
     ...mapActions({
       setLesson: "lesson/setLesson",
@@ -112,6 +108,7 @@ export default {
     this.setLessonId(1); // lesson id 1을 쓸 거 vuex에저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
     this.setStep(0);
+    this.setSuccess(false);
     this.$http
       .get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
       .then((res) => {

@@ -9,7 +9,7 @@ import * as THREE from "three";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -26,16 +26,19 @@ export default {
       followAudio: new Audio(),
       motions: [],
       animations: {},
+      curStep: undefined,
     };
   },
   computed: {
     ...mapGetters({
       getContents: "game/contents",
       getStep: "game/step",
+      getSuccess: "game/success",
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
     getVideo() {
+      console.log(this.getContents[this.getStep].video);
       return `videos/lesson_${this.getLessonId}/${
         this.getContents[this.getStep].video
       }`;
@@ -51,8 +54,24 @@ export default {
       this.scene.add(this.model);
       this.change = false;
     },
+    getSuccess() {
+      if (this.getSuccess) {
+        this.mixer = new THREE.AnimationMixer(this.model);
+        this.mixer.clipAction(this.animations.clap).play();
+        this.scene.add(this.model);
+        this.setSuccess(false);
+
+        setTimeout(() => {
+          this.setStep(this.getStep + 1);
+        }, 3000);
+      }
+    },
   },
   methods: {
+    ...mapMutations({
+      setSuccess: "game/SUCCESS_UPDATED",
+      setStep: "game/STEP_UPDATED",
+    }),
     init() {
       const container = document.getElementById("container");
 
@@ -73,7 +92,6 @@ export default {
       this.renderer.setPixelRatio(window.devicePixelRatio);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.shadowMap.enabled = true;
-      console.log(this.renderer.domElement);
       container.appendChild(this.renderer.domElement);
 
       // light
@@ -117,7 +135,7 @@ export default {
             this.animations[gltf.animations[i].name] = gltf.animations[i];
           }
 
-          const action = this.mixer.clipAction(this.animations.clap);
+          const action = this.mixer.clipAction(this.animations.explain);
 
           action.play();
 
@@ -169,7 +187,11 @@ export default {
       //랜덤화
       let motion;
 
-      while (motion === undefined || motion === "explain") {
+      while (
+        motion === undefined ||
+        motion === "explain" ||
+        motion === "clap"
+      ) {
         motion = this.motions[Math.floor(Math.random() * this.motions.length)];
       }
 
