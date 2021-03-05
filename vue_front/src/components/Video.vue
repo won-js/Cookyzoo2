@@ -9,7 +9,7 @@ import * as THREE from "three";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -28,12 +28,14 @@ export default {
       followAudio: new Audio(),
       motions: [],
       animations: {},
+      animal: 0,
     };
   },
   computed: {
     ...mapGetters({
       getContents: "game/contents",
       getStep: "game/step",
+      getAnimalId: "game/animalId",
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
@@ -55,6 +57,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setAnimalId: "game/ANIMAL_ID_UPDATED",
+    }),
     init() {
       const container = document.getElementById("container");
 
@@ -107,8 +112,9 @@ export default {
 
       //gltf
       this.loader = new GLTFLoader();
+      console.log(this.animal, "test");
       this.loader.load(
-        "./fbx/mellang2.gltf", // todo: 여기를 동적으로 변경
+        `./fbx/mellang2.gltf`, // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
@@ -186,6 +192,23 @@ export default {
       this.mixer.clipAction(this.animations.clap).play();
       this.scene.add(this.model);
     },
+  },
+  created() {
+    this.setAnimalId(1);
+    this.$http
+      .get(`http://127.0.0.1:3000/animal/${this.getAnimalId}`)
+      .then((res) => {
+        const animal = res.data;
+
+        if (animal) {
+          this.animal = animal;
+        }
+      })
+      .catch((err) => {
+        // console.error(err);
+        console.log(err);
+        console.log("실패");
+      });
   },
   mounted() {
     this.init();

@@ -18,7 +18,7 @@ html(lang='ko')
 			h1.title 캐릭터 목록 추가하기
 
 	form(
-		action="/character/"
+		action="/animal/"
 		method="POST"
 	)
 		table 
@@ -52,9 +52,9 @@ html(lang='ko')
 			td name
 			td information 
 			td image
-		for character in characters
+		for animal in animals
 			tr
-				td= character.dataValues.id
-				td= character.dataValues.name 
-				td= character.dataValues.information 
-				td= character.dataValues.image 
+				td= animal.dataValues.id
+				td= animal.dataValues.name 
+				td= animal.dataValues.information 
+				td= animal.dataValues.image 

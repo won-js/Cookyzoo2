@@ -14,7 +14,7 @@
         <div class="current-list">{{ curStep + 1 }}</div>
         <button class="next-step" @click="nextVideo()">다음 순서</button>
       </div>
-      <div class="cook-content">
+      <div class="cook-content" v-if="entireList">
         <div
           class="content-title"
           v-for="content in contents"
@@ -25,12 +25,12 @@
           </div>
         </div>
       </div>
-      <!-- <div class="cook-content" v-else>
+      <div class="cook-content" v-else>
         {{ contents[curStep].subtitle }}
       </div>
       <div class="cook-logo">
         <img src="cookyzoo.png" alt="" />
-      </div> -->
+      </div>
     </aside>
   </section>
 </template>
@@ -56,7 +56,7 @@ export default {
       curStep: 0,
       curVideo: null,
       playVideo: null,
-      entireList: true,
+      entireList: false,
     };
   },
   components: {
@@ -121,7 +121,7 @@ export default {
     this.$http
       .get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
       .then((res) => {
-        const contents = res.data.result;
+        const contents = res.data;
 
         if (contents) {
           this.contents = contents;
@@ -131,6 +131,7 @@ export default {
       .catch((err) => {
         // console.error(err);
         console.log(err);
+        console.log("실패");
       });
   },
 };
