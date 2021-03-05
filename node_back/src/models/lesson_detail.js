@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(500),
 			allowNull: true,
 		},
-		lesson_id: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 	}, {
 		timestamps: false,
 		tableName: "lesson_detail",
@@ -21,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 		LessonDetail.belongsTo(models.lesson, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 
