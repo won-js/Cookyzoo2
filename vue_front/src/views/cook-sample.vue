@@ -4,27 +4,33 @@
       <Game />
     </article>
     <aside>
-      <div class="return-icon">돌아가기 버튼 아이콘</div>
+      <div class="aside-top">
+        <div class="return-icon">돌아가기 버튼</div>
+        <button class="entire-list" @click="entireButton()">전체순서</button>
+      </div>
       <div class="cook-title">{{ getLessonName }}</div>
-      <button class="entire-list" @click="entireButton()">전체순서</button>
       <div class="cook-nav">
         <button class="previous-step" @click="previousVideo()">이전순서</button>
         <div class="current-list">{{ curStep + 1 }}</div>
         <button class="next-step" @click="nextVideo()">다음 순서</button>
       </div>
-      <div class="cook-content" v-if="entireList">
-        <div v-for="content in contents" v-bind:key="content.id">
+      <div class="cook-content">
+        <div
+          class="content-title"
+          v-for="content in contents"
+          v-bind:key="content.id"
+        >
           <div @click="selectVideo(content.step)">
             {{ content.step }}.{{ content.name }}
           </div>
         </div>
       </div>
-      <div class="cook-content" v-else>
+      <!-- <div class="cook-content" v-else>
         {{ contents[curStep].subtitle }}
       </div>
       <div class="cook-logo">
         <img src="cookyzoo.png" alt="" />
-      </div>
+      </div> -->
     </aside>
   </section>
 </template>
@@ -50,7 +56,7 @@ export default {
       curStep: 0,
       curVideo: null,
       playVideo: null,
-      entireList: false,
+      entireList: true,
     };
   },
   components: {
@@ -126,17 +132,6 @@ export default {
         // console.error(err);
         console.log(err);
       });
-    //   this.$modal.show(
-    //     MainModal,
-    //     {
-    //       modal: this.$modal,
-    //     },
-    //     {
-    //       clickToClose: false,
-    //       width: "70%",
-    //       height: "70%",
-    //     }
-    //   );
   },
 };
 </script>
@@ -157,7 +152,6 @@ section {
   display: -ms-flex;
   display: -o-flex;
   display: flex;
-
   font-family: "SpoMedium";
 }
 article {
@@ -173,7 +167,6 @@ aside {
   flex: 2;
   background-color: #0f2232;
   color: aliceblue;
-
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
@@ -182,26 +175,41 @@ aside {
   flex-direction: column;
   justify-content: center;
 }
-
-aside .return-icon {
-  /*        border: 1px solid #e58e26;*/
+aside .aside-top {
   flex: 0.5;
-}
-aside .cook-title {
-  /*        border: 1px solid #b71540;*/
-  flex: 1;
-  font-size: 20px;
-}
-aside .cook-nav {
-  /*        border: 1px solid #0c2461;*/
-  flex: 0.5;
-
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
   display: -o-flex;
   display: flex;
+  flex-direction: row;
+}
+aside .aside-top .return-icon {
+  /*        border: 1px solid #e58e26;*/
+  flex: 1;
+  justify-content: space-between;
+}
 
+aside .aside-top .entire-list {
+  /*        border: 1px solid #e58e26;*/
+  flex: 0.3;
+  justify-content: space-between;
+}
+
+aside .cook-title {
+  /*        border: 1px solid #b71540;*/
+  flex: 0.5;
+  margin: 0 auto;
+  font-size: 20px;
+}
+aside .cook-nav {
+  /*        border: 1px solid #0c2461;*/
+  flex: 0.5;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
   justify-content: space-around;
   -ms-align-items: center;
   align-items: center;
@@ -218,7 +226,6 @@ aside .cook-content {
   /*        border: 1px solid #82ccdd;*/
   flex: 6;
   font-size: 18px;
-
   text-align: center;
 }
 aside .cook-logo {
