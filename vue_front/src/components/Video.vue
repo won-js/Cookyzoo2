@@ -20,15 +20,14 @@ export default {
       controls: undefined,
       loader: undefined,
       mixer: undefined,
-      gltf: undefined,
       video: undefined,
-      videoImage: undefined,
-      videoImageContext: undefined,
       videoTexture: undefined,
       clock: new THREE.Clock(),
       videoSource: undefined,
       model: undefined,
-      change: false,
+      followAudio: new Audio(),
+      motions: [],
+      animations: {},
     };
   },
   computed: {
@@ -48,12 +47,11 @@ export default {
     getStep() {
       this.videoSource = this.getVideo;
       this.mixer = new THREE.AnimationMixer(this.model);
-      const action = this.mixer.clipAction(this.gltf.animations[0]);
+      const action = this.mixer.clipAction(this.animations.explain);
 
       action.play();
       this.scene.add(this.model);
       this.change = false;
-      console.log("hello");
     },
   },
   methods: {
@@ -67,7 +65,7 @@ export default {
         1,
         2000
       );
-      this.camera.position.set(100, 200, 300);
+      this.camera.position.set(250, 150, 300);
 
       // // scene
       this.scene = new THREE.Scene();
@@ -101,7 +99,8 @@ export default {
 
       this.scene.add(ambientLight);
 
-      const pointLight = new THREE.PointLight(0xffffff, 0.8);
+      // 밝기 조절
+      const pointLight = new THREE.PointLight(0xffffff, 4);
 
       this.camera.add(pointLight);
       this.scene.add(this.camera);
@@ -109,15 +108,18 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/pose_a1.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/mellang2.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
-          this.gltf = gltf;
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
-          const action = this.mixer.clipAction(this.gltf.animations[0]);
 
-          console.log(this.gltf.animations);
-          console.log(this.gltf.animations[0].name === "a1");
+          for (let i = 0; i < gltf.animations.length; i++) {
+            this.motions.push(gltf.animations[i].name);
+            this.animations[gltf.animations[i].name] = gltf.animations[i];
+          }
+
+          const action = this.mixer.clipAction(this.animations.clap);
+
           action.play();
 
           this.model.traverse((child) => {
@@ -126,8 +128,9 @@ export default {
               child.receiveShadow = true;
             }
           });
+
           // 모델의 크기 조정
-          this.model.scale.set(90, 90, 90);
+          this.model.scale.set(20, 20, 20);
           this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);
@@ -137,36 +140,6 @@ export default {
           console.log(error);
         }
       );
-      // fbx model을 사용할 때 코드
-      // this.loader = new FBXLoader();
-      // this.loader.load(
-      //   "./fbx/pose12.fbx",
-      //   (model) => {
-      //     this.mixer = new THREE.AnimationMixer(model);
-      //     this.model = model;
-
-      //     model.scale.set(2, 2, 2);
-      //     model.position.set(0, 0, -110);
-
-      //     // character action
-      //     const action = this.mixer.clipAction(model.animations[0]);
-
-      //     action.play();
-
-      // model.traverse((child) => {
-      //   if (child.isMesh) {
-      //     child.castShadow = true;
-      //     child.receiveShadow = true;
-      //   }
-      // });
-
-      //     this.scene.add(model);
-      //   },
-      //   undefined,
-      //   (error) => {
-      //     // console.log(error);
-      //   }
-      // );
 
       // controls // 컨트롤 안해도 될거 같음
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -174,13 +147,16 @@ export default {
       this.controls.update();
 
       window.addEventListener("resize", this.onWindowResize, false);
+      document
+        .getElementById("vid")
+        .addEventListener("ended", this.followMotion, false);
 
-      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.8, window.innerHeight);
     },
     onWindowResize() {
-      this.camera.aspect = (window.innerWidth * 0.79) / window.innerHeight;
+      this.camera.aspect = (window.innerWidth * 0.8) / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth * 0.79, window.innerHeight);
+      this.renderer.setSize(window.innerWidth * 0.8, window.innerHeight);
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -190,37 +166,36 @@ export default {
 
       this.renderer.render(this.scene, this.camera);
     },
-    getTime() {
-      const vid = document.getElementById("vid");
+    followMotion() {
+      //랜덤화
+      let motion;
 
-      // 현재 영상 시간
-      // console.log(vid.currentTime);
-
-      // 끝나는 시간
-      // console.log(vid.duration);
-      // 애니메이션 변경
-      if (vid.currentTime >= vid.duration * 0.5 && !this.change) {
-        // gltf는 불러온 gltf
-        // model은 gltf.scene()
-        this.mixer = new THREE.AnimationMixer(this.model);
-        const action = this.mixer.clipAction(this.gltf.animations[2]); // todo : 동적으로 변경해야함
-
-        action.play();
-
-        this.scene.add(this.model);
-        // 동작을 바뀌었으면 True로 설정을 해서 더 이상 동작이 바뀌지 않도록
-        this.change = true;
+      while (motion === undefined || motion === "explain") {
+        motion = this.motions[Math.floor(Math.random() * this.motions.length)];
       }
+
+      this.mixer = new THREE.AnimationMixer(this.model);
+      this.mixer.clipAction(this.animations[motion]).play();
+      this.scene.add(this.model);
+
+      // 음성 follow~
+      // this.followAudio.play();
     },
-    checkTime() {
-      setInterval(this.getTime, 1000);
+    clap() {
+      this.mixer = new THREE.AnimationMixer(this.model);
+      this.mixer.clipAction(this.animations.clap).play();
+      this.scene.add(this.model);
     },
   },
   mounted() {
     this.init();
     this.animate();
-    this.checkTime();
+    this.followAudio.src = "./audio/followMe.wav";
     this.videoSource = this.getVideo;
+
+    setInterval(() => {
+      this.followMotion();
+    }, 3000);
   },
 };
 </script>
@@ -229,6 +204,9 @@ export default {
 #vid {
   position: absolute;
   width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  background-color: black;
   /* height: 100vh; */
   z-index: -1;
 }

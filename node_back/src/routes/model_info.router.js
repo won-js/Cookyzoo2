@@ -17,7 +17,6 @@ router.get("/", (req, res) => {
 		});
 });
 
-
 // 행동으로 모델 정보 가져오기
 router.get("/action-name/:action_name", (req, res) => {
 	models.model_info.findOne({where: {action_name: req.params.action_name}})
