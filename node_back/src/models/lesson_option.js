@@ -16,11 +16,13 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(100),
 			allowNull: false,
 		},
-		lesson_id: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 	}, {
+		indexes: [
+			{
+				unique: true,
+				fields: ["lesson_id", "name"],
+			},
+		],
 		timestamps: false,
 		tableName: "lesson_option",
 	});
@@ -29,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 		LessonOption.belongsTo(models.lesson, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 

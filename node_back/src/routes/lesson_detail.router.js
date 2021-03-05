@@ -1,4 +1,5 @@
 import express from "express";
+import httpStatus from "http-status";
 import {logger} from "../config/winston";
 import models from "../models";
 
@@ -11,6 +12,9 @@ router.get("/show", (req, res, next) => {
 			res.render("lesson_detail_input", {
 				lessonDetails: result,
 			});
+		})
+		.catch(err => {
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
 });
 
@@ -24,11 +28,47 @@ router.post("/", (req, res, next) => {
 		lesson_id: body.lesson_id,
 	})
 		.then(result => {
-			logger.info("데이터 추가 완료");
-			res.redirect("/lesson-detail/show");
+			logger.info("lesson_detail created: ", result);
+			res.status(httpStatus.OK).send(result);
 		})
 		.catch(err => {
-			logger.error("데이터 추가 실패");
+			logger.error("lesson_detail created fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
+});
+
+// lesson_detail 업데이트
+router.put("/:id", (req, res) => {
+	const body = req.body;
+
+	models.lesson_detail.update({
+		image: body.image,
+		information: body.information,
+	}, {
+		where: {
+			id: req.params.id,
+		},
+	})
+		.then(result => {
+			logger.info("lesson_detail updated: ", result);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("lesson_detail updated fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
+});
+
+// lesson_detail 데이터 삭제
+router.delete("/:id", (req, res) => {
+	models.lesson_detail.destroy({where: {id: req.params.id}})
+		.then(result => {
+			logger.info("lesson_detail deleted: ", result);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("lesson_detail deleted fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
 });
 
