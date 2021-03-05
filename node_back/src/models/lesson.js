@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING(50),
 			allowNull: false,
+			unique: true,
 		},
 		price: {
 			type: DataTypes.INTEGER.UNSIGNED,
@@ -10,10 +11,6 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		thumbnail: {
 			type: DataTypes.STRING(100),
-			allowNull: true,
-		},
-		category_id: {
-			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 	}, {
@@ -25,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 		Lesson.belongsTo(models.category, {
 			foreignKey: "category_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 
@@ -32,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 		Lesson.hasone(models.lesson_detail, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 
@@ -39,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
 		Lesson.hasMany(models.lesson_content, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 
@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
 		Lesson.hasMany(models.lesson_option, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 
@@ -53,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
 		Lesson.hasMany(models.lesson_material, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 
