@@ -6,12 +6,17 @@ const STEP_UPDATED = (state, step) => {
 	state.step = step;
 };
 
-const ANIMAL_ID_UPDATED = (state, animalId) => {
-	state.animalId = animalId;
+const ANIMAL_ANIMATION_UPDATED = (state, animalAnimation) => {
+	state.animalAnimation = animalAnimation;
+};
+
+const START_UPDATED = (state, start) => {
+    state.start = start;
 };
 
 export default {
     CONTENTS_UPDATED,
     STEP_UPDATED,
-    ANIMAL_ID_UPDATED,
+    ANIMAL_ANIMATION_UPDATED,
+    START_UPDATED,
 };

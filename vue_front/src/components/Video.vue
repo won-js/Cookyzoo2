@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <video id="vid" :src="this.videoSource" autoplay muted/>
+    <video id="vid" :src="this.videoSource" autoplay />
   </div>
 </template>
 
@@ -29,13 +29,15 @@ export default {
       motions: [],
       animations: {},
       animal: 0,
+      startCheck: false,
     };
   },
   computed: {
     ...mapGetters({
       getContents: "game/contents",
       getStep: "game/step",
-      getAnimalId: "game/animalId",
+      getAnimalAnimation: "game/animalAnimation",
+      getStart: "game/start",
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
@@ -55,10 +57,22 @@ export default {
       this.scene.add(this.model);
       this.change = false;
     },
+    getStart() {
+      if (this.getStart) {
+        this.init();
+        this.animate();
+        this.followAudio.src = "./audio/followMe.wav";
+        this.videoSource = this.getVideo;
+
+        setInterval(() => {
+          this.followMotion();
+        }, 3000);
+      }
+    },
   },
   methods: {
     ...mapMutations({
-      setAnimalId: "game/ANIMAL_ID_UPDATED",
+      setStart: "game/START_UPDATED",
     }),
     init() {
       const container = document.getElementById("container");
@@ -112,9 +126,9 @@ export default {
 
       //gltf
       this.loader = new GLTFLoader();
-      console.log(this.animal, "test");
+      console.log(this.getAnimalAnimation, "잘 받아와지나?");
       this.loader.load(
-        `./fbx/mellang2.gltf`, // todo: 여기를 동적으로 변경
+        `./fbx/${this.getAnimalAnimation}`, // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
@@ -193,32 +207,8 @@ export default {
       this.scene.add(this.model);
     },
   },
-  created() {
-    this.setAnimalId(1);
-    this.$http
-      .get(`http://127.0.0.1:3000/animal/${this.getAnimalId}`)
-      .then((res) => {
-        const animal = res.data;
-
-        if (animal) {
-          this.animal = animal;
-        }
-      })
-      .catch((err) => {
-        // console.error(err);
-        console.log(err);
-        console.log("실패");
-      });
-  },
   mounted() {
-    this.init();
-    this.animate();
-    this.followAudio.src = "./audio/followMe.wav";
-    this.videoSource = this.getVideo;
-
-    setInterval(() => {
-      this.followMotion();
-    }, 3000);
+    this.setStart(false);
   },
 };
 </script>
