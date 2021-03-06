@@ -31,6 +31,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import MainModal from "@/components/cook-modal/main-modal.vue";
 import Game from "@/components/Game.vue";
 
 export default {
@@ -126,17 +127,17 @@ export default {
         // console.error(err);
         console.log(err);
       });
-    //   this.$modal.show(
-    //     MainModal,
-    //     {
-    //       modal: this.$modal,
-    //     },
-    //     {
-    //       clickToClose: false,
-    //       width: "70%",
-    //       height: "70%",
-    //     }
-    //   );
+      this.$modal.show(
+        MainModal,
+        {
+          modal: this.$modal,
+        },
+        {
+          clickToClose: false,
+          width: "70%",
+          height: "70%",
+        }
+      );
   },
 };
 </script>

@@ -1,12 +1,11 @@
 <template>
 	<section>
-		<p>수업 소개</p>
-		<img :src="images" />
+		<img :src="images" alt = "수업 요리 이미지"/>
 		<p class="title">{{ name }}</p>
 		<!--요리 제목 -->
 		<p class="describe">{{ price }}</p>
 		<!-- 요리설명 -->
-		<button @click="nextPage">바로 시작하기!</button>
+		<button @click="nextPage">시작하기!</button>
 	</section>
 </template>
 <script>
@@ -63,7 +62,7 @@ body {
 section {
 	margin: auto;
 
-	height: 100%;
+	height: 700px;
 	display: flex;
 	flex-direction: column;
 
@@ -84,6 +83,48 @@ p {
 
 .title {
 	font-size: 20px;
+}
+
+button {
+	font-family: "SpoMedium";
+	font-size: 40px;
+}
+
+button{
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:400ms ease all;
+  outline:none;
+}
+button:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+button:before,button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+button:hover:before,button:hover:after{
+  width:100%;
+  transition:800ms ease all;
 }
 
 @media (max-width: 768px) {

@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <video id="vid" :src="this.videoSource" autoplay />
+    <video id="vid" :src="this.videoSource" autoplay muted/>
   </div>
 </template>
 
