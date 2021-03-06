@@ -7,7 +7,7 @@
       <div class="aside-top">
         <div class="return-icon">돌아가기 버튼</div>
         <button class="entire-list" @click="entireButton()">전체순서</button>
-      </div>
+			</div>
       <div class="cook-title">{{ getLessonName }}</div>
       <div class="cook-nav">
         <button class="previous-step" @click="previousVideo()">이전순서</button>
