@@ -5,7 +5,11 @@
     </article>
     <aside>
       <div class="aside-top">
-        <div class="return-icon">돌아가기 버튼</div>
+        <div class="return-icon">
+					<button>
+						<font-awesome-icon :icon="['fas', 'arrow-left']" size="lg" :style="{color:'white'}"/>
+					</button>
+				</div>
         <button class="entire-list" @click="entireButton()">전체순서</button>
 			</div>
       <div class="cook-title">{{ getLessonName }}</div>
@@ -141,8 +145,8 @@ export default {
         },
         {
           clickToClose: false,
-          width: "70%",
-          height: "70%",
+          width: "60%",
+          height: "80%",
         }
       );
   },
@@ -169,10 +173,6 @@ section {
 }
 article {
   /*        border: 1px solid red;*/
-
-  /* background-image: url("../assets/images/cooksample.jpg"); */
-  /* background-size: 100% 100%; */
-
   flex: 8;
 }
 aside {
@@ -189,14 +189,16 @@ aside {
   justify-content: center;
 }
 aside .aside-top {
-  flex: 0.5;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
   display: -o-flex;
   display: flex;
   flex-direction: row;
+
+	padding: 20px;
 }
+
 aside .aside-top .return-icon {
   /*        border: 1px solid #e58e26;*/
   flex: 1;
@@ -209,11 +211,16 @@ aside .aside-top .entire-list {
   justify-content: space-between;
 }
 
+aside .aside-top button {
+	color: white;
+	font-size: 18px;
+}
+
 aside .cook-title {
   /*        border: 1px solid #b71540;*/
   flex: 0.5;
   margin: 0 auto;
-  font-size: 20px;
+  font-size: 28px;
 }
 aside .cook-nav {
   /*        border: 1px solid #0c2461;*/
@@ -226,6 +233,13 @@ aside .cook-nav {
   justify-content: space-around;
   -ms-align-items: center;
   align-items: center;
+
+	font-size: 20px;
+}
+
+aside .cook-nav button {
+	color: white;
+	font-size: 20px;
 }
 
 .cook-nav .entire-list {
@@ -238,9 +252,15 @@ aside .cook-nav {
 aside .cook-content {
   /*        border: 1px solid #82ccdd;*/
   flex: 6;
-  font-size: 18px;
+  font-size: 22px;
   text-align: center;
 }
+
+aside .cook-content .content-title {
+	padding: 10px;
+}
+
+
 aside .cook-logo {
   /*        border: 1px solid #78e08f;*/
   flex: 1;
