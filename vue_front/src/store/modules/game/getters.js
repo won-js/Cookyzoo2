@@ -1,9 +1,11 @@
 const contents = state => state.contents;
 const step = state => state.step;
-const animalId = state => state.animalId;
+const animalAnimation = state => state.animalAnimation;
+const start = state => state.start;
 
 export default {
     contents,
     step,
-    animalId,
+    animalAnimation,
+    start,
 };
