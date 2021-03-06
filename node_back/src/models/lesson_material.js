@@ -8,11 +8,13 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER.UNSIGNED,
 			allowNull: true,
 		},
-		lesson_id: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 	}, {
+		indexes: [
+			{
+				unique: true,
+				fields: ["lesson_id", "name"],
+			},
+		],
 		timestamps: false,
 		tableName: "lesson_material",
 	});
@@ -21,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 		LessonMaterial.belongsTo(models.lesson, {
 			foreignKey: "lesson_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 

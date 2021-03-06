@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING(20),
 			allowNull: true,
+			unique: true,
 		},
 	}, {
 		timestamps: false,
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 		Category.hasMany(models.lesson, {
 			foreignKey: "category_id",
 			onDelete: "cascade",
+			onUpdate: "cascade",
 		});
 	};
 	return Category;

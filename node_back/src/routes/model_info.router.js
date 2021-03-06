@@ -6,35 +6,27 @@ import models from "../models";
 const router = express.Router();
 
 // 들어 있는 데이터 전체 보기
-router.get("/show", (req,res) => {
+router.get("/", (req, res) => {
 	models.model_info.findAll()
 		.then(result => {
-			logger.info("불러오기 성공");
-			res.json(result);
-		}).catch(err => {
-			logger.error("불러오기 실패");
-			res.send(err);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("model_info findAll fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
-})
-            
+});
+
 // 행동으로 모델 정보 가져오기
-router.get("/:action_name", (req, res) => {
-    models.model_info.findOne({where : { action_name : req.params.action_name}})
+router.get("/action-name/:action_name", (req, res) => {
+	models.model_info.findOne({where: {action_name: req.params.action_name}})
 		.then(result => {
-			if (result) {
-				res.json({
-                    action_name : result.action_name,
-					name: result.name,
-					metadata: result.metadata,
-					weight: result.weight,
-				});
-			} else {
-				res.send(httpStatus.NOT_FOUND);
-			}
-		}).catch(err => {
-            logger.error("로딩 실패");
-            res.send(err);
-        });
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("model_info find by action_name fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
 });
 
 // model_info에 데이터 추가
@@ -42,33 +34,56 @@ router.post("/", (req, res) => {
 	const body = req.body;
 
 	models.model_info.create({
-		action_name : body.action_name,
-        name: body.name,
+		action_name: body.action_name,
+		name: body.name,
 		metadata: body.metadata,
 		weight: body.weight,
 	})
 		.then(result => {
-			logger.info("데이터 추가 완료");
-            res.send(result);
+			logger.info("model_info created: ", result);
+			res.status(httpStatus.OK).send(result);
 		})
 		.catch(err => {
-			logger.error("데이터 추가 실패");
-            res.send(err);
+			logger.error("model_info created fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
+});
+
+// model_info 업데이트
+router.put("/:id", (req, res) => {
+	const body = req.body;
+
+	models.model_info.update({
+		action_name: body.action_name,
+		name: body.name,
+		metadata: body.metadata,
+		weight: body.weight,
+	}, {
+		where: {
+			id: req.params.id,
+		},
+	})
+		.then(result => {
+			logger.info("model_info updated: ", result);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("model_info updated fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 		});
 });
 
 // model_info 데이터 삭제
-router.delete("/:action_name",(req, res) => {
-    logger.info(req.params.action_name);
-    models.model_info.destroy({where: {action_name : req.params.action_name}})
-        .then(result => {
-            logger.info("삭제 완료");
-            res.json(result);
-        })
-        .catch(err => {
-            logger.error("삭제 실패");
-            res.send(err);
-        });
-})
+router.delete("/:action_name", (req, res) => {
+	models.model_info.destroy({where: {action_name: req.params.action_name}})
+		.then(result => {
+			logger.info("model_info delete: ", result);
+			res.status(httpStatus.OK).send(result);
+		})
+		.catch(err => {
+			logger.error("model_info delete fail: ", err);
+			res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+		});
+});
 
 export default router;
