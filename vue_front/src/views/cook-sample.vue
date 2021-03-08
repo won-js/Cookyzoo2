@@ -112,7 +112,7 @@ export default {
     this.$http
       .get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
       .then((res) => {
-        const contents = res.data.result;
+        const contents = res.data;
 
         if (contents) {
           this.contents = contents;
