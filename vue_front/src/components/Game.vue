@@ -63,12 +63,10 @@ export default {
       setSuccess: "game/SUCCESS_UPDATED",
     }),
     setup(sketch) {
-      // sketch.createCanvas(750, 750);
       sketch.createCanvas(window.innerWidth * 0.8, window.innerHeight);
       sketch.background(0);
 
       this.video = sketch.createCapture(sketch.VIDEO);
-      // this.video.size(750, 750);
       this.video.size(window.innerWidth * 0.8, window.innerHeight);
       this.video.hide();
 
@@ -81,6 +79,9 @@ export default {
 
       //  몽타주 이미지
       this.image = sketch.loadImage("/images/test.png");
+
+      // resize
+      addEventListener("resize", this.resize, false);
     },
     draw(sketch) {
       sketch.push();
@@ -92,15 +93,15 @@ export default {
         this.video,
         0,
         0,
-        window.innerWidth * 0.8,
-        window.innerHeight
+        document.body.clientWidth * 0.8,
+        document.body.clientHeight
       );
       sketch.image(
         this.image,
         0,
         0,
-        window.innerWidth * 0.8,
-        window.innerHeight
+        document.body.clientWidth * 0.8,
+        document.body.clientHeight
       );
 
       sketch.pop();

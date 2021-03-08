@@ -125,15 +125,18 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/mellang2.gltf", // todo: 여기를 동적으로 변경
+        "./fbx/2eee.gltf", // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
 
           for (let i = 0; i < gltf.animations.length; i++) {
-            this.motions.push(gltf.animations[i].name);
-            this.animations[gltf.animations[i].name] = gltf.animations[i];
+            if (gltf.animations[i].name[0] !== "B") {
+              this.motions.push(gltf.animations[i].name);
+              this.animations[gltf.animations[i].name] = gltf.animations[i];
+            }
           }
+          console.log(this.motions);
 
           const action = this.mixer.clipAction(this.animations.explain);
 
