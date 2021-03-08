@@ -1,13 +1,13 @@
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.bulkInsert(
-			"character",
+			"animal",
 			[
 				{
 					name: "토끼",
 					information: "귀엽다.",
 					image: "rabbit.png",
-					animation: "",
+					animation: "mellang2.gltf",
 					unlock: 0,
 				}, {
 					name: "원숭이",
@@ -22,7 +22,7 @@ module.exports = {
 
 	down: async (queryInterface, Sequelize) => {
 		await queryInterface.bulkDelete(
-			"character",
+			"animal",
 			{
 				name: ["토끼", "원숭이"],
 			},

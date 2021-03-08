@@ -27,6 +27,8 @@ export default {
       motions: [],
       animations: {},
       curStep: undefined,
+      animal: 0,
+      startCheck: false,
     };
   },
   computed: {
@@ -34,11 +36,12 @@ export default {
       getContents: "game/contents",
       getStep: "game/step",
       getSuccess: "game/success",
+      getAnimalAnimation: "game/animalAnimation",
+      getStart: "game/start",
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
     getVideo() {
-      console.log(this.getContents[this.getStep].video);
       return `videos/lesson_${this.getLessonId}/${
         this.getContents[this.getStep].video
       }`;
@@ -61,9 +64,17 @@ export default {
         this.scene.add(this.model);
         this.setSuccess(false);
 
-        setTimeout(() => {
-          this.setStep(this.getStep + 1);
-        }, 3000);
+        // setTimeout(() => {
+        //   this.setStep(this.getStep + 1);
+        // },3000)
+      }
+    },
+    getStart() {
+      if (this.getStart) {
+        this.init();
+        this.animate();
+        this.followAudio.src = "./audio/followMe.wav";
+        this.videoSource = this.getVideo;
       }
     },
   },
@@ -71,6 +82,7 @@ export default {
     ...mapMutations({
       setSuccess: "game/SUCCESS_UPDATED",
       setStep: "game/STEP_UPDATED",
+      setStart: "game/START_UPDATED",
     }),
     init() {
       const container = document.getElementById("container");
@@ -124,8 +136,9 @@ export default {
 
       //gltf
       this.loader = new GLTFLoader();
+      console.log(this.getAnimalAnimation, "잘 받아와지나?");
       this.loader.load(
-        "./fbx/2eee.gltf", // todo: 여기를 동적으로 변경
+        `./fbx/${this.getAnimalAnimation}`, // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
@@ -212,10 +225,7 @@ export default {
     },
   },
   mounted() {
-    this.init();
-    this.animate();
-    this.followAudio.src = "./audio/followMe.wav";
-    this.videoSource = this.getVideo;
+    this.setStart(false);
   },
 };
 </script>
