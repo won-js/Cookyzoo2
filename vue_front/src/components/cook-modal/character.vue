@@ -99,7 +99,7 @@ section {
   flex-direction: column;
   justify-content: center;
 
-	/* position: relative; */
+  /* position: relative; */
 }
 
 .char-title {
@@ -107,7 +107,7 @@ section {
 }
 
 .char-title p {
-	font-size: 25px;
+  font-size: 25px;
 }
 
 .char-box {
@@ -115,14 +115,17 @@ section {
   display: flex;
 }
 
-.char-box p {}
-
-.char-box .box-name {/* 캐릭터 이름 */
-	font-size: 25px;
+.char-box p {
 }
 
-.char-box .box-info {/* 캐릭터 설명 */
-	font-size: 18px;
+.char-box .box-name {
+  /* 캐릭터 이름 */
+  font-size: 25px;
+}
+
+.char-box .box-info {
+  /* 캐릭터 설명 */
+  font-size: 18px;
 }
 
 .character {

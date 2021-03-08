@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import Start from "./start";
 // import Wash from "./wash";
 import Character from "./character";
@@ -39,11 +39,7 @@ export default {
   methods: {
     ...mapMutations({
       setThumbnail: "lesson/THUMBNAIL_UPDATED",
-      setLessonId: "lesson/LESSON_ID_UPDATED",
       setPage: "modal/PAGE_UPDATED",
-    }),
-    ...mapActions({
-      setLesson: "lesson/setLesson",
     }),
     prev() {
       if (this.page > 0) {
@@ -58,16 +54,13 @@ export default {
   },
   created() {
     this.setPage(0);
-    this.setLessonId(2);
-    this.setLesson();
-    console.log(this.getThumbnail);
   },
 };
 </script>
 
 <style scoped>
 div {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 </style>

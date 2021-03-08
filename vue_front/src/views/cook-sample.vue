@@ -1,18 +1,22 @@
 <template>
   <section>
-		<!-- <modals-container /> -->
+    <!-- <modals-container /> -->
     <article>
-      <!-- <Game /> -->
+      <Game />
     </article>
     <aside>
       <div class="aside-top">
         <div class="return-icon">
-					<button>
-						<font-awesome-icon :icon="['fas', 'arrow-left']" size="lg" :style="{color:'white'}"/>
-					</button>
-				</div>
+          <button>
+            <font-awesome-icon
+              :icon="['fas', 'arrow-left']"
+              size="lg"
+              :style="{ color: 'white' }"
+            />
+          </button>
+        </div>
         <button class="entire-list" @click="entireButton()">전체순서</button>
-			</div>
+      </div>
       <div class="cook-title">{{ getLessonName }}</div>
       <div class="cook-nav">
         <button class="previous-step" @click="previousVideo()">이전순서</button>
@@ -43,7 +47,7 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import MainModal from "@/components/cook-modal/main-modal.vue";
-// import Game from "@/components/Game.vue";
+import Game from "@/components/Game.vue";
 
 export default {
   name: "cook-sample",
@@ -66,18 +70,13 @@ export default {
     };
   },
   components: {
-    // Game,
+    Game,
   },
   computed: {
     ...mapGetters({
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
-    getVideo() {
-      return `videos/lesson_${this.getLessonId}/${
-        this.contents[this.curStep].video
-      }`;
-    },
   },
   watch: {
     curStep() {
@@ -90,6 +89,7 @@ export default {
       setLessonId: "lesson/LESSON_ID_UPDATED",
       setContents: "game/CONTENTS_UPDATED",
       setStep: "game/STEP_UPDATED",
+      setSuccess: "game/SUCCESS_UPDATED",
     }),
     ...mapActions({
       setLesson: "lesson/setLesson",
@@ -124,10 +124,14 @@ export default {
     this.setLessonId(1); // lesson id 1을 쓸 거 vuex에저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
     this.setStep(0);
+    this.setSuccess(false);
+
     this.$http
       .get(`http://127.0.0.1:3000/lesson-content/lesson/${this.getLessonId}`)
       .then((res) => {
         const contents = res.data;
+
+        console.log(contents);
 
         if (contents) {
           this.contents = contents;
@@ -139,17 +143,17 @@ export default {
         console.log(err);
         console.log("실패");
       });
-      this.$modal.show(
-        MainModal,
-        {
-          modal: this.$modal,
-        },
-        {
-          clickToClose: false,
-          width: "70%",
-          height: "75%",
-        }
-      );
+    this.$modal.show(
+      MainModal,
+      {
+        modal: this.$modal,
+      },
+      {
+        clickToClose: false,
+        width: "70%",
+        height: "75%",
+      }
+    );
   },
 };
 </script>
@@ -159,7 +163,7 @@ body,
 html {
   margin: 0;
   padding: 0;
-	/* width: 50vw; */
+  /* width: 50vw; */
 }
 
 section {
@@ -198,7 +202,7 @@ aside .aside-top {
   display: flex;
   flex-direction: row;
 
-	padding: 20px;
+  padding: 20px;
 }
 
 aside .aside-top .return-icon {
@@ -214,8 +218,8 @@ aside .aside-top .entire-list {
 }
 
 aside .aside-top button {
-	color: white;
-	font-size: 18px;
+  color: white;
+  font-size: 18px;
 }
 
 aside .cook-title {
@@ -236,12 +240,12 @@ aside .cook-nav {
   -ms-align-items: center;
   align-items: center;
 
-	font-size: 20px;
+  font-size: 20px;
 }
 
 aside .cook-nav button {
-	color: white;
-	font-size: 20px;
+  color: white;
+  font-size: 20px;
 }
 
 .cook-nav .entire-list {
@@ -259,9 +263,8 @@ aside .cook-content {
 }
 
 aside .cook-content .content-title {
-	padding: 10px;
+  padding: 10px;
 }
-
 
 aside .cook-logo {
   /*        border: 1px solid #78e08f;*/

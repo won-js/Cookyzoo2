@@ -20,14 +20,13 @@ export default {
       controls: undefined,
       loader: undefined,
       mixer: undefined,
-      video: undefined,
-      videoTexture: undefined,
       clock: new THREE.Clock(),
       videoSource: undefined,
       model: undefined,
       followAudio: new Audio(),
       motions: [],
       animations: {},
+      curStep: undefined,
       animal: 0,
       startCheck: false,
     };
@@ -36,6 +35,7 @@ export default {
     ...mapGetters({
       getContents: "game/contents",
       getStep: "game/step",
+      getSuccess: "game/success",
       getAnimalAnimation: "game/animalAnimation",
       getStart: "game/start",
       getLessonName: "lesson/name",
@@ -57,21 +57,31 @@ export default {
       this.scene.add(this.model);
       this.change = false;
     },
+    getSuccess() {
+      if (this.getSuccess) {
+        this.mixer = new THREE.AnimationMixer(this.model);
+        this.mixer.clipAction(this.animations.clap).play();
+        this.scene.add(this.model);
+        this.setSuccess(false);
+
+        // setTimeout(() => {
+        //   this.setStep(this.getStep + 1);
+        // },3000)
+      }
+    },
     getStart() {
       if (this.getStart) {
         this.init();
         this.animate();
         this.followAudio.src = "./audio/followMe.wav";
         this.videoSource = this.getVideo;
-
-        setInterval(() => {
-          this.followMotion();
-        }, 3000);
       }
     },
   },
   methods: {
     ...mapMutations({
+      setSuccess: "game/SUCCESS_UPDATED",
+      setStep: "game/STEP_UPDATED",
       setStart: "game/START_UPDATED",
     }),
     init() {
@@ -134,11 +144,14 @@ export default {
           this.mixer = new THREE.AnimationMixer(this.model);
 
           for (let i = 0; i < gltf.animations.length; i++) {
-            this.motions.push(gltf.animations[i].name);
-            this.animations[gltf.animations[i].name] = gltf.animations[i];
+            if (gltf.animations[i].name[0] !== "B") {
+              this.motions.push(gltf.animations[i].name);
+              this.animations[gltf.animations[i].name] = gltf.animations[i];
+            }
           }
+          console.log(this.motions);
 
-          const action = this.mixer.clipAction(this.animations.clap);
+          const action = this.mixer.clipAction(this.animations.explain);
 
           action.play();
 
@@ -190,7 +203,11 @@ export default {
       //랜덤화
       let motion;
 
-      while (motion === undefined || motion === "explain") {
+      while (
+        motion === undefined ||
+        motion === "explain" ||
+        motion === "clap"
+      ) {
         motion = this.motions[Math.floor(Math.random() * this.motions.length)];
       }
 
@@ -199,7 +216,7 @@ export default {
       this.scene.add(this.model);
 
       // 음성 follow~
-      // this.followAudio.play();
+      this.followAudio.play();
     },
     clap() {
       this.mixer = new THREE.AnimationMixer(this.model);
@@ -220,7 +237,6 @@ export default {
   height: 100vh;
   object-fit: cover;
   background-color: black;
-  /* height: 100vh; */
   z-index: -1;
 }
 </style>
