@@ -13,6 +13,12 @@
         <p class="box-name">{{ animal.name }}</p>
         <p class="box-info">{{ animal.information }}</p>
         <button @click="selectAnimal(animal.animation)">선택하기</button>
+				<ul>
+					<li>
+						선탠하기!
+						<span></span><span></span><span></span><span></span>
+					</li>
+				</ul>
       </div>
     </div>
   </section>
