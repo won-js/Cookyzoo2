@@ -75,14 +75,17 @@ section {
   display: flex;
 
 	margin: auto;
-	height: 700px;
+	height: 100%;
 }
 article {
   flex: 6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 article img {
-  width: 100%;
-	height: 100%;
+  width: 90%;
+	height: 90%;
 }
 aside {
   display: -webkit-flex;
@@ -101,8 +104,10 @@ aside h1 {
 	color: brown;
 }
 aside p {
+	margin-bottom: 250px;
 }
 aside button {
+	margin-top: 100px;
 }
 
 button {

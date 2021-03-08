@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="char-title">
-      <p>요리를 같이 할 캐릭터를 선택해주세요!</p>
+      <p>같이 요리할 캐릭터를 선택해볼까요?</p>
     </div>
     <div class="char-box">
       <div
@@ -10,8 +10,8 @@
         v-bind:key="animal.animation"
       >
         <img :src="animal.image" />
-        <p>{{ animal.name }}</p>
-        <p>{{ animal.information }}</p>
+        <p class="box-name">{{ animal.name }}</p>
+        <p class="box-info">{{ animal.information }}</p>
         <button @click="selectAnimal(animal.animation)">선택하기</button>
       </div>
     </div>
@@ -85,29 +85,38 @@ export default {
 section {
   margin: auto;
 
-  height: 700px;
-  background-image: url("../../assets/images/back3.jpg");
+  height: 100%;
+  background-image: url("../../assets/images/bg3.jpg");
   background-size: 100% 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /*        align-items: stretch; 디폴트 값 */
+
+	/* position: relative; */
 }
 
 .char-title {
-  /*        border: 1px solid blue;*/
   flex: 0.05;
-  font-size: 20px;
+}
+
+.char-title p {
+	font-size: 25px;
 }
 
 .char-box {
-  /*        border: 1px solid red;*/
-
   flex: 0.95;
   display: flex;
+}
 
-  /* padding: 10px; */
+.char-box p {}
+
+.char-box .box-name {/* 캐릭터 이름 */
+	font-size: 25px;
+}
+
+.char-box .box-info {/* 캐릭터 설명 */
+	font-size: 18px;
 }
 
 .character {
@@ -121,8 +130,19 @@ section {
   padding: 10px;
 }
 
+/* test */
+/* img:nth-child(1) {
+	position: absolute;
+	left: 10px;
+}
+
+img:nth-child(2) {
+	position: absolute;
+	left: 65%;
+} */
+
 img {
-  width: 100%;
+  width: 70%;
 }
 
 p {
@@ -130,7 +150,7 @@ p {
 }
 
 button {
-  font-family: "SpoMedium";
+  /* font-family: "SpoMedium"; */
   font-size: 30px;
 }
 

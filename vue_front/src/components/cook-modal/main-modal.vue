@@ -2,22 +2,22 @@
   <div>
     <start v-if="getPage == 0" />
     <character v-else-if="getPage == 1" />
-    <wash v-else-if="getPage == 2" />
-    <div v-if="getPage > 2">{{ $emit("close") }}</div>
+    <!-- <wash v-else-if="getPage == 2" /> -->
+    <div v-if="getPage > 1">{{ $emit("close") }}</div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import Start from "./start";
-import Wash from "./wash";
+// import Wash from "./wash";
 import Character from "./character";
 
 export default {
   name: "App",
   components: {
     // MaterialModal,
-    Wash,
+    // Wash,
     Start,
     Character,
   },
@@ -64,3 +64,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+div {
+	width: 100%;
+	height: 100%;
+}
+</style>

@@ -1,5 +1,6 @@
 <template>
   <section>
+		<!-- <modals-container /> -->
     <article>
       <Game />
     </article>
@@ -145,8 +146,8 @@ export default {
         },
         {
           clickToClose: false,
-          width: "60%",
-          height: "80%",
+          width: "70%",
+          height: "75%",
         }
       );
   },
@@ -158,6 +159,7 @@ body,
 html {
   margin: 0;
   padding: 0;
+	/* width: 50vw; */
 }
 
 section {
