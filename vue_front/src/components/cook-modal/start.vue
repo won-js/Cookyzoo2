@@ -15,7 +15,7 @@
       <!-- <button @click="nextPage">바로 시작하기!</button> -->
 			<ul>
 				<li @click="nextPage">
-					선택하기!
+					시작하기!
 					<span></span><span></span><span></span><span></span>
 				</li>
 			</ul>
@@ -90,8 +90,9 @@ article {
 	align-items: center;
 }
 article img {
-  width: 90%;
-	height: 90%;
+  width: 85%;
+	height: 85%;
+	box-shadow: 0px 0px 10px 2px grey;
 }
 aside {
   display: -webkit-flex;
@@ -145,7 +146,7 @@ ul {
 ul li {
     --c: goldenrod;
     color: var(--c);
-    font-size: 16px;
+    font-size: 20px;
     border: 0.3em solid var(--c);
     border-radius: 0.5em;
     width: 12em;
@@ -177,7 +178,7 @@ ul li span {
 }
 
 ul li:hover {
-    color: black;
+    color: white;
 }
 
 ul li:hover span {

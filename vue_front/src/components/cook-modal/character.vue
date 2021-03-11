@@ -12,10 +12,9 @@
         <img :src="animal.image" />
         <p class="box-name">{{ animal.name }}</p>
         <p class="box-info">{{ animal.information }}</p>
-        <button @click="selectAnimal(animal.animation)">선택하기</button>
 				<ul>
-					<li>
-						선탠하기!
+					<li @click="selectAnimal(animal.animation)">
+						선택하기
 						<span></span><span></span><span></span><span></span>
 					</li>
 				</ul>
@@ -158,48 +157,70 @@ p {
   padding: 10px;
 }
 
-button {
-  /* font-family: "SpoMedium"; */
-  font-size: 30px;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+		align-self: center;
 }
 
-button {
-  background: #1aab8a;
-  color: #fff;
-  border: none;
-  position: relative;
-  height: 60px;
-  font-size: 1.6em;
-  padding: 0 2em;
-  cursor: pointer;
-  transition: 400ms ease all;
-  outline: none;
+ul li {
+    --c: goldenrod;
+    color: var(--c);
+    font-size: 16px;
+    border: 0.3em solid var(--c);
+    border-radius: 0.5em;
+    width: 12em;
+    height: 3em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: sans-serif;
+    letter-spacing: 0.1em;
+    text-align: center;
+    line-height: 3em;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: 0.5s;
+    margin: 1em;
+		background-color: white;
 }
-button:hover {
-  background: #fff;
-  color: #1aab8a;
+
+ul li span {
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-color: var(--c);
+    transform: translateY(150%);
+    border-radius: 50%;
+    left: calc((var(--n) - 1) * 25%);
+    transition: 0.5s;
+    transition-delay: calc((var(--n) - 1) * 0.1s);
+    z-index: -1;
 }
-button:before,
-button:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 2px;
-  width: 0;
-  background: #1aab8a;
-  transition: 400ms ease all;
+
+ul li:hover {
+    color: white;
 }
-button:after {
-  right: inherit;
-  top: inherit;
-  left: 0;
-  bottom: 0;
+
+ul li:hover span {
+    transform: translateY(0) scale(2);
 }
-button:hover:before,
-button:hover:after {
-  width: 100%;
-  transition: 800ms ease all;
+
+ul li span:nth-child(1) {
+    --n: 1;
+}
+
+ul li span:nth-child(2) {
+    --n: 2;
+}
+
+ul li span:nth-child(3) {
+    --n: 3;
+}
+
+ul li span:nth-child(4) {
+    --n: 4;
 }
 
 @media (max-width: 768px) {
