@@ -12,6 +12,7 @@ import { mapGetters, mapMutations } from "vuex";
 import Start from "./start";
 // import Wash from "./wash";
 import Character from "./character";
+// import { log } from "three";
 
 export default {
   name: "App",
@@ -40,6 +41,7 @@ export default {
     ...mapMutations({
       setThumbnail: "lesson/THUMBNAIL_UPDATED",
       setPage: "modal/PAGE_UPDATED",
+      setAnimal: "animal/ANIMALS_UPDATED",
     }),
     prev() {
       if (this.page > 0) {
@@ -54,6 +56,25 @@ export default {
   },
   created() {
     this.setPage(0);
+    this.$http
+      .get(`http://127.0.0.1:3000/animal`)
+      .then((res) => {
+        const animals = res.data;
+
+        if (animals) {
+          for (let i = 0; i < animals.length; i++) {
+            console.log(i);
+            animals[i].image = `/images/${animals[i].image}`;
+          }
+          this.setAnimal(animals);
+        }
+        console.log("animal", animals);
+      })
+      .catch((err) => {
+        // console.error(err);
+        console.log(err);
+        console.log("실패");
+      });
   },
 };
 </script>

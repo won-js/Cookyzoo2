@@ -1,6 +1,7 @@
 <template>
   <div id="container">
     <video id="vid" :src="this.videoSource" autoplay />
+		{{this.videoSource}}
   </div>
 </template>
 

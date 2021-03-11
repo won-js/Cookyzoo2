@@ -8,7 +8,7 @@
 >
         <slide
           class="character"
-          v-for="(animal,i) in animals" :index="i" :key="i"
+          v-for="(animal,i) in getAnimals" :index="i" :key="animal.id"
         >
 					<img :src="animal.image" />
           <p class="box-name">{{ animal.name }}</p>
@@ -47,6 +47,7 @@ export default {
   computed: {
     ...mapGetters({
       getAnimalAnimation: "game/animalAnimation",
+			getAnimals: "animal/animals",
     }),
   },
   methods: {
@@ -63,24 +64,6 @@ export default {
   },
   created() {
     this.setAnimalAnimation(1);
-    this.$http
-      .get(`http://127.0.0.1:3000/animal`)
-      .then((res) => {
-        const animals = res.data;
-
-        if (animals) {
-          this.animals = animals;
-          for (let i = 0; i < animals.length; i++) {
-            this.animals[i].image = `/images/${animals[i].image}`;
-          }
-          console.log(this.animals);
-        }
-      })
-      .catch((err) => {
-        // console.error(err);
-        console.log(err);
-        console.log("실패");
-      });
   },
   mounted() {
     console.log("두번째");
@@ -149,6 +132,8 @@ section {
 		border: none;
 		visibility: visible !important;
 }
+
+.current {}
 
 img {
   width: 70%;

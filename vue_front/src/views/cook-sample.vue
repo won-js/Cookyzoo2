@@ -1,8 +1,7 @@
 <template>
   <section>
-    <!-- <modals-container /> -->
     <article>
-      <!-- <Game /> -->
+      <Game />
     </article>
     <aside>
       <div class="aside-top">
@@ -47,7 +46,7 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import MainModal from "@/components/cook-modal/main-modal.vue";
-// import Game from "@/components/Game.vue";
+import Game from "@/components/Game.vue";
 
 export default {
   name: "cook-sample",
@@ -70,7 +69,7 @@ export default {
     };
   },
   components: {
-    // Game,
+    Game,
   },
   computed: {
     ...mapGetters({
@@ -131,11 +130,10 @@ export default {
       .then((res) => {
         const contents = res.data;
 
-        console.log(contents);
-
         if (contents) {
           this.contents = contents;
           this.curVideo = this.getVideo;
+          this.setContents(contents);
         }
       })
       .catch((err) => {
