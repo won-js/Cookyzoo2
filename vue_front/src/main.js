@@ -3,6 +3,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft, faCookieBite } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+//Carousel3D 테스트
+import Carousel3d from "vue-carousel-3d";
 
 import Vue from "vue";
 // axios 테스트
@@ -25,6 +27,8 @@ Vue.prototype.$http = axios; // vue 컴포넌트에서 this.$http로 요청할 �
 
 Vue.use(VModal, {dynamic: true});
 
+//Carousel3D 테스트
+Vue.use(Carousel3d);
 
 Vue.config.productionTip = false;
 

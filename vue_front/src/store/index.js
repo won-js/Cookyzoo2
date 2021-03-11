@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
 import lessonModule from "./modules/lesson";
 import modalModule from "./modules/modal";
 import gameModule from "./modules/game";
@@ -13,5 +13,5 @@ export default new Vuex.Store({
 		modal: modalModule,
 		game: gameModule
 	},
-	plugins: [createPersistedState()],
+	// plugins: [createPersistedState()],
 });
