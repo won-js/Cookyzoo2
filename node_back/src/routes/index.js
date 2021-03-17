@@ -6,7 +6,7 @@ import lessonDetail from "./lesson_detail.router";
 import lessonMaterial from "./lesson_material.router";
 import lessonOption from "./lesson_option.router";
 import modelInfo from "./model_info.router";
-import character from "./character.router";
+import animal from "./animal.router";
 
 const router = express.Router();
 
@@ -17,6 +17,6 @@ router.use("/lesson-detail", lessonDetail);
 router.use("/lesson-material", lessonMaterial);
 router.use("/lesson-option", lessonOption);
 router.use("/model-info", modelInfo);
-router.use("/character", character);
+router.use("/animal", animal);
 
 export default router;

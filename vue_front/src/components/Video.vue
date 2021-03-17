@@ -27,6 +27,8 @@ export default {
       motions: [],
       animations: {},
       curStep: undefined,
+      animal: 0,
+      startCheck: false,
     };
   },
   computed: {
@@ -34,11 +36,12 @@ export default {
       getContents: "game/contents",
       getStep: "game/step",
       getSuccess: "game/success",
+      getAnimalAnimation: "game/animalAnimation",
+      getStart: "game/start",
       getLessonName: "lesson/name",
       getLessonId: "lesson/lessonId",
     }),
     getVideo() {
-      console.log(this.getContents[this.getStep].video);
       return `videos/lesson_${this.getLessonId}/${
         this.getContents[this.getStep].video
       }`;
@@ -66,11 +69,21 @@ export default {
         }, 3000);
       }
     },
+    getStart() {
+      if (this.getStart) {
+        this.init();
+        this.animate();
+
+        this.videoSource = this.getVideo;
+      }
+    },
   },
   methods: {
     ...mapMutations({
       setSuccess: "game/SUCCESS_UPDATED",
       setStep: "game/STEP_UPDATED",
+      setStart: "game/START_UPDATED",
+      setMotion: "game/MOTION_UPDATED",
     }),
     init() {
       const container = document.getElementById("container");
@@ -125,15 +138,19 @@ export default {
       //gltf
       this.loader = new GLTFLoader();
       this.loader.load(
-        "./fbx/mellang2.gltf", // todo: 여기를 동적으로 변경
+        // `./fbx/${this.getAnimalAnimation}`, // todo: 여기를 동적으로 변경
+        `./fbx/mallang_f2.gltf`, // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
 
           for (let i = 0; i < gltf.animations.length; i++) {
-            this.motions.push(gltf.animations[i].name);
-            this.animations[gltf.animations[i].name] = gltf.animations[i];
+            if (gltf.animations[i].name[0] !== "B") {
+              this.motions.push(gltf.animations[i].name);
+              this.animations[gltf.animations[i].name] = gltf.animations[i];
+            }
           }
+          console.log(this.motions);
 
           const action = this.mixer.clipAction(this.animations.explain);
 
@@ -147,7 +164,7 @@ export default {
           });
 
           // 모델의 크기 조정
-          this.model.scale.set(20, 20, 20);
+          this.model.scale.set(100, 100, 100);
           this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);
@@ -194,12 +211,22 @@ export default {
       ) {
         motion = this.motions[Math.floor(Math.random() * this.motions.length)];
       }
+      this.setMotion(motion);
 
       this.mixer = new THREE.AnimationMixer(this.model);
       this.mixer.clipAction(this.animations[motion]).play();
       this.scene.add(this.model);
 
+      // setTimeout(() => {
+      //   this.followMotion();
+      // }, 5000);
+
+      // 음성의 이름을
+      // 캐릭터이름_motion.wav 식으로 해두면 될듯!
       // 음성 follow~
+      const character = "mellang";
+
+      this.followAudio.src = `./audio/${character}_${motion}.wav`;
       this.followAudio.play();
     },
     clap() {
@@ -209,10 +236,7 @@ export default {
     },
   },
   mounted() {
-    this.init();
-    this.animate();
-    this.followAudio.src = "./audio/followMe.wav";
-    this.videoSource = this.getVideo;
+    this.setStart(false);
   },
 };
 </script>

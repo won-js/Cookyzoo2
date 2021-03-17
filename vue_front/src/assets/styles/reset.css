@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+	font-family: "SpoMedium";
 }
 
 h1,
@@ -25,4 +26,15 @@ a:active {
   text-decoration: none;
   color: #fff;
   background-color: #f59000;
+}
+
+button {
+	background: none;
+	border: none;
+	box-shadow:none;
+	border-radius:0; 
+	padding:0; 
+	overflow:visible; 
+	cursor:pointer;
+	font-family: "SpoMedium";
 }

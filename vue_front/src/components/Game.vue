@@ -4,7 +4,7 @@
       <P5 v-on="{ setup, draw }" />
     </div>
     <!-- <div id="video" v-show="this.toggle"> -->
-    <div id="video" v-show="this.temp">
+    <div id="video" v-show="true">
       <Video />
     </div>
   </div>
@@ -32,10 +32,11 @@ export default {
       learningModel: undefined,
       image: undefined,
       toggle: false,
+      active: false,
       modelInfo: {
-        model: "/model/nextmodel.json",
-        metadata: "/model/nextmodel_meta.json",
-        weights: "/model/nextmodel.weights.bin",
+        model: undefined,
+        metadata: undefined,
+        weights: undefined,
       },
       brainInfo: {
         model: "/model/model.json",
@@ -43,19 +44,45 @@ export default {
         weights: "/model/model.weights.bin",
       },
       options: {
-        input: 34,
+        input: 22,
         output: 2,
         task: "classification",
       },
       count: 0,
       modelCount: 0,
-      temp: true,
     };
   },
   computed: {
     ...mapGetters({
       getStep: "game/step",
+      getActive: "game/active",
+      getMotion: "game/motion",
     }),
+  },
+  watch: {
+    getActive() {
+      this.active = this.getActive;
+    },
+    getMotion() {
+      this.$http
+        .get(`http://127.0.0.1:3000/model-info/action-name/${this.getMotion}`)
+        .then((res) => {
+          const data = res.data;
+
+          console.log(data);
+          this.learningModel.load(
+            {
+              model: `/model/${data.name}`,
+              metadata: `/model/${data.metadata}`,
+              weights: `/model/${data.weights}`,
+            },
+            this.modelLoaded
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   methods: {
     ...mapMutations({
@@ -63,12 +90,10 @@ export default {
       setSuccess: "game/SUCCESS_UPDATED",
     }),
     setup(sketch) {
-      // sketch.createCanvas(750, 750);
       sketch.createCanvas(window.innerWidth * 0.8, window.innerHeight);
       sketch.background(0);
 
       this.video = sketch.createCapture(sketch.VIDEO);
-      // this.video.size(750, 750);
       this.video.size(window.innerWidth * 0.8, window.innerHeight);
       this.video.hide();
 
@@ -77,30 +102,31 @@ export default {
       this.brain = ml5.neuralNetwork(this.options);
       this.learningModel = ml5.neuralNetwork(this.options);
       this.brain.load(this.brainInfo, this.brainLoaded);
-      this.learningModel.load(this.modelInfo, this.modelLoaded);
 
       //  몽타주 이미지
       this.image = sketch.loadImage("/images/test.png");
+
+      // resize
+      addEventListener("resize", this.resize, false);
     },
     draw(sketch) {
+      if (this.temp) return; //나중에 toggle로
       sketch.push();
       sketch.translate(this.video.width, 0);
       sketch.scale(-1, 1);
-      // sketch.image(this.video, 0, 0, 750, 750);
-      // sketch.image(this.image, 0, 0, 750, 750);
       sketch.image(
         this.video,
         0,
         0,
-        window.innerWidth * 0.8,
-        window.innerHeight
+        document.body.clientWidth * 0.8,
+        document.body.clientHeight
       );
       sketch.image(
         this.image,
         0,
         0,
-        window.innerWidth * 0.8,
-        window.innerHeight
+        document.body.clientWidth * 0.8,
+        document.body.clientHeight
       );
 
       sketch.pop();
@@ -120,6 +146,7 @@ export default {
     },
     modelLoaded() {
       this.modelClassifyPose();
+      console.log("준비완료!");
     },
     classifyPose() {
       if (this.pose) {
@@ -129,11 +156,8 @@ export default {
           const x = this.pose.keypoints[i].position.x;
           const y = this.pose.keypoints[i].position.y;
 
-          inputs.push(x);
-          inputs.push(y);
-          // 비율로 할 때 고려해야 할 점
-          // inputs.push(x / 7.5);
-          // inputs.push(y / 7.5);
+          inputs.push((x * 100) / window.innerWidth);
+          inputs.push((y * 100) / window.innerHeight);
         }
         this.brain.classify(inputs, this.gotResult);
       } else {
@@ -148,10 +172,8 @@ export default {
           const x = this.pose.keypoints[i].position.x;
           const y = this.pose.keypoints[i].position.y;
 
-          inputs.push(x);
-          inputs.push(y);
-          // inputs.push(x / 7.5);
-          // inputs.push(y / 7.5);
+          inputs.push((x * 100) / window.innerWidth);
+          inputs.push((y * 100) / window.innerHeight);
         }
         this.learningModel.classify(inputs, this.modelGotResult);
       } else {
@@ -179,15 +201,19 @@ export default {
       this.modelClassifyPose();
       let poseLabel;
 
-      if (!this.toggle) return;
+      if (!this.toggle || this.active) return;
       if (results[0].confidence > 0.75) {
         poseLabel = results[0].label;
       }
-      if (poseLabel === "next") {
+      if (poseLabel === "p") {
         this.modelCount++;
         // this.setStep(this.getStep++);
       } else {
         this.modelCount = 0;
+      }
+      if (this.modelCount >= 100) {
+        this.setSuccess(true);
+        this.active = false;
       }
     },
   },
@@ -196,6 +222,7 @@ export default {
 
 <style scoped>
 #motion {
+  /* visibility: hidden; */
   position: absolute;
   z-index: 0;
 }
@@ -203,5 +230,10 @@ export default {
 #video {
   position: absolute;
   z-index: 5;
+}
+
+#game {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -1,20 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
 	const modelInfo = sequelize.define("model_info", {
 		action_name: {
-			type: DataTypes.STRING(20),
+			type: DataTypes.STRING(40),
 			allowNull: false,
 			unique: true,
 		},
 		name: {
-			type: DataTypes.STRING(30),
+			type: DataTypes.STRING(40),
 			allowNull: false,
 		},
 		metadata: {
-			type: DataTypes.STRING(30),
+			type: DataTypes.STRING(40),
 			allowNull: false,
 		},
-		weight: {
-			type: DataTypes.STRING(30),
+		weights: {
+			type: DataTypes.STRING(40),
 			allowNull: false,
 		},
 	}, {

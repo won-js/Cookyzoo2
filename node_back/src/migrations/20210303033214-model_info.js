@@ -10,20 +10,20 @@ module.exports = {
 					type: Sequelize.INTEGER,
 				},
 				action_name: {
-					type: Sequelize.STRING(20),
+					type: Sequelize.STRING(40),
 					allowNull: false,
 					unique: true,
 				},
 				name: {
-					type: Sequelize.STRING(30),
+					type: Sequelize.STRING(40),
 					allowNull: false,
 				},
 				metadata: {
-					type: Sequelize.STRING(30),
+					type: Sequelize.STRING(40),
 					allowNull: false,
 				},
-				weight: {
-					type: Sequelize.STRING(30),
+				weights: {
+					type: Sequelize.STRING(40),
 					allowNull: false,
 				},
 			}, {
