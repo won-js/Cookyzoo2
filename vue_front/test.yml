@@ -1,0 +1,12 @@
+config:
+  target: http://localhost:3000
+  tls:
+  rejectUnauthorized: false
+  phases:
+    - duration: 60
+      arrivalRate: 200
+scenarios:
+  - name: '이게 대체 뭐시당가'
+    flow:
+      - get:
+          url: "/lesson-material/lesson/1"

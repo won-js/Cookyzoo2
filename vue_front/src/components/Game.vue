@@ -74,7 +74,7 @@ export default {
             {
               model: `/model/${data.name}`,
               metadata: `/model/${data.metadata}`,
-              weights: `/model/${data.weight}`,
+              weights: `/model/${data.weights}`,
             },
             this.modelLoaded
           );
@@ -222,6 +222,7 @@ export default {
 
 <style scoped>
 #motion {
+  /* visibility: hidden; */
   position: absolute;
   z-index: 0;
 }
@@ -229,5 +230,10 @@ export default {
 #video {
   position: absolute;
   z-index: 5;
+}
+
+#game {
+  width: 100%;
+  height: 100%;
 }
 </style>
