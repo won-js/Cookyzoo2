@@ -3,7 +3,7 @@
     <start v-if="getPage == 0" />
     <character v-else-if="getPage == 1" />
     <!-- <wash v-else-if="getPage == 2" /> -->
-    <div v-if="getPage > 1">{{ $emit("close") }}</div>
+    <div v-if="getPage > 1">{{ close() }}</div>
   </div>
 </template>
 
@@ -52,6 +52,9 @@ export default {
       if (this.page < 2) {
         this.page += 1;
       }
+    },
+    close() {
+      this.$emit("close");
     },
   },
   created() {

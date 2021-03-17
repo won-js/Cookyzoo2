@@ -6,6 +6,8 @@ const state = {
     step: 0,
     success: false,
 		start: false,
+    motion: undefined,
+    active: false,
 };
 
 export default {
