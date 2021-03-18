@@ -11,27 +11,33 @@
       >
         <slide
           class="character"
-          v-for="(animal, i) in getAnimals"
+          v-for="(animal, i) in animals"
           :index="i"
           :key="animal.id"
         >
           <div class="wrap">
-            <img class="rabbit" :src="animal.image" alt="" />
+            <img
+              class="rabbit"
+              id="animalImage"
+              v-on:mouseover="hoverAnimal(i, animal.image, animal.hover_image)"
+              v-on:mouseout="hoverAnimal(i, animal.image, animal.hover_image)"
+              :src="animal.image"
+              alt=""
+            />
             <div class="arrow_box">
-              <p class="speech-text">
-                ㅎㅇ 나는 {{ animal.name }}야, 나는 {{ animal.information }}
-              </p>
+              <p class="speech-text">안녕 내 이름은 {{ animal.name }}야,</p>
+              <p class="speech-text">{{ animal.information }}</p>
             </div>
           </div>
+          <ul>
+            <li @click="selectAnimal(animal.animation)">
+              선택하기
+              <span></span><span></span><span></span><span></span>
+            </li>
+          </ul>
         </slide>
       </carousel-3d>
     </div>
-    <ul>
-      <li @click="selectAnimal()">
-        선택하기
-        <span></span><span></span><span></span><span></span>
-      </li>
-    </ul>
   </section>
 </template>
 
@@ -48,6 +54,7 @@ export default {
           name: null,
           information: null,
           image: null,
+          hoverImage: null,
           animation: null,
           unlock: null,
         },
@@ -81,12 +88,18 @@ export default {
     onSlideChanged(index) {
       this.index = index;
     },
+    hoverAnimal(i, image, hoverImage) {
+      this.animals[i].image = hoverImage;
+      this.animals[i].hover_image = image;
+      console.log(hoverImage);
+    },
   },
   created() {
     // this.setAnimalAnimation(1);
   },
   mounted() {
     console.log("두번째");
+    this.animals = this.getAnimals;
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
   },

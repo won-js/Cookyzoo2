@@ -73,7 +73,6 @@ export default {
       if (this.getStart) {
         this.init();
         this.animate();
-
         this.videoSource = this.getVideo;
       }
     },
@@ -137,9 +136,9 @@ export default {
 
       //gltf
       this.loader = new GLTFLoader();
+      console.log(this.getAnimalAnimation, "잘 받아와지나?");
       this.loader.load(
-        // `./fbx/${this.getAnimalAnimation}`, // todo: 여기를 동적으로 변경
-        `./fbx/mallang_f2.gltf`, // todo: 여기를 동적으로 변경
+        `./fbx/${this.getAnimalAnimation}.gltf`, // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);

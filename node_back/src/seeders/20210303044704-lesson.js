@@ -9,6 +9,12 @@ module.exports = {
 					thumbnail: "cookie.png",
 					category_id: 1,
 				},
+				{
+					name: "초코케이크",
+					price: 15000,
+					thumbnail: "cookie.png",
+					category_id: 1,
+				}
 			],
 			{});
 	},

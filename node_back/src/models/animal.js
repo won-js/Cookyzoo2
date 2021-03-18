@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
+		hover_image: {
+			type: DataTypes.STRING(128),
+			allowNull: true,
+		},
 		animation: {
 			type: DataTypes.STRING(128),
 			allowNull: false,
