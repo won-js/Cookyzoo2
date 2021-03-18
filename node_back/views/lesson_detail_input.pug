@@ -1,0 +1,60 @@
+doctype html
+html(lang='ko')
+	head
+		title 클래스 디테일
+		style.
+			table {
+				width: 100%;
+				border-top: 1px solid #444444;
+				border-collapse: collapse;
+			}
+			th, td {
+				border-bottom: 1px solid #444444;
+				padding: 10px;
+			}
+
+	body
+		#header 
+			h1.title 클래스 디테일 목록 추가하기
+
+	form(
+		action="/lesson-detail/"
+		method="POST"
+	)
+		table 
+			tr 
+				td 
+					input(
+						type="text" name="image" placeholder="이미지"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="information" placeholder="정보"
+					)
+			tr 
+				td 
+					input(
+						type="number" name="lesson_id" placeholder="lesson_id"
+					)
+		br
+		input(
+			type="submit"
+			value="전송하기"
+		)
+
+	br
+	br
+
+	table
+		tr
+			td id
+			td image
+			td information 
+			td lesson_id
+		for lessonDetail in lessonDetails
+			tr
+				td= lessonDetail.dataValues.id
+				td= lessonDetail.dataValues.image 
+				td= lessonDetail.dataValues.information 
+				td= lessonDetail.dataValues.lesson_id 

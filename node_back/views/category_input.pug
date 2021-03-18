@@ -1,0 +1,48 @@
+doctype html
+html(lang='ko')
+	head
+		title 카테고리
+		style.
+			table {
+				width: 100%;
+				border-top: 1px solid #444444;
+				border-collapse: collapse;
+			}
+			th, td {
+				border-bottom: 1px solid #444444;
+				padding: 10px;
+			}
+
+	body
+		#header 
+			h1.title 카테고리 추가하기
+
+	form(
+		action="/category/"
+		method="POST"
+	)
+		table 
+			tr 
+				td 
+					input(
+						type="text"
+						name="name"
+						placeholder="이름"
+					)
+		br
+		input(
+			type="submit"
+			value="전송하기"
+		)
+
+	br
+	br
+
+	table
+		tr
+			td id
+			td name
+		for category in categories
+			tr
+				td= category.dataValues.id
+				td= category.dataValues.name

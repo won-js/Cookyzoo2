@@ -1,0 +1,60 @@
+doctype html
+html(lang='ko')
+	head
+		title 클래스 재료
+		style.
+			table {
+				width: 100%;
+				border-top: 1px solid #444444;
+				border-collapse: collapse;
+			}
+			th, td {
+				border-bottom: 1px solid #444444;
+				padding: 10px;
+			}
+
+	body
+		#header 
+			h1.title 클래스 재료 목록 추가하기
+
+	form(
+		action="/lesson-material/"
+		method="POST"
+	)
+		table 
+			tr 
+				td 
+					input(
+						type="text" name="name" placeholder="이름"
+					)
+			tr 
+				td 
+					input(
+						type="text" name="quantity" placeholder="수량"
+					)
+			tr 
+				td 
+					input(
+						type="number" name="lesson_id" placeholder="lesson_id"
+					)
+		br
+		input(
+			type="submit"
+			value="전송하기"
+		)
+
+	br
+	br
+
+	table
+		tr
+			td id
+			td name
+			td quantity 
+			td lesson_id
+		for lessonMaterial in lessonMaterials
+			tr
+				td= lessonMaterial.dataValues.id
+				td= lessonMaterial.dataValues.name 
+				td= lessonMaterial.dataValues.price 
+				td= lessonMaterial.dataValues.thumbnail 

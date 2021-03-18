@@ -1,0 +1,40 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+	font-family: "SpoMedium";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6, video {
+  margin: 0;
+}
+
+/* a-style */
+a {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+a:hover,
+a:active {
+  text-decoration: none;
+  color: #fff;
+  background-color: #f59000;
+}
+
+button {
+	background: none;
+	border: none;
+	box-shadow:none;
+	border-radius:0; 
+	padding:0; 
+	overflow:visible; 
+	cursor:pointer;
+	font-family: "SpoMedium";
+}
