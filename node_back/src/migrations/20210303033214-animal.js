@@ -22,6 +22,10 @@ module.exports = {
 					type: Sequelize.STRING(128),
 					allowNull: true,
 				},
+				hover_image: {
+					type: Sequelize.STRING(128),
+					allowNull: true,
+				},
 				animation: {
 					type: Sequelize.STRING(128),
 					allowNull: false,

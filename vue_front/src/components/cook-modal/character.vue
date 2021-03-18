@@ -11,7 +11,7 @@
       >
         <slide
           class="character"
-          v-for="(animal, i) in getAnimals"
+          v-for="(animal, i) in animals"
           :index="i"
           :key="animal.id"
         >
@@ -19,8 +19,8 @@
             <img
               class="rabbit"
               id="animalImage"
-              v-on:mouseover="hoverAnimal(i, animal.image, animal.animation)"
-              v-on:mouseout="hoverAnimal(i, animal.image, animal.animation)"
+              v-on:mouseover="hoverAnimal(i, animal.image, animal.hover_image)"
+              v-on:mouseout="hoverAnimal(i, animal.image, animal.hover_image)"
               :src="animal.image"
               alt=""
             />
@@ -54,6 +54,7 @@ export default {
           name: null,
           information: null,
           image: null,
+          hoverImage: null,
           animation: null,
           unlock: null,
         },
@@ -87,9 +88,10 @@ export default {
     onSlideChanged(index) {
       this.index = index;
     },
-    hoverAnimal(i, image, animation) {
-      this.animals[i].image = animation;
-      this.animals[i].animation = image;
+    hoverAnimal(i, image, hoverImage) {
+      this.animals[i].image = hoverImage;
+      this.animals[i].hover_image = image;
+      console.log(hoverImage);
     },
   },
   created() {
@@ -97,6 +99,7 @@ export default {
   },
   mounted() {
     console.log("두번째");
+    this.animals = this.getAnimals;
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
   },
