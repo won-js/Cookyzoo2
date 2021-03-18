@@ -163,7 +163,7 @@ export default {
           });
 
           // 모델의 크기 조정
-          this.model.scale.set(100, 100, 100);
+          this.model.scale.set(20, 20, 20);
           this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);

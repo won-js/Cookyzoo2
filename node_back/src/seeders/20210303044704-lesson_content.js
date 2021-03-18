@@ -6,7 +6,7 @@ module.exports = {
 				{
 					step: 1,
 					name: "버터 녹이기",
-					subtitle: "전자렌지로 버터를 녹여주세요",
+					subtitle: "전자렌지로 버터와 초코칩을 녹여주세요",
 					video: "1.mp4",
 					lesson_id: 1,
 				}, {

@@ -28,7 +28,7 @@ router.get("/lesson/:id", (req, res, next) => {
 	})
 		.then(result => {
 			res.status(httpStatus.OK).send(result);
-			console.log(result.data)
+			console.log(result.data);
 		})
 		.catch(err => {
 			logger.error("lesson_content find by lesson_id failed: ", err);

@@ -19,8 +19,8 @@
             <img
               class="rabbit"
               id="animalImage"
-              v-on:mouseover="hoverAnimal(i, animal.image, animal.hover_image)"
-              v-on:mouseout="hoverAnimal(i, animal.image, animal.hover_image)"
+              v-on:mouseover="inAnimal(i)"
+              v-on:mouseout="outAnimal(i)"
               :src="animal.image"
               alt=""
             />
@@ -29,15 +29,15 @@
               <p class="speech-text">{{ animal.information }}</p>
             </div>
           </div>
-          <ul>
-            <li @click="selectAnimal(animal.animation)">
-              선택하기
-              <span></span><span></span><span></span><span></span>
-            </li>
-          </ul>
         </slide>
       </carousel-3d>
     </div>
+    <ul>
+      <li @click="selectAnimal()">
+        선택하기
+        <span></span><span></span><span></span><span></span>
+      </li>
+    </ul>
   </section>
 </template>
 
@@ -54,7 +54,6 @@ export default {
           name: null,
           information: null,
           image: null,
-          hoverImage: null,
           animation: null,
           unlock: null,
         },
@@ -87,11 +86,22 @@ export default {
     },
     onSlideChanged(index) {
       this.index = index;
+      this.inAnimal(index);
+      for (let i = 0; i < this.animals.length; i++) {
+        if (i === index) continue;
+        this.outAnimal(i);
+      }
     },
-    hoverAnimal(i, image, hoverImage) {
-      this.animals[i].image = hoverImage;
-      this.animals[i].hover_image = image;
-      console.log(hoverImage);
+    inAnimal(i) {
+      if (this.index === i) {
+        this.animals[i].image = this.getAnimals[i].hover_image;
+        console.log(this.animals[i].image);
+        console.log(this.getAnimals[i].image);
+      }
+    },
+    outAnimal(i) {
+      this.animals[i].image = this.getAnimals[i].image;
+      console.log(this.animals[i].image);
     },
   },
   created() {
@@ -99,7 +109,7 @@ export default {
   },
   mounted() {
     console.log("두번째");
-    this.animals = this.getAnimals;
+    this.animals = JSON.parse(JSON.stringify(this.getAnimals));
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
   },
