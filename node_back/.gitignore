@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# media 제외
+*.mp4
+*.png
+*.jpg

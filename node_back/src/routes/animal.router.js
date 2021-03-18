@@ -47,7 +47,6 @@ router.post("/", (req, res, next) => {
 		name: body.name,
 		information: body.information,
 		image: body.image,
-		thumbnail: body.thumbnail,
 		animation: body.animation,
 		unlock: body.unlock,
 	})

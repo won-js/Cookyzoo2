@@ -22,10 +22,6 @@ module.exports = {
 					type: Sequelize.STRING(128),
 					allowNull: true,
 				},
-				thumbnail: {
-					type: Sequelize.STRING(128),
-					allowNull: true,
-				},
 				animation: {
 					type: Sequelize.STRING(128),
 					allowNull: false,

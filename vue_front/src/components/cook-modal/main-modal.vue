@@ -68,7 +68,7 @@ export default {
           for (let i = 0; i < animals.length; i++) {
             console.log(i);
             animals[i].image = `/images/${animals[i].image}`;
-            animals[i].thumbnail = `/images/${animals[i].thumbnail}`;
+            animals[i].animation = `/images/${animals[i].animation}`;
           }
           this.setAnimal(animals);
         }

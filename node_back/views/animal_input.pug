@@ -40,7 +40,7 @@ html(lang='ko')
 			tr
 				td 
 					input(
-						type="text" name="thumbnail" placeholder="썸네일"
+						type="text" name="animation" placeholder="애니메이션 이미지"
 					)
 		br
 		input(
@@ -57,11 +57,9 @@ html(lang='ko')
 			td name
 			td information 
 			td image
-			td thumbnail
 		for animal in animals
 			tr
 				td= animal.dataValues.id
 				td= animal.dataValues.name 
 				td= animal.dataValues.information 
 				td= animal.dataValues.image 
-				td= animal.dataValues.thumbnail

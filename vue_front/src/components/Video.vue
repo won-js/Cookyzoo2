@@ -64,16 +64,15 @@ export default {
         this.scene.add(this.model);
         this.setSuccess(false);
 
-        // setTimeout(() => {
-        //   this.setStep(this.getStep + 1);
-        // },3000)
+        setTimeout(() => {
+          this.setStep(this.getStep + 1);
+        }, 3000);
       }
     },
     getStart() {
       if (this.getStart) {
         this.init();
         this.animate();
-        this.followAudio.src = "./audio/followMe.wav";
         this.videoSource = this.getVideo;
       }
     },
@@ -83,6 +82,7 @@ export default {
       setSuccess: "game/SUCCESS_UPDATED",
       setStep: "game/STEP_UPDATED",
       setStart: "game/START_UPDATED",
+      setMotion: "game/MOTION_UPDATED",
     }),
     init() {
       const container = document.getElementById("container");
@@ -138,7 +138,7 @@ export default {
       this.loader = new GLTFLoader();
       console.log(this.getAnimalAnimation, "잘 받아와지나?");
       this.loader.load(
-        `./fbx/${this.getAnimalAnimation}`, // todo: 여기를 동적으로 변경
+        `./fbx/${this.getAnimalAnimation}.gltf`, // todo: 여기를 동적으로 변경
         (gltf) => {
           this.model = gltf.scene;
           this.mixer = new THREE.AnimationMixer(this.model);
@@ -163,7 +163,7 @@ export default {
           });
 
           // 모델의 크기 조정
-          this.model.scale.set(20, 20, 20);
+          this.model.scale.set(100, 100, 100);
           this.model.position.set(190, -10, -50);
 
           this.scene.add(this.model);
@@ -210,12 +210,22 @@ export default {
       ) {
         motion = this.motions[Math.floor(Math.random() * this.motions.length)];
       }
+      this.setMotion(motion);
 
       this.mixer = new THREE.AnimationMixer(this.model);
       this.mixer.clipAction(this.animations[motion]).play();
       this.scene.add(this.model);
 
+      // setTimeout(() => {
+      //   this.followMotion();
+      // }, 5000);
+
+      // 음성의 이름을
+      // 캐릭터이름_motion.wav 식으로 해두면 될듯!
       // 음성 follow~
+      const character = "mellang";
+
+      this.followAudio.src = `./audio/${character}_${motion}.wav`;
       this.followAudio.play();
     },
     clap() {

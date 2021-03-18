@@ -13,10 +13,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
-		thumbnail: {
-			type: DataTypes.STRING(128),
-			allowNull: true,
-		},
 		animation: {
 			type: DataTypes.STRING(128),
 			allowNull: false,

@@ -4,10 +4,14 @@
       <p>같이 요리할 캐릭터를 선택해볼까요?</p>
     </div>
     <div class="character-box">
-      <carousel-3d :width="300" :height="600">
+      <carousel-3d
+        :height="carouselHeight"
+        :width="carouselWidth"
+        :on-slide-change="onSlideChanged"
+      >
         <slide
           class="character"
-          v-for="(animal, i) in animals"
+          v-for="(animal, i) in getAnimals"
           :index="i"
           :key="animal.id"
         >
@@ -15,8 +19,8 @@
             <img
               class="rabbit"
               id="animalImage"
-              v-on:mouseover="hoverAnimal(i, animal.image, animal.thumbnail)"
-              v-on:mouseout="hoverAnimal(i, animal.image, animal.thumbnail)"
+              v-on:mouseover="hoverAnimal(i, animal.image, animal.animation)"
+              v-on:mouseout="hoverAnimal(i, animal.image, animal.animation)"
               :src="animal.image"
               alt=""
             />
@@ -54,7 +58,9 @@ export default {
           unlock: null,
         },
       ],
-      imageSrc: null,
+      carouselHeight: 0,
+      carouselWidth: 0,
+      index: 0,
     };
   },
   computed: {
@@ -69,21 +75,34 @@ export default {
       setAnimalAnimation: "game/ANIMAL_ANIMATION_UPDATED",
       setStart: "game/START_UPDATED",
     }),
-    selectAnimal(animalAnimation) {
-      this.setAnimalAnimation(animalAnimation);
+    selectAnimal() {
+      this.setAnimalAnimation(this.getAnimals[this.index].animation);
       this.setStart(true);
       this.nextPage();
     },
-    hoverAnimal(i, image, thumbnail) {
-      this.animals[i].image = thumbnail;
-      this.animals[i].thumbnail = image;
+    handleResize(event) {
+      this.carouselHeight = window.innerHeight * 0.4;
+      this.carouselWidth = window.innerWidth * 0.3;
+    },
+    onSlideChanged(index) {
+      this.index = index;
+    },
+    hoverAnimal(i, image, animation) {
+      this.animals[i].image = animation;
+      this.animals[i].animation = image;
     },
   },
   created() {
-    this.setAnimalAnimation(1);
+    // this.setAnimalAnimation(1);
   },
   mounted() {
-    this.animals = this.getAnimals.slice();
+    console.log("두번째");
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  beforeDestroy() {
+    // console.log("beforeDestroy...");
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>
@@ -104,46 +123,42 @@ section {
 }
 
 .char-title {
-  flex: 0.05;
+  flex: 1 1 0;
 }
 
 .char-title p {
-  font-size: 25px;
+  font-size: 4vh;
+  font-family: "Katuri";
+  margin: 0;
+  padding: 3vh;
 }
 
-.char-box {
-  flex: 0.95;
+.character-box {
+  flex: 5 5 0;
+  margin: 0;
+  padding: 0;
   display: flex;
 }
 
-.char-box p {
-}
-
-.char-box .box-name {
-  /* 캐릭터 이름 */
-  font-size: 25px;
-}
-
-.char-box .box-info {
-  /* 캐릭터 설명 */
-  font-size: 18px;
-}
-
 .character {
-  margin: auto;
+  margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   width: 31%;
-  padding: 10px;
+  padding: 1vh;
 }
 
 .carousel-3d-container {
+  margin: 0;
+  padding: 0;
   overflow: visible;
 }
 
 .carousel-3d-slider {
+  margin: 0;
+  padding: 0;
 }
 
 .carousel-3d-container .carousel-3d-slider .carousel-3d-slide {
@@ -151,6 +166,7 @@ section {
   border: none;
   visibility: visible !important;
   /* border: 1px solid red; */
+  margin: 0;
   padding: 0;
   overflow: visible;
 }
@@ -160,76 +176,93 @@ section {
 }
 
 .current ul li {
+  margin: 0;
+  padding: 0;
   display: block;
 }
+
 .wrap {
   position: relative;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
   display: block;
-  width: 300px;
-  height: 300px;
+  width: 10vh;
+  height: 30vh;
   /* border: 1px solid blue; */
 }
 
 .rabbit {
   position: absolute;
-  width: 70%;
+  width: auto;
+  height: 40vh;
   left: 50%;
+  top: 30%;
+  margin: 0;
+  padding: 0;
   transform: translateX(-50%);
 }
 .arrow_box {
   visibility: hidden;
   /* visibility: visible; */
   position: absolute;
-  left: 60%;
-  bottom: 60%;
-  width: 350px;
-  height: 150px;
+  left: -120%;
+  bottom: 76%;
+  width: 40vh;
+  height: 15vh;
   background: white;
-  border: 4px solid #bbbbbb;
-  border-radius: 35px;
+  border: 0.5vh solid #bbbbbb;
+  border-radius: 2.5vh;
+  margin: 0;
+  padding: 0;
 }
 .speech-text {
-  font-size: 25px;
-  font-weight: 500;
-  margin: 5 15px;
+  font-size: 3vh;
+  font-family: "Bazzi";
+  margin: 3vh;
   text-align: center;
 }
 
 .arrow_box:after,
 .arrow_box:before {
   top: 100%;
-  left: 20%;
+  left: 30%;
   border: solid transparent;
   content: ""; /* after, before사용 시 필요, */
   height: 0;
   width: 0;
   position: absolute;
   pointer-events: none;
+  border-bottom-color: #bbbbbb;
+  border-width: 3vh;
+  margin: 0;
+  padding: 0;
 }
 
 .arrow_box:after {
   border-color: rgba(136, 183, 213, 0);
+  margin: 0;
+  padding: 0;
   border-top-color: #ffffff;
-  border-width: 30px;
-  margin-left: -30px;
+  border-width: 3vh;
+  margin-left: -3vh;
 }
 
 .arrow_box:before {
   border-color: rgba(194, 225, 245, 0);
   border-top-color: #bbbbbb;
-  border-width: 36px;
-  margin-left: -36px;
+  border-width: 3vh;
+  margin-left: -3vh;
 }
 .current .rabbit:hover + div.arrow_box {
   visibility: visible;
 }
 
 p {
-  padding: 10px;
+  padding: 1vh;
 }
 
 ul {
+  flex: 1 1 0;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -239,22 +272,22 @@ ul {
 ul li {
   --c: goldenrod;
   color: var(--c);
-  font-size: 16px;
-  border: 0.3em solid var(--c);
-  border-radius: 0.5em;
-  width: 12em;
-  height: 3em;
+  font-size: 2vh;
+  border: 0.5vh solid var(--c);
+  border-radius: 0.5vh;
+  width: 20vh;
+  height: 5.5vh;
   text-transform: uppercase;
   font-weight: bold;
   font-family: sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.5vh;
   text-align: center;
-  line-height: 3em;
+  line-height: 5.5vh;
   position: relative;
   overflow: hidden;
   z-index: 1;
   transition: 0.5s;
-  margin: 1em;
+  margin: 1.5vh;
   background-color: white;
 }
 
