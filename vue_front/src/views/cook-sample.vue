@@ -119,7 +119,7 @@ export default {
     },
   },
   created() {
-    this.setLessonId(1); // lesson id 1을 쓸 거 vuex에저장
+    this.setLessonId(2); // lesson id 1을 쓸 거 vuex에저장
     this.setLesson(); // lesson id 1의 데이터를 vuex에 저장
     this.setStep(0);
     this.setSuccess(false);

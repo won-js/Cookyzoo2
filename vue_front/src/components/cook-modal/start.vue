@@ -1,12 +1,12 @@
 <template>
   <section>
     <article>
-      <img src="@/assets/images/cookie.jpg" alt="" />
+      <img :src="lesson.thumbnail" alt="" />
       <!-- :src=images" -->
     </article>
     <aside>
       <h1>
-        초코쿠키 제작 클래스
+        {{ lesson.name }}
         <font-awesome-icon
           :icon="['fas', 'cookie-bite']"
           size="lg"
@@ -14,8 +14,7 @@
         />
       </h1>
       <p>
-        초코 쿠키를 만들어보자!! 초코 쿠키를 만들어보자!! 초코 쿠키를
-        만들어보자!!
+        {{ lesson.information }}
       </p>
       <!-- <button @click="nextPage">바로 시작하기!</button> -->
       <ul>
@@ -39,6 +38,14 @@ export default {
       price: 0,
       timer: null,
       currentIndex: 0,
+      lesson: {
+        id: null,
+        name: null,
+        price: null,
+        thumbnail: null,
+        information: null,
+        category_id: null,
+      },
     };
   },
   computed: {
@@ -49,11 +56,13 @@ export default {
       getName: "lesson/name",
       getPrice: "lesson/price",
       getThumbnail: "lesson/thumbnail",
+      getLessonId: "lesson/lessonId",
     }),
   },
   methods: {
     ...mapMutations({
       nextPage: "modal/NEXT_PAGE",
+      setLessonId: "lesson/LESSON_ID_UPDATED",
     }),
     startSlide() {
       console.log("startslide");
@@ -65,8 +74,24 @@ export default {
     this.images = `images/lesson/${this.getThumbnail}`;
     this.name = this.getName;
     this.price = this.getPrice;
-    console.log(this.name);
-    console.log(this.images);
+  },
+  created() {
+    this.$http
+      .get(`http://127.0.0.1:3000/lesson/${this.getLessonId}`)
+      .then((res) => {
+        const lesson = res.data;
+
+        if (lesson) {
+          lesson.thumbnail = `/images/lesson/${lesson.thumbnail}`;
+          this.lesson = lesson;
+          console.log(this.lesson.information);
+        }
+      })
+      .catch((err) => {
+        // console.error(err);
+        console.log(err);
+        console.log("실패");
+      });
   },
 };
 </script>

@@ -22,6 +22,10 @@ module.exports = {
 					type: Sequelize.STRING(100),
 					allowNull: true,
 				},
+				information: {
+					type: Sequelize.STRING(100),
+					allowNull: true,
+				},
 				category_id: {
 					type: Sequelize.INTEGER,
 					allowNull: false,

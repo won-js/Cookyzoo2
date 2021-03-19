@@ -26,6 +26,7 @@ router.get("/:id", (req, res, next) => {
 				name: result.name,
 				price: result.price,
 				thumbnail: result.thumbnail,
+				information: result.information,
 				category_id: result.category_id,
 			});
 		})
@@ -56,6 +57,7 @@ router.post("/", (req, res, next) => {
 		name: body.name,
 		price: body.price,
 		thumbnail: body.thumbnail,
+		information: body.information,
 		category_id: body.category_id,
 	})
 		.then(result => {
@@ -76,6 +78,7 @@ router.put("/:id", (req, res) => {
 		name: body.name,
 		price: body.price,
 		thumbnail: body.thumbnail,
+		information: body.information,
 	}, {
 		where: {
 			id: req.params.id,

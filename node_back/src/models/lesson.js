@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(100),
 			allowNull: true,
 		},
+		information: {
+			type: DataTypes.STRING(100),
+			allowNull: true,	
+		},
 	}, {
 		timestamps: false,
 		tableName: "lesson",
