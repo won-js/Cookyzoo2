@@ -4,23 +4,24 @@
       <Game />
     </article>
     <aside>
+      <img class="aside-bg" src="../assets/images/bg.png"/>
       <div class="aside-top">
-        <div class="return-icon">
-          <button>
-            <font-awesome-icon
-              :icon="['fas', 'arrow-left']"
-              size="lg"
-              :style="{ color: 'white' }"
-            />
-          </button>
-        </div>
-        <button class="entire-list" @click="entireButton()">전체순서</button>
+        <button class="return">
+          <img src="../assets/images/back.png"/>
+        </button>
+        <button class="entire-list" @click="entireButton()">
+          <img src="../assets/images/menu.png"/>
+        </button>
       </div>
       <div class="cook-title">{{ getLessonName }}</div>
       <div class="cook-nav">
-        <button class="previous-step" @click="previousVideo()">이전순서</button>
+        <button class="previous-step" @click="previousVideo()">
+          <img src="../assets/images/prev.png"/>
+        </button>
         <div class="current-list">{{ curStep + 1 }}</div>
-        <button class="next-step" @click="nextVideo()">다음 순서</button>
+        <button class="next-step" @click="nextVideo()">
+          <img src="../assets/images/next.png"/>
+        </button>
       </div>
       <div class="cook-content" v-if="entireList">
         <div
@@ -170,6 +171,7 @@ section {
   display: -o-flex;
   display: flex;
   font-family: "SpoMedium";
+  background-color: #462f4d;
 }
 article {
   /*        border: 1px solid red;*/
@@ -178,7 +180,6 @@ article {
 aside {
   /*        border: 1px solid blue;*/
   flex: 2;
-  background-color: #0f2232;
   color: aliceblue;
   display: -webkit-flex;
   display: -moz-flex;
@@ -188,6 +189,13 @@ aside {
   flex-direction: column;
   justify-content: center;
 }
+aside .aside-bg {
+  position: absolute;
+  text-align: center;
+  height: 92vh;
+  width: 20vw;
+  z-index: 1;
+}
 aside .aside-top {
   display: -webkit-flex;
   display: -moz-flex;
@@ -195,27 +203,29 @@ aside .aside-top {
   display: -o-flex;
   display: flex;
   flex-direction: row;
-  padding: 1.4vw;
-}
-aside .aside-top .return-icon {
-  /*        border: 1px solid #e58e26;*/
-  flex: 1;
   justify-content: space-between;
+  padding-top: 8vh;
+  margin: 0;
+  z-index: 2;
 }
-aside .aside-top .entire-list {
+aside .aside-top .return img {
   /*        border: 1px solid #e58e26;*/
-  flex: 0.3;
-  justify-content: space-between;
+  height: 3.6vh;
+  margin-left: 5vh;
 }
-aside .aside-top button {
-  color: white;
-  font-size: 1vw;
+aside .aside-top .entire-list img {
+  /*        border: 1px solid #e58e26;*/
+  height: 3.6vh;
+  margin-right: 5vh;
 }
 aside .cook-title {
   /*        border: 1px solid #b71540;*/
   flex: 0.5;
-  margin: 0 auto;
-  font-size: 1.8vw;
+  font-size: 4.5vh;
+  text-align: center;
+  font-family: "CookieRunOTF-Bold";
+  padding: 1.4vh;
+  z-index: 2;
 }
 aside .cook-nav {
   /*        border: 1px solid #0c2461;*/
@@ -229,6 +239,12 @@ aside .cook-nav {
   -ms-align-items: center;
   align-items: center;
   font-size: 1.2vw;
+  z-index: 2;
+  margin-top: 1vh;
+}
+aside .cook-nav img {
+  height: 6vh;
+  width: auto;
 }
 aside .cook-nav button {
   color: white;
@@ -237,16 +253,24 @@ aside .cook-nav button {
 .cook-nav .entire-list {
 }
 .cook-nav .current-list {
+  color: #7e4238;
+  font-size: 4vh;
+  font-family: "CookieRunOTF-Bold";
 }
 .cook-nav .next-step {
 }
 aside .cook-content {
   /*        border: 1px solid #82ccdd;*/
   flex: 3;
-  margin-top: 1vw;
+  color: #7e4238;
   font-size: 1.2vw;
   text-align: center;
-  border-bottom: 2px solid #8fceff;
+  font-family: "TmoneyRoundWindExtraBold";
+  margin-top: 3.8vh;
+  padding-right: 3.5vh;
+  padding-left: 3.5vh;
+  line-height: 5vh;
+  z-index: 2;
 }
 aside .cook-content .content-title {
   padding: 0.8vw;
@@ -255,6 +279,10 @@ aside .cook-logo {
   /*        border: 1px solid #78e08f;*/
   flex: 1;
   text-align: center;
+  z-index: 2;
+  height: 7vh;
+  width: auto;
+  margin-bottom: 15vh;
 }
 .cook-logo img {
   width: 50%;

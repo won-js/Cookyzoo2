@@ -84,6 +84,7 @@ export default {
         if (lesson) {
           lesson.thumbnail = `/images/lesson/${lesson.thumbnail}`;
           this.lesson = lesson;
+          console.log(this.lesson.thumbnail);
           console.log(this.lesson.information);
         }
       })
